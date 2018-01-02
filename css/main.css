@@ -10,9 +10,7 @@ body{
 	background-color: #fff;
 }
 
-
 /*	<--TYPOGRAPHY-->*/
-
 
 h1{
 	font-size: 3.5em;
@@ -30,135 +28,114 @@ h2{
 	text-align: center;
 }
 
+h3{
+	font-size: 1.8em;
+	font-weight: bold;
+	line-height: 1.4em;
+	color: white;
+	text-align: center;
+}
+
 p{
 	line-height: 1.8em;
 	font-family: 'Helvetica Neue', sans-serif;
 }
 
+a{
+	color: #4460ba;
+}
+
+a:hover{
+	color: #6095cc;
+}
 
 /*<--NAV-->*/
 
-
-#home{
-	background: url("../images/bg2.jpg") no-repeat center center fixed;	 
-	-webkit-background-size: cover;
-  	-moz-background-size: cover;
-  	-o-background-size: cover;
-  	background-size: cover;
-  	margin: 0;
-  	height: 100vh;
-  	position: relative;
-}
-
 .nav-container{
 	width: 100%;
-}
-
-#global-nav {
-	position: fixed;
-	top: 0;
-	z-index: 9999;
-	height: 96px;
-	width: 100%;
-	background: rgba(255,255,255,.0);
-	color: #fff;
-	-webkit-transition: height .3s, line-height .3s; /* Safari */
-	transition: height .3s, line-height .3s;
-}
-
-nav{
 	text-align: center;
-	width: 50%;
+	color: #fff;
+	padding: 30px;
+	position: fixed;
+	background-color: white;
 }
 
-nav.left-nav{
-	text-align: left;
+.scrolled-nav{
+	padding: 10px 30px;
+	-webkit-transition: .5s; /* Safari */
+    transition: .5s;
+}
+
+.nav-logo{
+	font-size: 20px;
 	float: left;
-	padding-left: 30px;
 }
 
-nav.right-nav{
+.logo a{
+	color: #000;
+	font-weight: bold;
+	text-decoration: none;
+	border: 4px solid black;
+	padding: 4px;
+}
+
+.logo a:hover{
+	color: #fff;
+	background-color: #000;
+}
+
+nav.nav-menu{
 	text-align: right;
 	float: right;
-	padding-right: 30px;
-}
-
-nav ul{
-	padding: 40px 0;
 }
 
 nav ul li{
 	display: inline-block;
-	padding: 0 10px;
+	padding: 0 6px;
 	position: relative;
 	letter-spacing: 0.08em;
+}
+
+nav ul li:last-of-type{
+	padding-right: 0;
 }
 
 nav ul li a{
 	text-decoration: none;
 	color: #fff;
-	padding: 4px 6px;
+	padding: 1px 3px;
+	background-color: #000;
+	font-size: .8em;
+	border: 3px solid black;
+	line-height: 2.9em;
 }
 
 nav ul li a:hover{
 	color: #000;
 	background-color: #fff;
-}
-
-nav ul li a.subpage{
-	color: #000;
-	background-color: #fff;
-}
-
-nav ul li a.subpage:hover{
-	color: #fff;
-	background-color: #000;
+	border: 3px solid black;
 }
 
 a.selected{
-	background-color: #000!important;
-	color: #fff!important;
+	background-color: #fff!important;
+	color: #000!important;
 }
 
-.nav-scroll {
-	display: inline-block;
-	-webkit-transition: all .5s;
-	transition: all .5s;
+/*<--TITLES-->*/
+
+#home,.intro{
+  	margin: 0;
+  	background-color: #4460ba;
+  	width: 100%;
+  	padding: 210px 30px 110px 30px;
+  	text-align: center;
 }
 
-.scrolled-nav .nav-scroll  {
-  	font-size: 12px;
-  	background-color: #000;
-}
-
-.scrolled-nav .nav-scroll:hover{
-	background-color: #fff;
-}
-
-.scrolled-nav .nav-scroll.subpage{
-	background-color: #fff;
-}
-
-.scrolled-nav .nav-scroll.subpage:hover{
-	background-color: #000!important;
-}
-
-#logo{
-	width: 100%;
-	text-align: center;
-	position: absolute;
-  	top: 50%; left: 50%;
- 	transform: translate(-50%,-50%);
- 	padding: 0 30px;
-}
-
-#logo span{
+#home span{
 	font-size: .35em;
 }
 
-
-/*<--BODY-->*/
-
+/*<--BODY WRAPPER-->*/
 
 .content-wrapper{
 	width: 100%;
@@ -167,17 +144,7 @@ a.selected{
 	text-align: left;
 }
 
-.content-wrapper a{
-	color: #4460ba;
-}
-
-.content-wrapper a:hover{
-	color: #6095cc;
-}
-
-
 /*<--ABOUT-->*/
-
 
 #about{
 	padding: 70px;
@@ -187,6 +154,7 @@ a.selected{
 #avatar{
 	width: 250px;
 	margin: 0 auto;
+	padding-bottom: 60px;
 }
 
 #avatar img{
@@ -214,9 +182,7 @@ a.selected{
 	text-align: justify;
 }
 
-
-/*PUBLICATIONS*/
-
+/*<--PUBLICATIONS-->*/
 
 #publications{
 	padding: 70px;
@@ -247,12 +213,10 @@ span.bold{
     font-weight: bold;
 }
 
-
-/*ORBITAL*/
-
+/*<--ORBITAL-->*/
 
 .orbital{
-	padding: 40px;
+	padding: 70px;
 	width: 100%;
 	background-color: #FFF;
 }
@@ -271,12 +235,10 @@ span.bold{
 .orbital p{
 	width: 60%;
 	margin: 0 auto;
-	padding: 40px 0;
+	padding: 0 0 70px 0;
 }
 
-
-/*CONTACT*/
-
+/*<--CONTACT-->*/
 
 #contact{
 	padding: 70px;
@@ -297,20 +259,22 @@ span.bold{
 }
 
 #backtotop a{
-	background-color: #f6f6f6;
-	color: #000;
+	background-color: #000;
+	color: #fff;
 	padding: 10px 20px;
+	border: 4px solid black;
 	font-family: 'Avenir-Heavy', 'Helvetica Neue', Arial, sans-serif;
 	text-decoration: none;
 }
 
 #backtotop a:hover{
-	background-color: #fbfbfb;
+	background-color: #fff;
+	color: #000;
+	-webkit-transition: all .3s;
+	transition: all .3s;
 }
 
-
-/*FOOTER*/
-
+/*<--FOOTER-->*/
 
 footer{
 	padding: 0 40px 40px 40px;
@@ -327,16 +291,14 @@ footer p{
 }
 
 footer a{
-	color: rgba(100,100,100,.7);
+	color: #4460ba;
 }
 
 footer a:hover{
-	opacity: .6;
+	color: #6095cc;
 }
 
-
 /*<--CLEARFIX-->*/
-
 
 .clearfix:after { 
 	visibility: hidden; 
@@ -347,60 +309,9 @@ footer a:hover{
 	height: 0; 
 }
 
-
 /*<--RESPONSIVE-->*/
 
-
-@media only screen and (max-width: 1024px){
-	#home{	
-		background: url("../images/bg2.jpg");	 
-		-webkit-background-size: cover;
-	  	-moz-background-size: cover;
-	  	-o-background-size: cover;
-	  	background-size: cover;
-	  	margin: 0;
-	}
-
-	.orbital h2{
-		padding-top: 60px;
-	}
-}
-
 @media only screen and (max-width: 900px){
-	nav{
-		text-align: center;
-		width: 100%;
-	}
-
-	nav.left-nav,nav.right-nav{
-		text-align: center;
-		float: none;
-		padding-left: 0;
-		padding-right: 0
-	}
-
-	nav ul{
-		padding: 30px 0;
-	}
-
-	nav.right-nav ul{
-		width: 75%;
-		margin: 0 auto;
-		padding-top: 10px;
-	}
-
-	nav ul li a{
-		opacity: 1;
-	}
-
-	.subpage nav ul li a{
-		opacity: 1;
-	}
-
-	h2{	
-		padding-bottom: 40px;
-	}
-
 	#about,#publications,#contact,.orbital{
 		padding: 60px;
 	}
@@ -420,19 +331,30 @@ footer a:hover{
 	.publication{
 		width: 80%;
 	}
+
+	.gif{
+		width: 100%;
+	}
+
+	.orbital p{
+		width: 80%;
+		padding-bottom: 60px;
+	}
 }
 
 @media only screen and (max-width: 700px){
-	#global-nav{
+	.nav-container{
 		position: static;
+		padding: 20px;
 	}
 
-	.orbital h2{
-		padding-top: 20px;
+	nav ul li{
+		display: block;
+		padding: 0;
 	}
 
-	#avatar{
-		padding-bottom: 40px;
+	#home,.intro{
+	  	padding-top: 110px;
 	}
 
 	.column-left{
@@ -451,37 +373,29 @@ footer a:hover{
 		width: 100%;
 	}
 
-	.orbital .gif,.orbital p{
+	.orbital p{
 		width: 100%;
 	}
 }
 
 @media only screen and (max-width: 450px){
-	nav ul{
-		padding: 20px 0;
-	}
-
-	nav ul li{
-		padding: 0 4px;
-	}
-
-	nav ul li:first-of-type{
-		padding-left: 0;
-	}
-
-	nav ul li:last-of-type{
-		padding-right: 0;
-	}
-
-	nav.right-nav ul{
-		width: 90%;
+	.nav-container{
+		padding: 15px;
 	}
 
 	#logo,#about,#publications,#contact,.orbital{
-		padding: 60px 30px;
+		padding: 40px;
 	}
 
-	.orbital h2{
-		padding-top: 0;
+	#avatar{
+		padding-bottom: 40px;
+	}
+
+	h2{
+		padding-bottom: 40px;
+	}
+
+	footer{
+		padding-top: 10px;
 	}
 }
