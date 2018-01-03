@@ -42,7 +42,7 @@ p{
 }
 
 a{
-	color: #4460ba;
+	color: #2c53ce;
 }
 
 a:hover{
@@ -58,6 +58,7 @@ a:hover{
 	padding: 30px;
 	position: fixed;
 	background-color: white;
+	z-index: 2;
 }
 
 .scrolled-nav{
@@ -121,20 +122,6 @@ a.selected{
 	color: #000!important;
 }
 
-/*<--TITLES-->*/
-
-#home,.intro{
-  	margin: 0;
-  	background-color: #4460ba;
-  	width: 100%;
-  	padding: 210px 30px 110px 30px;
-  	text-align: center;
-}
-
-#home span{
-	font-size: .35em;
-}
-
 /*<--BODY WRAPPER-->*/
 
 .content-wrapper{
@@ -142,6 +129,33 @@ a.selected{
 	max-width: 1300px;
 	margin: 0 auto;
 	text-align: left;
+}
+
+/*<--HOME-->*/
+
+#home{
+	background: url("../images/bg2.jpg") no-repeat center center fixed;	 
+	-webkit-background-size: cover;
+  	-moz-background-size: cover;
+  	-o-background-size: cover;
+  	background-size: cover;
+  	height: 100vh;
+  	position: relative;
+  	margin: 0;
+  	width: 100%;
+  	padding: 100px 30px;
+  	text-align: center;
+}
+
+#home h1{
+	position: absolute;
+    top: 50%;
+    width: 100%;
+    left: 0;
+}
+
+#home span{
+	font-size: .35em;
 }
 
 /*<--ABOUT-->*/
@@ -213,31 +227,6 @@ span.bold{
     font-weight: bold;
 }
 
-/*<--ORBITAL-->*/
-
-.orbital{
-	padding: 70px;
-	width: 100%;
-	background-color: #FFF;
-}
-
-.gif{
-	width: 80%;
-	text-align: center;
-	margin: 0 auto;
-}
-
-.gif img{
-	width: 100%;
-	text-align: center;
-}
-
-.orbital p{
-	width: 60%;
-	margin: 0 auto;
-	padding: 0 0 70px 0;
-}
-
 /*<--CONTACT-->*/
 
 #contact{
@@ -272,6 +261,41 @@ span.bold{
 	color: #000;
 	-webkit-transition: all .3s;
 	transition: all .3s;
+}
+
+
+/*<--SUBPAGES-->*/
+
+.intro{
+	margin: 0;
+  	background-color: #2c53ce;
+  	width: 100%;
+  	padding: 210px 30px 110px 30px;
+  	text-align: center;
+}
+
+.subpage-wrapper{
+	padding: 70px;
+	width: 100%;
+	background-color: #FFF;
+}
+
+.gif{
+	width: 80%;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.gif img{
+	width: 100%;
+	text-align: center;
+}
+
+.subpage-wrapper p{
+	width: 60%;
+	margin: 0 auto;
+	padding: 0 0 70px 0;
+	text-align: justify;
 }
 
 /*<--FOOTER-->*/
@@ -312,7 +336,7 @@ footer a:hover{
 /*<--RESPONSIVE-->*/
 
 @media only screen and (max-width: 900px){
-	#about,#publications,#contact,.orbital{
+	#about,#publications,#contact,.subpage-wrapper{
 		padding: 60px;
 	}
 
@@ -336,7 +360,7 @@ footer a:hover{
 		width: 100%;
 	}
 
-	.orbital p{
+	.subpage-wrapper p{
 		width: 80%;
 		padding-bottom: 60px;
 	}
@@ -349,11 +373,29 @@ footer a:hover{
 	}
 
 	nav ul li{
-		display: block;
 		padding: 0;
 	}
 
-	#home,.intro{
+	#home{
+	  	background: url("../images/bg2.jpg");	 
+		-webkit-background-size: cover;
+	  	-moz-background-size: cover;
+	  	-o-background-size: cover;
+	  	background-size: cover;
+	  	margin: 0;
+	  	height: 100%;
+	  	padding:150px 30px;
+	}
+
+	#home h1{
+		position: static;
+	    width: 100%;
+	    left: 0;
+	    top: 0;
+	    font-size: 3em;
+	}
+
+	.intro{
 	  	padding-top: 110px;
 	}
 
@@ -373,8 +415,22 @@ footer a:hover{
 		width: 100%;
 	}
 
-	.orbital p{
+	.subpage-wrapper p{
 		width: 100%;
+	}
+}
+
+@media only screen and (max-width: 600px){
+	.nav-logo,nav.nav-menu{
+		float: none;
+		width: 100%;
+		text-align: left;
+	}
+	nav.nav-menu ul{
+		padding-top: 10px;
+	}
+	nav.nav-menu ul li{
+		height: 31px;
 	}
 }
 
@@ -383,8 +439,16 @@ footer a:hover{
 		padding: 15px;
 	}
 
-	#logo,#about,#publications,#contact,.orbital{
+	#home{
+	  	padding:120px 30px;
+	}
+
+	#logo,#about,#publications,#contact,.subpage-wrapper{
 		padding: 40px;
+	}
+
+	.subpage-wrapper p{
+		padding-bottom: 40px;
 	}
 
 	#avatar{
