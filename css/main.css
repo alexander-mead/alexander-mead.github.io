@@ -270,7 +270,7 @@ span.bold{
 	margin: 0;
   	background-color: #2c53ce;
   	width: 100%;
-  	padding: 210px 30px 110px 30px;
+  	padding: 180px 30px 80px 30px;
   	text-align: center;
 }
 
@@ -280,21 +280,31 @@ span.bold{
 	background-color: #FFF;
 }
 
-.gif{
-	width: 80%;
-	text-align: center;
-	margin: 0 auto;
+.subpage-left{
+	float: left;
+	width: 50%;
+	padding-right: 70px;
 }
 
-.gif img{
+.spacer{
+	padding-bottom: 70px;
+}
+
+.subpage-right{
+	float: right;
+	width: 50%;
+}
+
+.subpage-right img{
 	width: 100%;
 	text-align: center;
 }
 
+.subpage-center{
+	width: 100%;
+}
+
 .subpage-wrapper p{
-	width: 60%;
-	margin: 0 auto;
-	padding: 0 0 70px 0;
 	text-align: justify;
 }
 
@@ -356,13 +366,20 @@ footer a:hover{
 		width: 80%;
 	}
 
-	.gif{
+	.subpage-left{
+		float: none;
 		width: 100%;
+		padding-right: 0;
+		padding-bottom: 60px;
 	}
 
-	.subpage-wrapper p{
-		width: 80%;
+	.spacer{
 		padding-bottom: 60px;
+	}
+
+	.subpage-right{
+		float: none;
+		width: 100%;
 	}
 }
 
@@ -396,7 +413,7 @@ footer a:hover{
 	}
 
 	.intro{
-	  	padding-top: 110px;
+	  	padding-top: 80px;
 	}
 
 	.column-left{
@@ -414,10 +431,6 @@ footer a:hover{
 	.publication{
 		width: 100%;
 	}
-
-	.subpage-wrapper p{
-		width: 100%;
-	}
 }
 
 @media only screen and (max-width: 600px){
@@ -426,11 +439,17 @@ footer a:hover{
 		width: 100%;
 		text-align: left;
 	}
+
 	nav.nav-menu ul{
 		padding-top: 10px;
 	}
+
 	nav.nav-menu ul li{
 		height: 31px;
+	}
+
+	.subpage-wrapper p{
+		font-size: .95em;
 	}
 }
 
@@ -447,15 +466,19 @@ footer a:hover{
 		padding: 40px;
 	}
 
-	.subpage-wrapper p{
-		padding-bottom: 40px;
-	}
-
 	#avatar{
 		padding-bottom: 40px;
 	}
 
 	h2{
+		padding-bottom: 40px;
+	}
+
+	.subpage-left{
+		padding-bottom: 40px;
+	}
+
+	.spacer{
 		padding-bottom: 40px;
 	}
 
