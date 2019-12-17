@@ -2,6 +2,4 @@ To update the website on the PHAS public server do `ssh -Y mead@ssh.phas.ubc.ca`
 
 Note that you will need to manually update `images/cv.pdf`.
 
-(Obsolete) To transfer this to the UBC PHAS server you should use FileZilla. FileZilla does not seem to work from UBC so I should do this transfer from home. Also I need to 'quick connect' to the sftp address.
-
 This UBC PHAS version of the website lives here: http://www.phas.ubc.ca/~mead/
