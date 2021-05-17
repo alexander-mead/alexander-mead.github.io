@@ -59,12 +59,14 @@ a:hover{
 	position: fixed;
 	background-color: white;
 	z-index: 2;
+  -webkit-transition: .5s; /* Safari */
+  transition: .5s;
 }
 
 .scrolled-nav{
 	padding: 10px 30px;
 	-webkit-transition: .5s; /* Safari */
-    transition: .5s;
+  transition: .5s;
 }
 
 .nav-logo{
