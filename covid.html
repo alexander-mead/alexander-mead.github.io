@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
   <head>
     <title>COVID-19 | Alexander Mead</title>
     <link rel='shortcut icon' href='images/favicon.ico' type='image/x-icon'/>
@@ -15,11 +14,11 @@
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
   </head>
-
   <body>
     <div class="page-wrapper">
       
       <!-- nav -->
+
       <div class="nav-container clearfix" id="nav-home">
         <div class="nav-logo">
           <p class="logo"><a href="index.html">AM</a></p>
@@ -31,6 +30,7 @@
             <li><a href="https://github.com/alexander-mead/HMcode">HMcode</a></li>
             <li><a href="orbital.html">Orbits</a></li>
             <li><a href="gravity.html">1D gravity</a></li>
+            <!--li><a href="covid.html">COVID-19</a></li-->
             <li><a href="#" class="selected">COVID-19</a></li>
             <li><a href="maths.html">Maths</a></li>
             <li><a href="index.html#contact">Contact</a></li>
@@ -39,17 +39,53 @@
       </div>
 
       <!-- intro -->
-      <div class="intro">
-        <h3>COVID-19</h3>
-      </div>
 
+      <div class="intro">
+        <h3>COVID-19: United Kingdom</h3>
+      </div>
+      
       <!-- body -->
+        
       <div class="subpage-wrapper">
         <div class="content-wrapper clearfix">
-          <h2><a href="covid_BC.html">British Columbia</a></h2>
-          <h2><a href="covid_Canada.html">Canada</a></h2>
-          <h2><a href="covid_UK.html">United Kingdom</a></h2>
-          <h2><a href="covid_world.html">World</a></h2>
+
+          <div class="subpage-centre">
+            <img src="images/covid_bar_overview.png" width="100%">
+            <p>
+              Overview of COVID-19 cases, hospital admissions and deaths in the the UK over the course of the pandemic.
+              <!--Also shown are: 
+              flu deaths in a typical year, averaged over the whole year; 
+              flu deaths in a 'bad' year averaged over the worst three months of the flu season; 
+              and the typical number of deaths the UK experiences in an average day of an average year.-->
+              Data from <a href="https://coronavirus.data.gov.uk/details/download" target="_blank">gov.uk</a>.
+            </p>
+            <br>
+          </div>
+
+          <div class="subpage-centre">
+            <img src="images/covid_bar_nations.png" width="100%">
+            <p>
+              COVID-19 cases, hospital admissions and deaths in the four nations of the UK.
+              Note that the definition of hospital admission differs between 
+              the four nations, so these data are not directly comparable. 
+              Wales is particularly different to the other nations
+              as both confirmed and suspected COVID cases are included. This is explained 
+              <a href="https://coronavirus.data.gov.uk/details/about-data#daily-and-cumulative-numbers-of-patients-admitted-to-hospital" target="_blank"> here</a>.
+              Data from <a href="https://coronavirus.data.gov.uk/details/download" target="_blank">gov.uk</a>. 
+            </p>
+            <br>
+          </div>
+
+          <div class="subpage-centre">
+            <img src="images/covid_bar_regions.png" width="100%">
+            <p> 
+              COVID-19 cases and deaths broken down by region of the UK.
+              English regional data from 
+              <a href="https://coronavirus.data.gov.uk/details/download" target="_blank"> gov.uk</a>.
+            </p>
+            <br>
+          </div>
+
         </div>
       </div>
       
@@ -57,7 +93,6 @@
       <footer>
         <p>&copy; 2022 Alexander Mead. Website by <a href="http://www.jenbayne.com" target="_blank">Jen Bayne</a>.</p>
       </footer>
-
     </div>
   </body>
 </html>
