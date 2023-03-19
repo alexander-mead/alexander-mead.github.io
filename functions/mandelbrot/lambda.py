@@ -35,12 +35,23 @@ def handler(event, context, verbose=True):
     real_centre = float(body["real"])
     imag_centre = float(body["imag"])
     patch_zoom = float(body["zoom"])
+    patch_depth = body["depth"]
     rmin, rmax = real_centre-1./patch_zoom, real_centre+1./patch_zoom
     imin, imax = imag_centre-1./patch_zoom, imag_centre+1./patch_zoom
-    max_iters = 64
+    if patch_depth == 'low':
+        max_iters = 64
+    elif patch_depth == 'medium':
+        max_iters = 128
+    elif patch_depth == 'high':
+        max_iters = 256
+    else:
+        raise Exception("Invalid patch depth.")
     width, height = 1000, 1000
+    cmap = 'binary_r'
+    sigma = 1.
     data = mandelbrot.create_image(
-        rmin, rmax, imin, imax, max_iters, width, height)
+        rmin, rmax, imin, imax, max_iters, width, height,
+        cmap=cmap, figsize=(6, 6), dpi=224, sigma=sigma)
 
     # Return the response
     response = {

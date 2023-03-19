@@ -7,6 +7,7 @@ const image = () => {
   const real = document.getElementById("real").value;
   const imag = document.getElementById("imag").value;
   const zoom = document.getElementById("zoom").value;
+  const depth = document.getElementById("depth").value;
   const url = baseURL + "/mandelbrot";
   const params = {
     method: "POST", // Unless this is present it will default to "GET"
@@ -17,6 +18,7 @@ const image = () => {
       real: real,
       imag: imag,
       zoom: zoom,
+      depth: depth,
     }),
   };
 

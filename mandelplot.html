@@ -43,19 +43,41 @@
         <h3>Mandelplot: Plot from the Mandelbrot set</h3>
       </div>
 
-      <label for="real">Image centre (real): </label>
-      <input id="real" type="number" value="-0.5" /><br /><br />
+      <div class="subpage-wrapper">
+        <div class="content-wrapper clearfix">
+          <div class="subpage-left">
+            <label for="real">Image centre (real): </label>
+            <input id="real" type="number" value="-0.5" /><br /><br />
 
-      <label for="imag">Image centre (imaginary): </label>
-      <input id="imag" type="number" value="0.0" /><br /><br />
+            <label for="imag">Image centre (imaginary): </label>
+            <input id="imag" type="number" value="0.0" /><br /><br />
 
-      <label for="zoom">Image zoom: </label>
-      <input id="zoom" type="number" value="1.0" /><br /><br />
+            <label for="zoom">Image zoom: </label>
+            <input id="zoom" type="number" value="1.0" /><br /><br />
 
-      <button id="clickButton" onClick="image()">Generate image!</button
-      ><br /><br />
+            <label for="depth">Image depth:</label>
+            <select name="depth" id="depth">
+              <option value="low" selected>Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+            <br /><br />
 
-      <img id="image" class="center" src="images/mandelbrot.png" />
+            <button id="clickButton" onClick="image()">Generate image!</button
+            ><br /><br />
+          </div>
+
+          <div class="subpage-right"></div>
+            <img
+              id="image"
+              src="images/mandelbrot.png"
+              alt="Mandelbrot Set"
+              class="center"
+              style="width: 600px; height: 600px"
+            />
+          </div>
+        </div>
+      </div>
 
       <footer>
         <p>
