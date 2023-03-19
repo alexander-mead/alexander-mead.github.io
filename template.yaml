@@ -1,0 +1,40 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  SAM template for Mandelbrot image generation
+
+Globals:
+  Api:
+    Cors:
+      AllowMethods: "'GET,POST,OPTIONS'"
+      AllowHeaders: "'content-type'"
+      AllowOrigin: "'*'"
+      AllowCredentials: "'*'"
+  Function:
+    Architectures:
+      - x86_64
+      # - arm64
+    Timeout: 60
+
+Resources:
+  MandelbrotFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: "A lambda that generates an image from the Mandelbrot Set."
+      PackageType: Image
+      Events:
+        Mandelbrot:
+          Type: Api
+          Properties:
+            Path: /mandelbrot
+            Method: post
+      MemorySize: 128
+    Metadata:
+      Dockerfile: Dockerfile
+      DockerContext: ./functions/mandelbrot
+      DockerTag: python3.10
+
+Outputs:
+  MandelbrotApi:
+    Description: "API Gateway endpoint URL for Mandelbrot function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/mandelbrot"
