@@ -11,6 +11,12 @@
     <script type="text/javascript" src="scripts/script.js"></script>
     <script type="text/javascript" src="scripts/menu.js"></script>
     <script type="text/javascript" src="scripts/mandelbrot.js"></script>
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+    </script>
+    <script type="text/javascript"
+      src="http://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    </script>
     <!--[if IE]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -72,7 +78,13 @@
               Here you can plot part of the <a href="https://en.wikipedia.org/wiki/Mandelbrot_set">Mandelbrot Set</a>.
               This is a fun thing to do if you have no friends and cannot sleep at night.
               The set is a good example of how a simple mathematical equation can produce extraordinarily complex behaviour.
-              Some good coordinates to try are: ...
+            </p><br />
+              Some good coordinates to try are:
+              <ol>
+                <li>$(-0.75, 0)$</li>
+                <li>$(-1.4002, 0)$</li>
+                <li>$(-0.75, 0)$</li>
+              </ol>
             </p><br /><br />
 
             <label for="real">Image centre (real): </label>

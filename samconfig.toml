@@ -1,0 +1,10 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "mandelbrot"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-q72rntpmpzju"
+s3_prefix = "mandelbrot"
+region = "eu-west-1"
+capabilities = "CAPABILITY_IAM"
+image_repositories = ["MandelbrotFunction=939027885851.dkr.ecr.eu-west-1.amazonaws.com/mandelbrot93434389/mandelbrotfunction24517f5frepo"]

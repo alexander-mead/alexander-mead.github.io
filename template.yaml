@@ -37,4 +37,4 @@ Resources:
 Outputs:
   MandelbrotApi:
     Description: "API Gateway endpoint URL for Mandelbrot function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/mandelbrot"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/mandelbrot"
