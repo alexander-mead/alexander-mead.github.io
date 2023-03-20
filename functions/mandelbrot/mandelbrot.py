@@ -32,7 +32,6 @@ def create_image(real_start, real_end, imag_start, image_end, max_iters, width, 
                         image_end, max_iters, width, height)
     if sigma != 0.:
         array = gaussian_filter(array, sigma=sigma)
-    print(sigma)
     plt.subplots(figsize=figsize, dpi=dpi, frameon=False)
     plt.imshow(array, cmap=cmap, vmin=0., vmax=max_iters)
     plt.xticks([])

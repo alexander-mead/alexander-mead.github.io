@@ -33,19 +33,48 @@
             <li><a href="gravity.html">1D gravity</a></li>
             <li><a href="covid.html">COVID-19</a></li>
             <li><a href="maths.html">Maths</a></li>
-            <li><a href="#" class="selected">Mandelbrot</a></li>
+            <li><a href="#" class="selected">Mandelplot</a></li>
             <li><a href="index.html#contact">Contact</a></li>
           </ul>
         </nav>
       </div>
 
+      <!-- <div id="mandelbrot">
+        <h1>
+          Mandelplot: Plot from the Mandelbrot set<br />
+          <span class="subtitle">
+            <label for="real">Image centre (real): </label>
+            <input id="real" type="number" value="-0.5" />
+            <label for="imag">Image centre (imaginary): </label>
+            <input id="imag" type="number" value="0.0" />
+            <label for="zoom">Image zoom: </label>
+            <input id="zoom" type="number" value="1.0" />
+            <label for="depth">Image depth:</label>
+            <select name="depth" id="depth">
+              <option value="low" selected>Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+            <br /><br />
+          </span>
+        </h1>
+      </div> -->
+
       <div class="intro">
-        <h3>Mandelplot: Plot from the Mandelbrot set</h3>
+        <h3>Mandelplot: Plot from the Mandelbrot Set</h3>
       </div>
 
       <div class="subpage-wrapper">
         <div class="content-wrapper clearfix">
           <div class="subpage-left">
+
+            <p>
+              Here you can plot part of the <a href="https://en.wikipedia.org/wiki/Mandelbrot_set">Mandelbrot Set</a>.
+              This is a fun thing to do if you have no friends and cannot sleep at night.
+              The set is a good example of how a simple mathematical equation can produce extraordinarily complex behaviour.
+              Some good coordinates to try are: ...
+            </p><br /><br />
+
             <label for="real">Image centre (real): </label>
             <input id="real" type="number" value="-0.5" /><br /><br />
 
@@ -57,13 +86,23 @@
 
             <label for="depth">Image depth:</label>
             <select name="depth" id="depth">
-              <option value="low" selected>Low</option>
-              <option value="medium">Medium</option>
-              <option value="high">High</option>
+              <option value="64" selected>Low</option>
+              <option value="128">Medium</option>
+              <option value="256">High</option>
+              <option value="512">Very high</option>
             </select>
             <br /><br />
 
-            <button id="clickButton" onClick="image()">Generate image!</button
+            <label for="color">Colour scheme:</label>
+            <select name="color" id="color">
+              <option value="binary_r" selected>Black & white</option>
+              <option value="cubehelix">Cubehelix</option>
+              <option value="afmhot">Lava</option>
+              <option value="bone">Cool</option>
+            </select>
+            <br /><br />
+
+            <button id="clickButton" onClick="image()">Generate image</button
             ><br /><br />
           </div>
 

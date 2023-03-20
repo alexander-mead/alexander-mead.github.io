@@ -136,7 +136,7 @@ a.selected{
 /*<--HOME-->*/
 
 #home{
-	background: url("../images/bg.jpg") no-repeat center center fixed;	 
+	background: url("../images/background.jpg") no-repeat center center fixed;	 
 	-webkit-background-size: cover;
   	-moz-background-size: cover;
   	-o-background-size: cover;
@@ -159,6 +159,33 @@ a.selected{
 #home span{
 	font-size: .35em;
 }
+
+/*<--Mandelbrot->*/
+
+/* #mandelbrot{
+	background: url("../images/mandelbrot.png") no-repeat center center fixed;	 
+	-webkit-background-size: cover;
+  	-moz-background-size: cover;
+  	-o-background-size: cover;
+  	background-size: cover;
+  	height: 100vh;
+  	position: relative;
+  	margin: 0;
+  	width: 100%;
+  	padding: 100px 30px;
+  	text-align: center;
+}
+
+#mandelbrot h1{
+	position: absolute;
+    top: 50%;
+    width: 100%;
+    left: 0;
+}
+
+#mandelbrot span{
+	font-size: .35em;
+} */
 
 /*<--ABOUT-->*/
 

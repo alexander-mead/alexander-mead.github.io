@@ -4,11 +4,16 @@ const baseURL = "http://127.0.0.1:3000";
 
 const image = () => {
   // Definitions
+  const url = baseURL + "/mandelbrot";
+
+  // Get from html
   const real = document.getElementById("real").value;
   const imag = document.getElementById("imag").value;
   const zoom = document.getElementById("zoom").value;
   const depth = document.getElementById("depth").value;
-  const url = baseURL + "/mandelbrot";
+  const color = document.getElementById("color").value;
+
+  // Construct json
   const params = {
     method: "POST", // Unless this is present it will default to "GET"
     headers: {
@@ -19,6 +24,7 @@ const image = () => {
       imag: imag,
       zoom: zoom,
       depth: depth,
+      color: color,
     }),
   };
 
