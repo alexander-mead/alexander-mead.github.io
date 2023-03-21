@@ -32,9 +32,8 @@ Resources:
     Metadata:
       Dockerfile: Dockerfile
       DockerContext: ./functions/mandelbrot
-      DockerTag: python3.10
 
 Outputs:
   MandelbrotApi:
     Description: "API Gateway endpoint URL for Mandelbrot function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/mandelbrot"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/mandelbrot"
