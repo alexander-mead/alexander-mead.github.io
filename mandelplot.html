@@ -11,12 +11,7 @@
     <script type="text/javascript" src="scripts/script.js"></script>
     <script type="text/javascript" src="scripts/menu.js"></script>
     <script type="text/javascript" src="scripts/mandelbrot.js"></script>
-    <!-- <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
-    </script>
-    <script type="text/javascript"
-      src="http://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-    </script> -->
+    <!-- Mathjax with GitHub pages: https://stackoverflow.com/questions/34347818/using-mathjax-on-a-github-page -->
     <script type="text/javascript" id="MathJax-script" async
       src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
     </script>
@@ -51,27 +46,6 @@
         </nav>
       </div>
 
-      <!-- <div id="mandelbrot">
-        <h1>
-          Mandelplot: Plot from the Mandelbrot set<br />
-          <span class="subtitle">
-            <label for="real">Image centre (real): </label>
-            <input id="real" type="number" value="-0.5" />
-            <label for="imag">Image centre (imaginary): </label>
-            <input id="imag" type="number" value="0.0" />
-            <label for="zoom">Image zoom: </label>
-            <input id="zoom" type="number" value="1.0" />
-            <label for="depth">Image depth:</label>
-            <select name="depth" id="depth">
-              <option value="low" selected>Low</option>
-              <option value="medium">Medium</option>
-              <option value="high">High</option>
-            </select>
-            <br /><br />
-          </span>
-        </h1>
-      </div> -->
-
       <div class="intro">
         <h3>Mandelplot: Plot from the Mandelbrot Set</h3>
       </div>
@@ -94,7 +68,6 @@
                 <li>$(-0.75, 0.00)$</li>
                 <li>$(-1.40, 0.00)$</li>
                 <li>$(-0.60, -0.40)$</li>
-                <li>$(-0.34, -0.61)$</li>
                 <li>$(0.25, 0.00)$</li>
               </ol>
             </p><br /><br />
@@ -135,8 +108,7 @@
               id="image"
               src="images/mandelbrot.png"
               alt="Mandelbrot Set"
-              class="center"
-              style="width: 600px; height: 600px"
+              width="50%"
             />
           </div>
         </div>
