@@ -13,17 +13,16 @@ Globals:
   Function:
     Architectures:
       - x86_64
-      # - arm64
     Timeout: 60
 
 Resources:
-  MandelbrotFunction:
+  MeadMandelbrotFunction:
     Type: AWS::Serverless::Function
     Properties:
       Description: "A lambda that generates an image from the Mandelbrot Set."
       PackageType: Image
       Events:
-        Mandelbrot:
+        MeadMandelbrot:
           Type: Api
           Properties:
             Path: /mandelbrot
@@ -34,6 +33,6 @@ Resources:
       DockerContext: ./functions/mandelbrot
 
 Outputs:
-  MandelbrotApi:
-    Description: "API Gateway endpoint URL for Mandelbrot function"
+  MeadMandelbrotApi:
+    Description: "API Gateway endpoint URL for Mead Mandelbrot function"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/mandelbrot"

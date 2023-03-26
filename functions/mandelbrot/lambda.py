@@ -39,22 +39,26 @@ def handler(event, context, verbose=True):
     cmap = body["color"]
     rmin, rmax = real_centre-1./patch_zoom, real_centre+1./patch_zoom
     imin, imax = imag_centre-1./patch_zoom, imag_centre+1./patch_zoom
-    width, height = 1000, 1000
-    sigma = 0.75
+    width, height = 500, 500
+    sigma = 0.5
     data = mandelbrot.create_image(
         rmin, rmax, imin, imax, max_iters, width, height,
-        cmap=cmap, figsize=(6, 6), dpi=224, sigma=sigma)
+        cmap=cmap, dpi=100, sigma=sigma)
+    data = base64.b64encode(data)  # Encode to base64 bytes
+    data = data.decode()           # Convert bytes to string
 
     # Construct the response
     status = 200  # 200 = OK
     headers = {  # Headers are necessary for CORS
-        "Access-Control-Allow-Headers": "Content-Type",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Headers": "*",
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+        "Access-Control-Allow-Credentials": "*",
+        "Access-Control-Allow-Methods": "*",
     }
     response = {
         "message": "Request received.",
-        "data": str(data),  # TODO: Is this str necessary?
+        "data": data,
     }
 
     # Return the response

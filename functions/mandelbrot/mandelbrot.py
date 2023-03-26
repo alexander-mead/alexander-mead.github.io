@@ -23,24 +23,45 @@ def sample_area(real_start, real_end, imag_start, image_end, max_iters, width, h
     return mandelbrot_set
 
 
-def create_image(real_start, real_end, imag_start, image_end, max_iters, width, height,
-                 cmap="cubehelix", figsize=(6, 6), dpi=224, sigma=1.):
+def transform_image(array, transform):
+    """
+    Apply a transform to the image
+    """
+    if transform is None:
+        pass
+    elif transform == "log":
+        array = np.log(1.+array)/np.log(2.)
+    elif transform == "square_root":
+        array = np.sqrt(array)
+    elif transform == "cube_root":
+        array = np.cbrt(array)
+    elif type(transform) is float:
+        array = array**transform
+    else:
+        raise ValueError("Transform not recognised")
+    return array
+
+
+def create_image(real_start, real_end, imag_start, imag_end, max_iters, width, height,
+                 sigma=0.5, transform=None,
+                 cmap="cubehelix", dpi=224, format="png"):
     """
     Create a png and return it as a binary
     """
     array = sample_area(real_start, real_end, imag_start,
-                        image_end, max_iters, width, height)
+                        imag_end, max_iters, width, height)
+    array /= max_iters-1  # Normalise
     if sigma != 0.:
         array = gaussian_filter(array, sigma=sigma)
+    array = transform_image(array, transform)
+    figsize = width/dpi, height/dpi
     plt.subplots(figsize=figsize, dpi=dpi, frameon=False)
-    plt.imshow(array, cmap=cmap, vmin=0., vmax=max_iters)
+    plt.imshow(array, cmap=cmap, vmin=0., vmax=1.)  # , vmax=max(array))
     plt.xticks([])
     plt.yticks([])
     plt.tight_layout()
     buffer = io.BytesIO()
-    plt.savefig(buffer, format="png", bbox_inches='tight',
-                pad_inches=0)      # Place the png as a binary in memory
-    data = buffer.getvalue()       # Get the binary
-    data = base64.b64encode(data)  # Encode to base64 bytes
-    data = data.decode()           # Convert bytes to string
-    return data  # Return the encoded png binary
+    plt.savefig(buffer, bbox_inches='tight', format=format,
+                pad_inches=0)  # Place the image as a binary in memory
+    buffer = buffer.getvalue()
+    return buffer   # Return the image binary (avoids saving to disk)

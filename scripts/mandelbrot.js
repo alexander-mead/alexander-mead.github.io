@@ -1,5 +1,5 @@
 // const baseURL = "http://127.0.0.1:3000";
-const baseURL = "https://0hku56rtzd.execute-api.eu-west-1.amazonaws.com/Prod";
+const baseURL = "https://3ptm05v8lb.execute-api.eu-west-1.amazonaws.com/Prod";
 
 const image = () => {
   // Definitions
@@ -17,6 +17,7 @@ const image = () => {
     method: "POST", // Unless this is present it will default to "GET"
     headers: {
       "Content-Type": "application/json",
+      Accept: "application/json",
     },
     body: JSON.stringify({
       real: real,
@@ -42,7 +43,8 @@ const image = () => {
       document.getElementById("image").src = image; // To set image within html
       console.log("Image displayed");
     })
-    //.then(document.getElementById("buttonId").disabled = true) // TODO: Disable button to prevent multiple requests
+    // TODO: Disable button to prevent multiple requests
+    //.then(document.getElementById("buttonId").disabled = true)
     .catch((error) => {
       console.log("Error:", error);
       console.log("Failed to sample image");
