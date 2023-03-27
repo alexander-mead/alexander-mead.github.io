@@ -5,13 +5,13 @@ import matplotlib.pyplot as plt
 import base64
 
 
-def sample_area(real_start, real_end, imag_start, image_end, max_iters, width, height):
+def sample_area(real_start, real_end, imag_start, imag_end, max_iters, width, height):
     """
     Loops over an area and assigns points to the Mandelbrot set
     Thanks chatGPT for this vectorized version (although it was wrong to begin with)
     """
     x, y = np.meshgrid(np.linspace(real_start, real_end, width),
-                       np.linspace(imag_start, image_end, height))
+                       np.linspace(imag_end, imag_start, height))  # Reverse y-axis for Cartesian
     mandelbrot_set = np.zeros((height, width))
     c = x + y * 1j        # Map x, y to their complex values
     z = np.zeros_like(c)  # Initialise the value of 'z' at each location
