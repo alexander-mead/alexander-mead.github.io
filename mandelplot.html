@@ -12,11 +12,14 @@
     <script type="text/javascript" src="scripts/menu.js"></script>
     <script type="text/javascript" src="scripts/mandelbrot.js"></script>
     <!-- Mathjax with GitHub pages: https://stackoverflow.com/questions/34347818/using-mathjax-on-a-github-page -->
-    <script type="text/javascript" id="MathJax-script" async
-      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-    </script>
+    <script
+      type="text/javascript"
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+    ></script>
     <script>
-      MathJax = {tex: {inlineMath: [['$', '$']]}};
+      MathJax = { tex: { inlineMath: [["$", "$"]] } };
     </script>
     <!--[if IE]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -53,24 +56,31 @@
       <div class="subpage-wrapper">
         <div class="content-wrapper clearfix">
           <div class="subpage-left">
-
             <p>
-              Here you can plot part of the <a href="https://en.wikipedia.org/wiki/Mandelbrot_set">Mandelbrot Set</a>.
-              This is a fun thing to do if you have no friends and cannot sleep at night.
-              The set is a good example of how a simple mathematical equation can produce extraordinarily complex behaviour.
-              Explore the set by changing the image centre and zoom level.
-              The image depth controls the number of iterations that are used to determine whether a point is in the set or not.
-              Points are coloured according to the number of iterations required to determine whether they are in the set or not,
-              with black being points that are in the set, and the colour intensity indicating how long it took a point to diverge.
-            </p><br />
-              Some interesting coordinates to try are:
-              <ol>
-                <li>$(-0.75, 0.00)$</li>
-                <li>$(-1.40, 0.00)$</li>
-                <li>$(-0.60, -0.40)$</li>
-                <li>$(0.25, 0.00)$</li>
-              </ol>
-            </p><br /><br />
+              Here you can plot part of the
+              <a href="https://en.wikipedia.org/wiki/Mandelbrot_set"
+                >Mandelbrot Set</a
+              >. This is a fun thing to do if you have no friends and cannot
+              sleep at night. The set is a good example of how a simple
+              mathematical equation can produce extraordinarily complex
+              behaviour. Explore the set by changing the image centre and zoom
+              level. The image depth controls the number of iterations that are
+              used to determine whether a point is in the set or not. Points are
+              coloured according to the number of iterations required to
+              determine whether they are in the set or not, with black being
+              points that are in the set, and the colour intensity indicating
+              how long it took a point to diverge.
+            </p>
+            <br />
+            <p>Some interesting coordinates to try are:</p>
+            <ol>
+              <br />
+              <li>$(-0.75, 0.00)$</li>
+              <li>$(-1.40, 0.00)$</li>
+              <li>$(-0.60, -0.40)$</li>
+              <li>$(0.25, 0.00)$</li>
+            </ol>
+            <br /><br />
 
             <label for="real">Image centre (real): </label>
             <input id="real" type="number" value="-0.5" /><br /><br />
@@ -86,29 +96,22 @@
               <option value="64" selected>Low</option>
               <option value="128">Medium</option>
               <option value="256">High</option>
-              <option value="512">Very high</option>
-            </select>
-            <br /><br />
+              <option value="512">Very high</option></select
+            ><br /><br />
 
             <label for="color">Colour scheme:</label>
             <select name="color" id="color">
               <option value="binary_r" selected>Black & white</option>
               <option value="cubehelix">Cubehelix</option>
               <option value="afmhot">Lava</option>
-              <option value="bone">Cool</option>
-            </select>
-            <br /><br />
-
-            <button id="clickButton" onClick="image()">Generate image</button
+              <option value="bone">Cool</option></select
             ><br /><br />
+
+            <button id="clickButton" onClick="image()">Generate image</button>
           </div>
 
-          <div class="subpage-right"></div>
-            <img
-              id="image"
-              src="images/mandelbrot.png"
-              alt="Mandelbrot Set"
-            />
+          <div class="subpage-right">
+            <img id="image" src="images/mandelbrot.png" alt="Mandelbrot Set" />
           </div>
         </div>
       </div>
