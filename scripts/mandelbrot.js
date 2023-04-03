@@ -11,6 +11,9 @@ const image = () => {
   const zoom = document.getElementById("zoom").value;
   const depth = document.getElementById("depth").value;
   const color = document.getElementById("color").value;
+  const width = 500;
+  const height = 500;
+  const sigma = 0.5;
 
   // Construct json
   const params = {
@@ -25,6 +28,9 @@ const image = () => {
       zoom: zoom,
       depth: depth,
       color: color,
+      width: width,
+      height: height,
+      sigma: sigma,
     }),
   };
 
