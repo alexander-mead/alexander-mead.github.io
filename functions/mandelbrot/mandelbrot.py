@@ -1,8 +1,13 @@
+# Project imports
 import io
+
+# Third-party imports
 import numpy as np
 from scipy.ndimage import gaussian_filter
 import matplotlib.pyplot as plt
-import base64
+
+# Project imports
+from Fortran import sample_area as Fortran_sample_area
 
 
 def sample_area(real_start, real_end, imag_start, imag_end, max_iters, width, height):
@@ -44,13 +49,19 @@ def transform_image(array, transform):
 
 def create_image(real_start, real_end, imag_start, imag_end, max_iters, width, height,
                  sigma=0.5, transform=None,
-                 cmap="cubehelix", dpi=224, format="png"):
+                 cmap="cubehelix", dpi=224, format="png",
+                 use_Fortran=True):
     """
     Create a png and return it as a binary
     """
-    array = sample_area(real_start, real_end, imag_start,
-                        imag_end, max_iters, width, height)
-    array /= max_iters-1  # Normalise
+    if use_Fortran:
+        array = Fortran_sample_area(real_start, real_end, imag_start,
+                                    imag_end, max_iters, width, height, width, height)
+        array = array.T/(max_iters-1)
+    else:
+        array = sample_area(real_start, real_end, imag_start,
+                            imag_end, max_iters, width, height)
+        array /= max_iters-1
     if sigma != 0.:
         array = gaussian_filter(array, sigma=sigma)
     array = transform_image(array, transform)
