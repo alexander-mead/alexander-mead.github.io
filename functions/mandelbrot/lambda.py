@@ -39,7 +39,7 @@ def handler(event, context, verbose=True):
     cmap = body["color"]
     rmin, rmax = real_centre-1./patch_zoom, real_centre+1./patch_zoom
     imin, imax = imag_centre-1./patch_zoom, imag_centre+1./patch_zoom
-    width, height = 500, 500
+    width, height = 1000, 1000
     sigma = 0.5
     data = mandelbrot.create_image(
         rmin, rmax, imin, imax, max_iters, width, height,
