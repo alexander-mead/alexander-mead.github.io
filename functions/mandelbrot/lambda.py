@@ -43,7 +43,7 @@ def handler(event, context, verbose=True):
     sigma = float(body['sigma'])
     data = mandelbrot.create_image(
         rmin, rmax, imin, imax, max_iters, width, height,
-        cmap=cmap, dpi=100, sigma=sigma)
+        sigma=sigma, cmap=cmap)
     data = base64.b64encode(data)  # Encode to base64 bytes
     data = data.decode()           # Convert bytes to string
 

@@ -1,10 +1,8 @@
 version = 0.1
-[default]
-[default.deploy]
 [default.deploy.parameters]
-stack_name = "mandelbrotMead"
-s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-q72rntpmpzju"
-s3_prefix = "mandelbrotMead"
-region = "eu-west-1"
+stack_name = "meadmandelbrot"
+resolve_s3 = true
+s3_prefix = "meadmandelbrot"
+region = "eu-west-2"
 capabilities = "CAPABILITY_IAM"
-image_repositories = ["MeadMandelbrotFunction=939027885851.dkr.ecr.eu-west-1.amazonaws.com/mandelbrotmead5c07d184/meadmandelbrotfunctionbd344d2arepo"]
+image_repositories = ["MeadMandelbrotFunction=939027885851.dkr.ecr.eu-west-2.amazonaws.com/meadmandelbrotd18ae537/meadmandelbrotfunctionbd344d2arepo"]
