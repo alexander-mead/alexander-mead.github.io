@@ -11,8 +11,8 @@ const image = () => {
   const zoom = document.getElementById("zoom").value;
   const depth = document.getElementById("depth").value;
   const color = document.getElementById("color").value;
-  const width = 500;
-  const height = 500;
+  const width = 750;
+  const height = 750;
   const sigma = 0.5;
 
   // Construct json
