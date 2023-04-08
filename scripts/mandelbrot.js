@@ -35,6 +35,14 @@ const image = () => {
     }),
   };
 
+  // Show spinner and grey overlay
+  const spinner = document.getElementById("spinner");
+  const overlay = document.getElementById("overlay");
+  const button = document.getElementById("clickButton");
+  spinner.style.display = "block";
+  overlay.style.display = "block";
+  button.disabled = true;
+
   // Fetch
   console.log("Request sent");
   fetch(url, params)
@@ -49,11 +57,17 @@ const image = () => {
       //console.log("Image: "+image);
       document.getElementById("image").src = image; // To set image within html
       console.log("Image displayed");
+      spinner.style.display = "none";
+      overlay.style.display = "none";
+      button.disabled = false;
     })
     // TODO: Disable button to prevent multiple requests
     //.then(document.getElementById("buttonId").disabled = true)
     .catch((error) => {
       console.log("Error:", error);
       console.log("Failed to sample image");
+      spinner.style.display = "none";
+      overlay.style.display = "none";
+      button.disabled = false;
     });
 };
