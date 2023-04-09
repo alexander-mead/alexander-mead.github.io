@@ -60,19 +60,19 @@
               Here you can plot part of the
               <a href="https://en.wikipedia.org/wiki/Mandelbrot_set"
                 >Mandelbrot Set</a
-              >. This is a fun thing to do if you have no friends and cannot
-              sleep at night. The set is a good example of how a simple
-              mathematical equation can produce extraordinarily complex
-              behaviour. Explore the set by changing the image centre and zoom
-              level. The image depth controls the number of iterations that are
-              used to determine whether a point is in the set or not. Points are
-              coloured according to the number of iterations required to
-              determine whether they are in the set or not, with black being
-              points that are in the set, and the colour intensity indicating
-              how long it took a point to diverge.
+              >. This is a fun thing to do if you cannot sleep at night. The set
+              is a good example of how a simple mathematical equation can
+              produce extraordinarily complex behaviour. Explore the set by
+              changing the image centre, depth, and zoom level. The depth
+              controls the number of iterations that are used to determine
+              whether a point is in the set or not. Points are coloured
+              according to the number of iterations required to determine
+              whether they are in the set or not, with black being points that
+              are in the set, and the colour intensity indicating how long it
+              took a point to diverge.
             </p>
             <br />
-            <p>Some interesting coordinates to try are:</p>
+            <p>Some coordinates to try are:</p>
             <ol>
               <br />
               <li>$(-0.75, 0.00)$</li>
@@ -93,10 +93,11 @@
 
             <label for="depth">Image depth:</label>
             <select name="depth" id="depth">
-              <option value="64" selected>Low</option>
-              <option value="128">Medium</option>
-              <option value="256">High</option>
-              <option value="512">Very high</option></select
+              <option value="64" selected>Very low</option>
+              <option value="128">Low</option>
+              <option value="256">Medium</option>
+              <option value="512">High</option>
+              <option value="1024">Very high</option></select
             ><br /><br />
 
             <label for="color">Colour scheme:</label>
