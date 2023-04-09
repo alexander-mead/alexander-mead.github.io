@@ -9,7 +9,7 @@ const image = () => {
   // Get from html
   const real = document.getElementById("real").value;
   const imag = document.getElementById("imag").value;
-  const zoom = document.getElementById("zoom").value;
+  const zoom = 2 ** document.getElementById("zoom").value;
   const depth = document.getElementById("depth").value;
   const color = document.getElementById("color").value;
   const width = 750;
