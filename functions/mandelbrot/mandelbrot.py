@@ -7,23 +7,27 @@ from scipy.ndimage import gaussian_filter
 import matplotlib.pyplot as plt
 
 # Project imports
-from Fortran import sample_area as Fortran_sample_area
+from Fortran import mandelbrot
 
 
-def sample_area(real_start, real_end, imag_start, imag_end, max_iters, width, height):
+def sample_area(real_start, real_end, imag_start, imag_end, max_iters, width, height, smooth=False):
     """
     Loops over an area and assigns points to the Mandelbrot set
     Thanks chatGPT for this vectorized version (although it was wrong to begin with)
     """
     x, y = np.meshgrid(np.linspace(real_start, real_end, width),
-                       np.linspace(imag_end, imag_start, height))  # Reverse y-axis for Cartesian
+                       np.linspace(imag_end, imag_start, height))
     mandelbrot_set = np.zeros((height, width))
     c = x + y * 1j        # Map x, y to their complex values
     z = np.zeros_like(c)  # Initialise the value of 'z' at each location
     for i in range(max_iters):
         z = z**2 + c               # Iterate
         mask = np.abs(z) > 2.      # Select points that are diverging
-        mandelbrot_set[mask] = i   # Set is number of iterations for divergence
+        if smooth:  # Fractional iteration count
+            mandelbrot_set[mask] = i + 1. - \
+                np.log(np.log(np.abs(z[mask])))/np.log(2.)
+        else:  # Set is number of iterations for divergence
+            mandelbrot_set[mask] = i
         z[mask], c[mask] = 0., 0.  # Reset the diverging point so that it will not diverge in future
     return mandelbrot_set
 
@@ -50,24 +54,27 @@ def transform_image(array, transform):
 def create_image(real_start, real_end, imag_start, imag_end, max_iters, width, height,
                  sigma=0.5, transform=None,
                  cmap="cubehelix", dpi=224, format="png",
-                 use_Fortran=True):
+                 smooth=False, bound=False, use_Fortran=False):
     """
     Create a png and return it as a binary
     """
     if use_Fortran:
-        array = Fortran_sample_area(real_start, real_end, imag_start,
-                                    imag_end, max_iters, width, height, width, height)
+        array = mandyb.sample_area(real_start, real_end, imag_start,
+                                   imag_end, max_iters, width, height,
+                                   smooth)
         array = array.T/(max_iters-1)
     else:
         array = sample_area(real_start, real_end, imag_start,
-                            imag_end, max_iters, width, height)
+                            imag_end, max_iters, width, height,
+                            smooth)
         array /= max_iters-1
     if sigma != 0.:
         array = gaussian_filter(array, sigma=sigma)
     array = transform_image(array, transform)
     figsize = width/dpi, height/dpi
     plt.subplots(figsize=figsize, dpi=dpi, frameon=False)
-    plt.imshow(array, cmap=cmap, vmin=0., vmax=1.)  # , vmax=max(array))
+    vmin, vmax = (0., 1.) if bound else (None, None)
+    plt.imshow(array, cmap=cmap, vmin=vmin, vmax=vmax)  # , vmax=max(array))
     plt.xticks([])
     plt.yticks([])
     plt.tight_layout()

@@ -1,6 +1,5 @@
-// const baseURL = "http://127.0.0.1:3000";
-// const baseURL = "https://3ptm05v8lb.execute-api.eu-west-1.amazonaws.com/Prod";
-const baseURL = "https://birlzhi2xg.execute-api.eu-west-2.amazonaws.com/Prod";
+const baseURL = "http://127.0.0.1:3000";
+// const baseURL = "https://birlzhi2xg.execute-api.eu-west-2.amazonaws.com/Prod";
 
 const image = () => {
   // Definitions

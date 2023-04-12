@@ -1,9 +1,10 @@
+# Standard imports
 import json
 import base64
 
+# Project imports
 # TODO: Check on relative import vs. ... import
-# from . import mandelbrot
-import mandelbrot
+from . import mandelbrot
 
 
 def unwrap_payload(event):
@@ -43,7 +44,7 @@ def handler(event, context, verbose=True):
     sigma = float(body['sigma'])
     data = mandelbrot.create_image(
         rmin, rmax, imin, imax, max_iters, width, height,
-        sigma=sigma, cmap=cmap)
+        sigma=sigma, cmap=cmap, smooth=True, bound=True, use_Fortran=True)
     data = base64.b64encode(data)  # Encode to base64 bytes
     data = data.decode()           # Convert bytes to string
 
