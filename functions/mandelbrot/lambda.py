@@ -4,7 +4,7 @@ import base64
 
 # Project imports
 # TODO: Check on relative import vs. ... import
-from . import mandelbrot
+import mandelbrot
 
 
 def unwrap_payload(event):
@@ -40,11 +40,14 @@ def handler(event, context, verbose=True):
     cmap = body["color"]
     rmin, rmax = real_centre-1./patch_zoom, real_centre+1./patch_zoom
     imin, imax = imag_centre-1./patch_zoom, imag_centre+1./patch_zoom
-    width, height = int(body['width']), int(body['height'])
-    sigma = float(body['sigma'])
+    width, height = int(body["width"]), int(body["height"])
+    sigma = float(body["sigma"])
+    method = "Fortran"
+    smooth = True
+    bound = True
     data = mandelbrot.create_image(
         rmin, rmax, imin, imax, max_iters, width, height,
-        sigma=sigma, cmap=cmap, smooth=True, bound=True, use_Fortran=True)
+        sigma=sigma, cmap=cmap, smooth=smooth, bound=bound, method=method)
     data = base64.b64encode(data)  # Encode to base64 bytes
     data = data.decode()           # Convert bytes to string
 
