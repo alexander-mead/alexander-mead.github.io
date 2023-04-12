@@ -3,7 +3,6 @@ import json
 import base64
 
 # Project imports
-# TODO: Check on relative import vs. ... import
 import mandelbrot
 
 
