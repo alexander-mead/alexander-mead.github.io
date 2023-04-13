@@ -41,9 +41,9 @@ def handler(event, context, verbose=True):
     imin, imax = imag_centre-1./patch_zoom, imag_centre+1./patch_zoom
     width, height = int(body["width"]), int(body["height"])
     sigma = float(body["sigma"])
-    method = "Fortran"
     smooth = True
     bound = True
+    method = "numba"
     data = mandelbrot.create_image(
         rmin, rmax, imin, imax, max_iters, width, height,
         sigma=sigma, cmap=cmap, smooth=smooth, bound=bound, method=method)
