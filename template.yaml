@@ -27,7 +27,7 @@ Resources:
           Properties:
             Path: /mandelbrot
             Method: post
-      MemorySize: 128
+      MemorySize: 10240
     Metadata:
       Dockerfile: Dockerfile
       DockerContext: ./functions/mandelbrot
