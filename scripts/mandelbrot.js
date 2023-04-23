@@ -8,9 +8,14 @@ const image = () => {
   // Get from html
   const real = document.getElementById("real").value;
   const imag = document.getElementById("imag").value;
-  const zoom = 2 ** document.getElementById("zoom").value;
   const depth = document.getElementById("depth").value;
   const color = document.getElementById("color").value;
+
+  // Calculate
+  const zoom = 2 ** document.getElementById("zoom").value;
+  const transform = 1 / (1 + Math.log(depth / 64) / Math.log(2));
+
+  // Constants
   const width = 750;
   const height = 750;
   const sigma = 0.5;
@@ -31,6 +36,7 @@ const image = () => {
       width: width,
       height: height,
       sigma: sigma,
+      transform: transform,
     }),
   };
 
@@ -49,19 +55,14 @@ const image = () => {
     .then((blob) => {
       console.log("Response blob received");
       console.log("Blob: " + blob);
-      //console.log(blob);
-      //const objectURL = blob.data;
       const data = blob.data;
       const image = "data:image/png;base64," + data;
-      //console.log("Image: "+image);
       document.getElementById("image").src = image; // To set image within html
       console.log("Image displayed");
       spinner.style.display = "none";
       overlay.style.display = "none";
       button.disabled = false;
     })
-    // TODO: Disable button to prevent multiple requests
-    //.then(document.getElementById("buttonId").disabled = true)
     .catch((error) => {
       console.log("Error:", error);
       console.log("Failed to sample image");

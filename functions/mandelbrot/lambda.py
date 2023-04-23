@@ -41,12 +41,14 @@ def handler(event, context, verbose=True):
     imin, imax = imag_centre-1./patch_zoom, imag_centre+1./patch_zoom
     width, height = int(body["width"]), int(body["height"])
     sigma = float(body["sigma"])
+    transform = float(body["transform"])
     smooth = True
     bound = True
     method = "numba"
     data = mandelbrot.create_image(
         rmin, rmax, imin, imax, max_iters, width, height,
-        sigma=sigma, cmap=cmap, smooth=smooth, bound=bound, method=method)
+        sigma=sigma, transform=transform,
+        cmap=cmap, smooth=smooth, bound=bound, method=method)
     data = base64.b64encode(data)  # Encode to base64 bytes
     data = data.decode()           # Convert bytes to string
 
