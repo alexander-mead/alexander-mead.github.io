@@ -16,8 +16,8 @@ const image = () => {
   const transform = 1 / (1 + Math.log(depth / 64) / Math.log(2));
 
   // Constants
-  const width = 750;
-  const height = 750;
+  const width = 1000;
+  const height = 1000;
   const sigma = 0.5;
 
   // Construct json
