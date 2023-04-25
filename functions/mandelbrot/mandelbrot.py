@@ -146,6 +146,6 @@ def create_image(real_start, real_end, imag_start, imag_end, max_iters, width, h
     plt.tight_layout()
     buffer = io.BytesIO()
     plt.savefig(buffer, bbox_inches='tight', format=format,
-                pad_inches=0)  # Place the image as a binary in memory
+                pad_inches=0.02)  # Place the image as a binary in memory
     buffer = buffer.getvalue()
     return buffer   # Return the image binary (avoids saving to disk)
