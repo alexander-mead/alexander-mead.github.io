@@ -47,7 +47,7 @@ def handler(event, context, verbose=True):
     method = "numba"
     data = mandelbrot.create_image(
         rmin, rmax, imin, imax, max_iters, width, height,
-        sigma=sigma, transform=transform,
+        sigma=sigma, transform=transform, pad_inches=0.02,
         cmap=cmap, smooth=smooth, bound=bound, method=method)
     data = base64.b64encode(data)  # Encode to base64 bytes
     data = data.decode()           # Convert bytes to string
