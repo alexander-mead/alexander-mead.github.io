@@ -12,27 +12,48 @@ Globals:
       AllowCredentials: "'*'"
   Function:
     Architectures:
-      - x86_64
+      # - x86_64
+      - arm64
     Timeout: 60
 
+# Resources:
+#   MeadMandelbrotFunction:
+#     Type: AWS::Serverless::Function
+#     Properties:
+#       Description: "A lambda that generates an image from the Mandelbrot Set."
+#       PackageType: Image
+#       Events:
+#         MeadMandelbrot:
+#           Type: Api
+#           Properties:
+#             Path: /mandelbrot
+#             Method: post
+#       MemorySize: 10240
+#     Metadata:
+#       Dockerfile: Dockerfile
+#       DockerContext: ./functions/mandelbrot
+
 Resources:
-  MeadMandelbrotFunction:
+  MeadNbodyFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Description: "A lambda that generates an image from the Mandelbrot Set."
+      Description: "A lambda that generates an image from a universe."
       PackageType: Image
       Events:
-        MeadMandelbrot:
+        MeadNbody:
           Type: Api
           Properties:
-            Path: /mandelbrot
+            Path: /nbody
             Method: post
       MemorySize: 10240
     Metadata:
       Dockerfile: Dockerfile
-      DockerContext: ./functions/mandelbrot
+      DockerContext: ./functions/nbody
 
 Outputs:
-  MeadMandelbrotApi:
-    Description: "API Gateway endpoint URL for Mead Mandelbrot function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/mandelbrot"
+  # MeadMandelbrotApi:
+  #   Description: "API Gateway endpoint URL for Mead Mandelbrot function"
+  #   Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/mandelbrot"
+  MeadNbodyApi:
+    Description: "API Gateway endpoint URL for Mead Nbody function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/nbody"

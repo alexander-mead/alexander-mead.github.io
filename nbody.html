@@ -10,7 +10,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script type="text/javascript" src="scripts/script.js"></script>
     <script type="text/javascript" src="scripts/menu.js"></script>
-    <script type="text/javascript" src="scripts/mandelbrot.js"></script>
+    <script type="text/javascript" src="scripts/nbody.js"></script>
     <!-- Mathjax with GitHub pages: https://stackoverflow.com/questions/34347818/using-mathjax-on-a-github-page -->
     <script
       type="text/javascript"
@@ -41,84 +41,62 @@
             </li>
             <li><a href="orbits.html">Orbits</a></li>
             <li><a href="gravity.html">Gravity</a></li>
-            <li><a href="nbody.html">N-body</a></li>
+            <li><a href="#" class="selected">N-body</a></li>
             <li><a href="covid.html">COVID-19</a></li>
             <li><a href="maths.html">Maths</a></li>
-            <li><a href="#" class="selected">Mandelplot</a></li>
+            <li><a href="mandelplot.html">Mandelplot</a></li>
             <li><a href="index.html#contact">Contact</a></li>
           </ul>
         </nav>
       </div>
 
       <div class="intro">
-        <h3>Mandelplot: Plot from the Mandelbrot Set</h3>
+        <h3>$N$-body</h3>
       </div>
 
       <div class="subpage-wrapper">
         <div class="content-wrapper clearfix">
           <div class="subpage-left">
             <p>
-              Here you can plot part of the
-              <a href="https://en.wikipedia.org/wiki/Mandelbrot_set"
-                >Mandelbrot Set</a
-              >, which is a fun thing to do if you cannot sleep at night. The
-              set is a good example of how a simple mathematical equation can
-              produce extraordinarily complex behaviour. Explore the set by
-              changing the image centre, depth, and zoom level. The depth
-              controls the number of iterations that are used to determine
-              whether a point is in the set or not. Zoom is how many factors of
-              two to zoom in by. Points are coloured according to the number of
-              iterations required to determine whether they are in the set or
-              not, with black being points that are in the set, and the colour
-              intensity indicating how long it took a point to diverge.
+              You are become God! You have the power to create a universe. Use
+              this power to your advantage. This tool uses
+              <a href="https://github.com/alexander-mead/HMcode">HMcode</a>
+              combined with a Gaussian-field assumption to produce realisations
+              of the Universe for different structural parameters.
             </p>
             <br />
-            <p>Some coordinates to try are:</p>
-            <ol>
-              <br />
-              <li>･ $(-0.75, 0.00)$</li>
-              <li>･ $(-1.40, 0.00)$</li>
-              <li>･ $(-0.60, -0.40)$</li>
-              <li>･ $(0.25, 0.00)$</li>
-            </ol>
-            <br /><br />
 
-            <label for="real">Image centre (real): </label>
-            <input id="real" type="number" value="-0.5" /><br /><br />
+            <label for="Omega_m">Matter density: </label>
+            <input id="Omega_m" type="number" value="0.3" /><br /><br />
 
-            <label for="imag">Image centre (imaginary): </label>
-            <input id="imag" type="number" value="0.0" /><br /><br />
+            <label for="Omega_b">Baryon density: </label>
+            <input id="Omega_b" type="number" value="0.045" /><br /><br />
 
-            <label for="zoom">Image zoom: </label>
-            <input id="zoom" type="number" value="0.0" /><br /><br />
+            <label for="H_0">Hubble parameter: </label>
+            <input id="H_0" type="number" value="70.0" /><br /><br />
 
-            <label for="depth">Image depth:</label>
-            <select name="depth" id="depth">
-              <option value="64" selected>Very low</option>
-              <option value="128">Low</option>
-              <option value="256">Medium</option>
-              <option value="512">High</option>
-              <option value="1024">Very high</option></select
-            ><br /><br />
+            <label for="sigma_8">Fluctuation amplitude: </label>
+            <input id="sigma_8" type="number" value="0.8" /><br /><br />
 
-            <label for="color">Colour scheme:</label>
+            <label for="n_s">Primordial spectral index: </label>
+            <input id="n_s" type="number" value="0.96" /><br /><br />
+
+            <!-- <label for="color">Colour scheme:</label>
             <select name="color" id="color">
               <option value="binary_r" selected>Black & white</option>
               <option value="cubehelix">Cubehelix</option>
               <option value="afmhot">Lava</option>
               <option value="bone">Cool</option></select
-            ><br /><br />
+            ><br /><br /> -->
 
-            <button id="clickButton" onClick="image()">Generate image</button>
+            <button id="clickButton" onClick="image()">
+              Generate universe
+            </button>
           </div>
 
           <div class="subpage-right">
             <div class="image-container">
-              <img
-                id="image"
-                src="images/mandelbrot.png"
-                alt="Mandelbrot Set"
-              />
+              <img id="image" src="images/nbody.png" alt="Universe" />
               <div id="spinner" class="spinner"></div>
               <div id="overlay" class="overlay"></div>
             </div>
