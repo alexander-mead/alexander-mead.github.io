@@ -58,27 +58,39 @@
         <div class="content-wrapper clearfix">
           <div class="subpage-left">
             <p>
-              You are become God! You have the power to create a universe. Use
-              this power to your advantage. This tool uses
+              You are become God! You have the power to create a universe. This
+              tool uses
               <a href="https://github.com/alexander-mead/HMcode">HMcode</a>
-              combined with a Gaussian-field assumption to produce realisations
-              of the Universe for different structural parameters.
+              combined with a log-normal field assumption to produce
+              realisations of the Universe for different structural parameters.
+              The region of the Universe shown is roughly 500 megaparsecs across
+              and 10 megaparsecs deep, which would be approximately 2 million
+              galaxies. You can change the density of both dark and normal
+              (baryonic) matter, the Hubble parameter, the fluctuation amplitude
+              (defined on 8 megaparsec scales), and the primordial inflationary
+              spectral index. The default values are approximately the
+              best-fitting values from the
+              <a href="https://arxiv.org/abs/1807.06209">Planck (2018)</a> data
+              release.
             </p>
             <br />
 
-            <label for="Omega_m">Matter density: </label>
+            <label for="Omega_m">$\Omega_\mathrm{m}$; matter density: </label>
             <input id="Omega_m" type="number" value="0.3" /><br /><br />
 
-            <label for="Omega_b">Baryon density: </label>
+            <label for="Omega_b">$\Omega_\mathrm{b}$; baryon density: </label>
             <input id="Omega_b" type="number" value="0.045" /><br /><br />
 
-            <label for="H_0">Hubble parameter: </label>
+            <label for="H_0"
+              >$H_0$; Hubble parameter
+              [$\mathrm{km}\,\mathrm{s}^{-1}\,\mathrm{Mpc}^{-1}$]:
+            </label>
             <input id="H_0" type="number" value="70.0" /><br /><br />
 
-            <label for="sigma_8">Fluctuation amplitude: </label>
+            <label for="sigma_8">$\sigma_8$; fluctuation amplitude: </label>
             <input id="sigma_8" type="number" value="0.8" /><br /><br />
 
-            <label for="n_s">Primordial spectral index: </label>
+            <label for="n_s">$n_\mathrm{s}$; primordial spectral index: </label>
             <input id="n_s" type="number" value="0.96" /><br /><br />
 
             <!-- <label for="color">Colour scheme:</label>
