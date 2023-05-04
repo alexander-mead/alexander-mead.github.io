@@ -4,14 +4,25 @@ import io
 # Third-party imports
 import numpy as np
 from scipy.optimize import fsolve
+from scipy.integrate import quad
+from scipy.interpolate import interp1d
 import matplotlib.pyplot as plt
+from matplotlib.colors import LinearSegmentedColormap
 import camb
 import hmcode
 # from numba import njit, prange
 
+digilab_colors = [
+    "#162448",  # Dark blue
+    "#009FE3",  # Light blue
+    "#7DB928",  # Green
+    "#EEEEEE",  # Cement
+]
+digilab_cmap = LinearSegmentedColormap.from_list("", digilab_colors)
+
 
 # @njit(parallel=True)
-def make_Gaussian_random_field_2D(mean_value: float, power_spectrum: np.ndarray,
+def make_Gaussian_random_field_2D(mean_value: float, power_spectrum: callable,
                                   map_size: int, mesh_cells: int) -> np.ndarray:
     """
     Parameters:
@@ -52,15 +63,16 @@ def make_Gaussian_random_field_2D(mean_value: float, power_spectrum: np.ndarray,
     return field
 
 
-def make_image(params: dict, krange=(1e-3, 1e1), nk=128, z=0., L=512., n=512,
+def make_image(params: dict, krange=(1e-3, 1e1), nk=128, z=0., L=512., T=None, n=512,
                vrange=(None, None), box_h_units=True, truncate_Pk=True,
                log_normal_transform=True, plot_log_overdensity=True,
                norm_sigma8=True,
-               pad_inches=0., cmap='CMRmap',
+               pad_inches=0., cmap=digilab_cmap,
                verbose=False) -> bytes:
 
     # Constants
     kfac = 10.  # How much bigger is CAMB kmax
+    As = 2e-9 if norm_sigma8 else params['A_s']
 
     # Ranges
     kmin, kmax = krange
@@ -69,13 +81,14 @@ def make_image(params: dict, krange=(1e-3, 1e1), nk=128, z=0., L=512., n=512,
 
     # Initial run of CAMB
     pars = camb.CAMBparams(WantCls=False)
-    omega_c = params['Omega_m']*(params['H_0']/100.)**2
+    Omega_c = params['Omega_m']-params['Omega_b']
+    omega_c = Omega_c*(params['H_0']/100.)**2
     omega_b = params['Omega_b']*(params['H_0']/100.)**2
     pars.set_cosmology(omch2=omega_c, ombh2=omega_b,
                        H0=params['H_0'], mnu=params['m_nu'])
     pars.set_dark_energy(
         w=params['w_0'], wa=params['w_a'], dark_energy_model='ppf')
-    pars.InitPower.set_params(As=params['A_s'], ns=params['n_s'])
+    pars.InitPower.set_params(As=As, ns=params['n_s'])
     pars.set_matter_power(redshifts=zs, kmax=kfac*kmax)
 
     # Scale 'As' to be correct for the desired 'sigma_8' value if necessary
@@ -83,46 +96,82 @@ def make_image(params: dict, krange=(1e-3, 1e1), nk=128, z=0., L=512., n=512,
         results = camb.get_results(pars)
         sigma_8_init = results.get_sigma8_0()
         scaling = (params['sigma_8']/sigma_8_init)**2
-        params['A_s'] *= scaling
-        pars.InitPower.set_params(As=params['A_s'], ns=params['n_s'])
+        As *= scaling
+        pars.InitPower.set_params(As=As, ns=params['n_s'])
 
     # Run CAMB
     results = camb.get_results(pars)
+    if verbose:
+        sigma_8 = results.get_sigma8_0()
+        print('sigma_8:', sigma_8)
 
     # HMcode
     Pk = hmcode.power(k, zs, results)[zs.index(z)]
 
-    # Plot
-    # for iz, z in enumerate(zs):
-    #     plt.loglog(k, Pk[iz, :], label='z = {:1.1f}'.format(z))
-    # plt.xlabel(r'$k$ $[h \mathrm{Mpc}^{-1}]$')
-    # plt.ylabel(r'$P(k)$ $[(h^{-1}\mathrm{Mpc})^3]$')
-    # plt.legend()
-    # plt.show()
+    # Careful, this function returns a function, which is thought prevoking
+    # This can interpolate both 3D and 2D power spectra
+    def Pk_interp(k: np.array, Pk: np.array) -> callable:
+        interpolator = interp1d(np.log(k), np.log(Pk),
+                                kind='linear',
+                                assume_sorted=True,
+                                bounds_error=False,
+                                fill_value=-np.inf,
+                                )
+        return lambda x: np.exp(interpolator(np.log(x)))
 
-    def Pk_func(k, k_array, Pk_array):
-        Pk = np.exp(np.interp(np.log(k), np.log(k_array), np.log(Pk_array)))
-        return Pk
-
-    def Dk_func(k, k_array, Pk_array):
-        Dk = 4.*np.pi*(k/(2.*np.pi))**3*Pk_func(k, k_array, Pk_array)
+    def Dk2D(k: np.array, Pk: callable) -> np.array:
+        Dk = 2.*np.pi*((k/(2.*np.pi))**2)*Pk(k)
         return Dk
 
-    # TODO: Convert to 2D power spectrum
+    def Dk3D(k: np.array, Pk: callable) -> np.array:
+        Dk = 4.*np.pi*((k/(2.*np.pi))**3)*Pk(k)
+        return Dk
+
+    def Dk2D_integrand(y: float, k: np.array, Pk: callable, T: float) -> float:
+        Wk = np.sinc(T*np.sqrt(y**2-k**2))
+        Dk = Dk3D(y, Pk)
+        integrand = Dk*Wk**2/(np.sqrt(y**2-k**2)*y**2)
+        return integrand
+
+    def Pk2D(k: np.array, Pk: callable, T: float, kmax=100.) -> np.array:
+        Dk = []
+        for _k in k:
+            _Dk, _ = quad(lambda y: Dk2D_integrand(
+                y, _k, Pk, T), _k, kmax)
+            Dk.append(_Dk)
+        Dk = (k**2)*np.array(Dk)
+        Pk = Dk/(2.*np.pi*(k/(2.*np.pi))**2)
+        return Pk
+
+    # Convert to 2D power spectrum
+    if True and T is not None:
+        Pk = Pk2D(k, Pk_interp(k, Pk), T)
+    # plt.loglog(k, Pk)
+    # plt.show()
 
     # Calculate kmax_Pk from the power spectrum
     # Defined as a non-linear wavenumber where D^2(k_max)=1.
     if truncate_Pk:
-        kmax_Pk = fsolve(lambda x: Dk_func(x, k, Pk)-1., 0.1)[0]
+        k_initial_guess = 0.1
+        if True and T is None:
+            kmax_Pk = fsolve(lambda x: Dk3D(
+                x, Pk_interp(k, Pk))-1., k_initial_guess)[0]
+        else:
+            kmax_Pk = fsolve(lambda x: Dk2D(
+                x, Pk_interp(k, Pk))-1., k_initial_guess)[0]
         if verbose:
             print(f"Truncation k: {kmax_Pk} h/Mpc")
         Pk *= np.exp(-k/kmax_Pk)
 
+    # Convert to 2D power spectrum
+    # TODO: Do this before or after truncation?
+    # if False and T is not None:
+    #     Pk = Pk2D(k, Pk_interp(k, Pk), T)
+
     # Generate Gaussian random field
-    # TODO: Check the length transformation
+    # TODO: Check the length transformation L -> L/h or L -> L*h ?!?
     L_here = L if box_h_units else L/(params['H_0']/100.)
-    delta = make_Gaussian_random_field_2D(
-        0., lambda x: Pk_func(x, k, Pk), L_here, n)
+    delta = make_Gaussian_random_field_2D(0., Pk_interp(k, Pk), L_here, n)
 
     # Log-normal transform
     if log_normal_transform:
@@ -162,20 +211,31 @@ if __name__ == "__main__":
         'w_0': -1.,
         'w_a': 0.,
         'sigma_8': 0.8,
+        'A_s': 2.1e-9,
         'n_s': 0.96,
         'm_nu': 0.,
     }
-    kmin, kmax = 1e-3, 1e1
-    nk = 100
+    kmin, kmax = 1e-3, 1e2
+    nk = 128
     z = 0.
-    L = 512.
+    L = 500.
+    T = 1.
     n = 512
     seed = 123
-    vmin, vmax = 1e-3, 5000.
-    cmap = 'cubehelix'
+    # vmin, vmax = None, None
+    plot_log_overdensity = False
+    if plot_log_overdensity:
+        vmin, vmax = 1e-1, 10.
+        # vmin, vmax = 1e-3, 5000.
+    else:
+        vmin, vmax = 0., 4.
+    # cmap = 'cubehelix'
+    cmap = digilab_cmap
 
     np.random.seed(seed)
 
-    _ = make_image(params, (kmin, kmax), nk, z, L, n,
-                   vrange=(vmin, vmax), cmap=cmap, verbose=True)
+    _ = make_image(params, (kmin, kmax), nk, z, L, T, n,
+                   vrange=(vmin, vmax), cmap=cmap,
+                   plot_log_overdensity=False,
+                   verbose=True)
     plt.show()

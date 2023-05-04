@@ -5,12 +5,16 @@ const image = () => {
   // Definitions
   const url = baseURL + "/nbody";
 
-  // Get from html
+  // Cosmological parameters
   const Omega_m = document.getElementById("Omega_m").value;
   const Omega_b = document.getElementById("Omega_b").value;
   const H_0 = document.getElementById("H_0").value;
-  const sigma_8 = document.getElementById("sigma_8").value;
+  const sigma_8 = 0.8; //document.getElementById("sigma_8").value;
+  const A_s = 2e-9;
   const n_s = document.getElementById("n_s").value;
+  const w_0 = document.getElementById("w_0").value;
+  const w_a = 0;
+  const m_nu = 0;
 
   // Calculate
   // const zoom = 2 ** document.getElementById("zoom").value;
@@ -18,11 +22,12 @@ const image = () => {
 
   // Constants
   const kmin = 1e-3;
-  const kmax = 1e1;
-  const nk = 100;
+  const kmax = 1e2;
+  const nk = 128;
   const z = 0;
   const npix = 512;
-  const Lbox = 512;
+  const Lbox = 500;
+  const Tbox = 1;
 
   // Construct json
   const params = {
@@ -38,11 +43,16 @@ const image = () => {
       z: z,
       npix: npix,
       Lbox: Lbox,
+      Tbox: Tbox,
       Omega_m: Omega_m,
       Omega_b: Omega_b,
       H_0: H_0,
       sigma_8: sigma_8,
+      A_s: A_s,
       n_s: n_s,
+      w_0: w_0,
+      w_a: w_a,
+      m_nu: m_nu,
     }),
   };
 

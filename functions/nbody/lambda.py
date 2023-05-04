@@ -1,10 +1,19 @@
 # Standard imports
 import json
 import base64
+from matplotlib.colors import LinearSegmentedColormap
 
 # Project imports
 import numpy as np
 import nbody
+
+digilab_colors = [
+    "#162448",  # Dark blue
+    "#009FE3",  # Light blue
+    "#7DB928",  # Green
+    "#EEEEEE",  # Cement
+]
+digilab_cmap = LinearSegmentedColormap.from_list("", digilab_colors)
 
 
 def unwrap_payload(event):
@@ -37,30 +46,33 @@ def handler(event, context, verbose=True):
         "Omega_m": float(body["Omega_m"]),
         "Omega_b": float(body["Omega_b"]),
         "H_0": float(body["H_0"]),
-        "w_0": -1.,
-        "w_a": 0.,
-        "A_s": 2.1e-9,
+        "w_0": float(body["w_0"]),
+        "w_a": float(body["w_a"]),
+        "A_s": float(body["A_s"]),
         "sigma_8": float(body["sigma_8"]),
         "n_s": float(body["n_s"]),
-        "m_nu": 0.,
+        "m_nu": float(body["m_nu"]),
     }
     kmin = float(body["kmin"])
     kmax = float(body["kmax"])
     nk = int(body["nk"])
     z = float(body["z"])
     L = float(body["Lbox"])
+    T = float(body["Tbox"])
     n = int(body["npix"])
     pad = 0.02
     seed = 123
-    vmin, vmax = 1e-3, 1e4  # Change these if log_normal_transform = False
-    # vmin, vmax = -15., 15.
-    cmap = "cubehelix"
+    # vmin, vmax = 1e-3, 1e3  # Change these if log_normal_transform = False
+    vmin, vmax = 0., 15.
+    # cmap = "cubehelix"
+    cmap = digilab_cmap
     np.random.seed(seed)
     box_h_units = True
     log_normal_transform = True
-    plot_log_overdensity = True  # Should be False if log_normal_transform = False
-    norm_sigma8 = True
-    data = nbody.make_image(params, (kmin, kmax), nk, z, L, n, (vmin, vmax),
+    plot_log_overdensity = False  # Should be False if log_normal_transform = False
+    norm_sigma8 = False
+    data = nbody.make_image(params, (kmin, kmax), nk, z, L, T,
+                            n, (vmin, vmax),
                             box_h_units=box_h_units,
                             log_normal_transform=log_normal_transform,
                             plot_log_overdensity=plot_log_overdensity,
