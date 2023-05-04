@@ -153,39 +153,57 @@ def transform_image(array: np.array, transform: str | float) -> np.array:
 
 def create_image(real_start: float, real_end: float, imag_start: float, imag_end: float,
                  max_iters: int, width: int, height: int,
-                 sigma=0.5, transform=None, pad_inches=0.,
-                 cmap="cubehelix", dpi=224, format="png",
-                 smooth=True, bound=True, method="Fortran") -> bytes:
+                 smooth_sigma=0.5, transform=None, fractional_escape=True, resample=1,
+                 calculation_method="Fortran",
+                 pad_inches=0., cmap="cubehelix", dpi=224, format="png",
+                 bound_colorbar=True, verbose=False) -> bytes:
     """
     Create a png and return it as a binary
     """
 
-    if method == "python":
+    # Sample the area
+    _width, _height = width*resample, height*resample
+    if calculation_method == "python":
         array = sample_area_python(real_start, real_end, imag_start,
-                                   imag_end, max_iters, width, height,
-                                   smooth)
-    elif method == "numpy":
+                                   imag_end, max_iters, _width, _height,
+                                   fractional_escape)
+    elif calculation_method == "numpy":
         array = sample_area_numpy(real_start, real_end, imag_start,
-                                  imag_end, max_iters, width, height,
-                                  smooth)
-    elif method == "Fortran":
+                                  imag_end, max_iters, _width, _height,
+                                  fractional_escape)
+    elif calculation_method == "Fortran":
         array = mandelbrot.sample_area(real_start, real_end, imag_start,
-                                       imag_end, max_iters, width, height,
-                                       smooth)
+                                       imag_end, max_iters, _width, _height,
+                                       fractional_escape)
         array = array.T
-    elif method == "numba":
+    elif calculation_method == "numba":
         array = sample_area_numba(real_start, real_end, imag_start,
-                                  imag_end, max_iters, width, height,
-                                  smooth)
+                                  imag_end, max_iters, _width, _height,
+                                  fractional_escape)
     else:
         raise ValueError("Method not recognised")
-    array = array/array.max() if smooth else array/(max_iters-1)
-    if sigma != 0.:
-        array = gaussian_filter(array, sigma=sigma)
+
+    # Process image
+    if verbose:
+        print(f"Min/max pre-shrink; pre-smooth: {array.min(), array.max()}")
+    array = array/(max_iters-1)
+    if fractional_escape:  # Here, it possible for values to be greater than 1
+        array[array > 1.] = 1.
+    if verbose:
+        print(f"Min/max post-shrink; pre-smooth: {array.min(), array.max()}")
+    if smooth_sigma != 0.:
+        array = gaussian_filter(array, sigma=smooth_sigma)
+    if verbose:
+        print(f"Min/max post-shrink; post-smooth: {array.min(), array.max()}")
     array = transform_image(array, transform)
+    if resample > 1:  # Average image pixels over resample x resample grid
+        array = array.reshape(height, resample, width,
+                              resample).mean(axis=(1, 3))
+
+    # Plot
     figsize = width/dpi, height/dpi
     plt.subplots(figsize=figsize, dpi=dpi, frameon=False)
-    vmin, vmax = (0., 1.) if bound else (None, None)
+    vmin, vmax = (0., 1.) if bound_colorbar else (None, None)
     plt.imshow(array, cmap=cmap, vmin=vmin, vmax=vmax)
     plt.xticks([])
     plt.yticks([])
@@ -194,4 +212,4 @@ def create_image(real_start: float, real_end: float, imag_start: float, imag_end
     plt.savefig(buffer, bbox_inches='tight', format=format,
                 pad_inches=pad_inches)  # Place the image as a binary in memory
     buffer = buffer.getvalue()
-    return buffer   # Return the image binary (avoids saving to disk)
+    return buffer  # Return the image binary (avoids saving to disk)

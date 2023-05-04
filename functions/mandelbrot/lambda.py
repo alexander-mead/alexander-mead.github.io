@@ -42,13 +42,13 @@ def handler(event, context, verbose=True):
     width, height = int(body["width"]), int(body["height"])
     sigma = float(body["sigma"])
     transform = float(body["transform"])
-    smooth = True
-    bound = True
     method = "numba"
+    resample = 3
     data = mandelbrot.create_image(
         rmin, rmax, imin, imax, max_iters, width, height,
-        sigma=sigma, transform=transform, pad_inches=0.02,
-        cmap=cmap, smooth=smooth, bound=bound, method=method)
+        smooth_sigma=sigma, transform=transform,
+        resample=resample, calculation_method=method,
+        pad_inches=0.02, cmap=cmap)
     data = base64.b64encode(data)  # Encode to base64 bytes
     data = data.decode()           # Convert bytes to string
 
