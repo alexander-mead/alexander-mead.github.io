@@ -6,6 +6,7 @@ import numpy as np
 from scipy.optimize import fsolve
 from scipy.integrate import quad
 from scipy.interpolate import interp1d
+from scipy.ndimage import gaussian_filter
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 import camb
@@ -63,11 +64,11 @@ def make_Gaussian_random_field_2D(mean_value: float, power_spectrum: callable,
     return field
 
 
-def make_image(params: dict, krange=(1e-3, 1e1), nk=128, z=0., L=512., T=None, n=512,
+def make_image(params: dict, krange=(1e-3, 1e2), nk=128, z=0., L=500., T=None, n=512,
                vrange=(None, None), box_h_units=True, truncate_Pk=True,
                log_normal_transform=True, plot_log_overdensity=True,
                norm_sigma8=True,
-               pad_inches=0., cmap=digilab_cmap,
+               smooth_sigma=0.5, pad_inches=0., cmap=digilab_cmap,
                verbose=False) -> bytes:
 
     # Constants
@@ -172,6 +173,9 @@ def make_image(params: dict, krange=(1e-3, 1e1), nk=128, z=0., L=512., T=None, n
     # TODO: Check the length transformation L -> L/h or L -> L*h ?!?
     L_here = L if box_h_units else L/(params['H_0']/100.)
     delta = make_Gaussian_random_field_2D(0., Pk_interp(k, Pk), L_here, n)
+
+    if smooth_sigma != 0.:
+        delta = gaussian_filter(delta, sigma=smooth_sigma)
 
     # Log-normal transform
     if log_normal_transform:

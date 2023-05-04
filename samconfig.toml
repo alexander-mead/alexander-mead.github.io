@@ -1,8 +1,8 @@
 version = 0.1
 [default.deploy.parameters]
-stack_name = "meadmandelbrot"
+stack_name = "mead"
 resolve_s3 = true
-s3_prefix = "meadmandelbrot"
+s3_prefix = "mead"
 region = "eu-west-2"
 capabilities = "CAPABILITY_IAM"
-image_repositories = ["MeadMandelbrotFunction=939027885851.dkr.ecr.eu-west-2.amazonaws.com/meadmandelbrotd18ae537/meadmandelbrotfunctionbd344d2arepo"]
+image_repositories = ["MeadNbodyFunction=939027885851.dkr.ecr.eu-west-2.amazonaws.com/mead16d85aee/meadnbodyfunction40fb9383repo"]
