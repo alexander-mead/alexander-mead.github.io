@@ -3,22 +3,31 @@ const baseURL = "https://qte7wuo072.execute-api.eu-west-2.amazonaws.com/Prod";
 
 const image = () => {
   // Definitions
-  const url = baseURL + "/mandelbrot";
+  const url = baseURL + "/nbody";
 
-  // Get from html
-  const real = document.getElementById("real").value;
-  const imag = document.getElementById("imag").value;
-  const depth = document.getElementById("depth").value;
-  const color = document.getElementById("color").value;
+  // Cosmological parameters
+  const Omega_m = document.getElementById("Omega_m").value;
+  const Omega_b = document.getElementById("Omega_b").value;
+  const H_0 = document.getElementById("H_0").value;
+  const sigma_8 = 0.8; //document.getElementById("sigma_8").value;
+  const A_s = 2e-9;
+  const n_s = document.getElementById("n_s").value;
+  const w_0 = document.getElementById("w_0").value;
+  const w_a = 0;
+  const m_nu = 0;
 
   // Calculate
-  const zoom = 2 ** document.getElementById("zoom").value;
-  const transform = 1 / (1 + Math.log(depth / 64) / Math.log(2));
+  // const zoom = 2 ** document.getElementById("zoom").value;
+  // const transform = 1 / (1 + Math.log(depth / 64) / Math.log(2));
 
   // Constants
-  const width = 1000;
-  const height = 1000;
-  const sigma = 0.5;
+  const kmin = 1e-3;
+  const kmax = 1e2;
+  const nk = 128;
+  const z = 0;
+  const npix = 512;
+  const Lbox = 500;
+  const Tbox = 1;
 
   // Construct json
   const params = {
@@ -28,15 +37,22 @@ const image = () => {
       Accept: "application/json",
     },
     body: JSON.stringify({
-      real: real,
-      imag: imag,
-      zoom: zoom,
-      depth: depth,
-      color: color,
-      width: width,
-      height: height,
-      sigma: sigma,
-      transform: transform,
+      kmin: kmin,
+      kmax: kmax,
+      nk: nk,
+      z: z,
+      npix: npix,
+      Lbox: Lbox,
+      Tbox: Tbox,
+      Omega_m: Omega_m,
+      Omega_b: Omega_b,
+      H_0: H_0,
+      sigma_8: sigma_8,
+      A_s: A_s,
+      n_s: n_s,
+      w_0: w_0,
+      w_a: w_a,
+      m_nu: m_nu,
     }),
   };
 
