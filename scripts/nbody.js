@@ -27,7 +27,7 @@ const image = () => {
   const z = 0;
   const npix = 512;
   const Lbox = 500;
-  const Tbox = 1;
+  const Tbox = 0;
 
   // Construct json
   const params = {

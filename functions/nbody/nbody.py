@@ -22,7 +22,6 @@ digilab_colors = [
 digilab_cmap = LinearSegmentedColormap.from_list("", digilab_colors)
 
 
-# @njit(parallel=True)
 def make_Gaussian_random_field_2D(mean_value: float, power_spectrum: callable,
                                   map_size: int, mesh_cells: int) -> np.ndarray:
     """
@@ -69,6 +68,7 @@ def make_image(params: dict, krange=(1e-3, 1e2), nk=128, z=0., L=500., T=None, n
                log_normal_transform=True, plot_log_overdensity=True,
                norm_sigma8=True,
                smooth_sigma=0.5, pad_inches=0., cmap=digilab_cmap,
+               figsize=(8, 8),
                verbose=False) -> bytes:
 
     # Constants
@@ -116,7 +116,8 @@ def make_image(params: dict, krange=(1e-3, 1e2), nk=128, z=0., L=500., T=None, n
                                 kind='linear',
                                 assume_sorted=True,
                                 bounds_error=False,
-                                fill_value=-np.inf,
+                                # fill_value=-np.inf,
+                                fill_value='extrapolate',
                                 )
         return lambda x: np.exp(interpolator(np.log(x)))
 
@@ -134,32 +135,34 @@ def make_image(params: dict, krange=(1e-3, 1e2), nk=128, z=0., L=500., T=None, n
         integrand = Dk*Wk**2/(np.sqrt(y**2-k**2)*y**2)
         return integrand
 
-    def Pk2D(k: np.array, Pk: callable, T: float, kmax=100.) -> np.array:
+    # @njit(parallel=True)
+    def Pk2D(k: np.array, Pk: callable, T: float, kmax=np.inf) -> np.array:
         Dk = []
         for _k in k:
-            _Dk, _ = quad(lambda y: Dk2D_integrand(
-                y, _k, Pk, T), _k, kmax)
+        # for ik in prange(k.size):
+            # _k = k[ik]
+            _Dk, _ = quad(Dk2D_integrand, _k, kmax, args=(_k, Pk, T), epsabs=1e-3, epsrel=1e-3)
             Dk.append(_Dk)
         Dk = (k**2)*np.array(Dk)
         Pk = Dk/(2.*np.pi*(k/(2.*np.pi))**2)
         return Pk
 
     # Convert to 2D power spectrum
-    if True and T is not None:
-        Pk = Pk2D(k, Pk_interp(k, Pk), T)
-    # plt.loglog(k, Pk)
-    # plt.show()
+    if T is not None:
+        Pk = Pk2D(k, Pk_interp(k, Pk), T, kmax=np.inf)
+    plt.loglog(k, Pk)
+    plt.show()
 
     # Calculate kmax_Pk from the power spectrum
     # Defined as a non-linear wavenumber where D^2(k_max)=1.
-    if truncate_Pk:
+    if truncate_Pk: # Field looks a mess without truncation
         k_initial_guess = 0.1
-        if True and T is None:
-            kmax_Pk = fsolve(lambda x: Dk3D(
-                x, Pk_interp(k, Pk))-1., k_initial_guess)[0]
-        else:
-            kmax_Pk = fsolve(lambda x: Dk2D(
-                x, Pk_interp(k, Pk))-1., k_initial_guess)[0]
+        if T is None:  # Use the 3D power spectrum here...
+            kmax_Pk = fsolve(lambda x: Dk3D(x, Pk_interp(k, Pk))-1.,
+                             k_initial_guess)[0]
+        else:  # ...otherwise use the 2D one
+            kmax_Pk = fsolve(lambda x: Dk2D(x, Pk_interp(k, Pk))-1.,
+                             k_initial_guess)[0]
         if verbose:
             print(f"Truncation k: {kmax_Pk} h/Mpc")
         Pk *= np.exp(-k/kmax_Pk)
@@ -174,6 +177,7 @@ def make_image(params: dict, krange=(1e-3, 1e2), nk=128, z=0., L=500., T=None, n
     L_here = L if box_h_units else L/(params['H_0']/100.)
     delta = make_Gaussian_random_field_2D(0., Pk_interp(k, Pk), L_here, n)
 
+    # Smooth image
     if smooth_sigma != 0.:
         delta = gaussian_filter(delta, sigma=smooth_sigma)
 
@@ -187,7 +191,7 @@ def make_image(params: dict, krange=(1e-3, 1e2), nk=128, z=0., L=500., T=None, n
         print()
 
     # Plot
-    plt.subplots(figsize=(8, 8), dpi=224)
+    plt.subplots(figsize=figsize, dpi=224)
     vmin, vmax = vrange
     if plot_log_overdensity:
         eps = 1.+delta[delta > -1.].min()
@@ -223,23 +227,25 @@ if __name__ == "__main__":
     nk = 128
     z = 0.
     L = 500.
-    T = 1.
+    T = 0.
     n = 512
     seed = 123
-    # vmin, vmax = None, None
+    truncate_Pk = True
     plot_log_overdensity = False
     if plot_log_overdensity:
         vmin, vmax = 1e-1, 10.
-        # vmin, vmax = 1e-3, 5000.
     else:
-        vmin, vmax = 0., 4.
+        vmin, vmax = 0., 15.
+    # vmin, vmax = None, None
     # cmap = 'cubehelix'
     cmap = digilab_cmap
 
     np.random.seed(seed)
 
     _ = make_image(params, (kmin, kmax), nk, z, L, T, n,
-                   vrange=(vmin, vmax), cmap=cmap,
-                   plot_log_overdensity=False,
+                   vrange=(vmin, vmax), 
+                   truncate_Pk=truncate_Pk,
+                   plot_log_overdensity=plot_log_overdensity, 
+                   cmap=cmap, figsize=(5, 5),
                    verbose=True)
     plt.show()
