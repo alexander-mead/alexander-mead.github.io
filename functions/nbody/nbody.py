@@ -20,6 +20,8 @@ digilab_colors = [
     "#EEEEEE",  # Cement
 ]
 digilab_cmap = LinearSegmentedColormap.from_list("", digilab_colors)
+# kfac_trunc = np.pi/2.
+kfac_trunc = 1.
 
 
 def make_Gaussian_random_field_2D(mean_value: float, power_spectrum: callable,
@@ -72,7 +74,7 @@ def make_image(params: dict, krange=(1e-3, 1e2), nk=128, z=0., L=500., T=None, n
                verbose=False) -> bytes:
 
     # Constants
-    kfac = 10.  # How much bigger is CAMB kmax
+    kfac_CAMB = 10.  # How much bigger is CAMB kmax
     As = 2e-9 if norm_sigma8 else params['A_s']
 
     # Ranges
@@ -90,7 +92,7 @@ def make_image(params: dict, krange=(1e-3, 1e2), nk=128, z=0., L=500., T=None, n
     pars.set_dark_energy(
         w=params['w_0'], wa=params['w_a'], dark_energy_model='ppf')
     pars.InitPower.set_params(As=As, ns=params['n_s'])
-    pars.set_matter_power(redshifts=zs, kmax=kfac*kmax)
+    pars.set_matter_power(redshifts=zs, kmax=kfac_CAMB*kmax)
 
     # Scale 'As' to be correct for the desired 'sigma_8' value if necessary
     if norm_sigma8:
@@ -139,9 +141,8 @@ def make_image(params: dict, krange=(1e-3, 1e2), nk=128, z=0., L=500., T=None, n
     def Pk2D(k: np.array, Pk: callable, T: float, kmax=np.inf) -> np.array:
         Dk = []
         for _k in k:
-        # for ik in prange(k.size):
-            # _k = k[ik]
-            _Dk, _ = quad(Dk2D_integrand, _k, kmax, args=(_k, Pk, T), epsabs=1e-3, epsrel=1e-3)
+            _Dk, _ = quad(Dk2D_integrand, _k, kmax, args=(
+                _k, Pk, T), limit=100, epsabs=1e-3, epsrel=1e-3)
             Dk.append(_Dk)
         Dk = (k**2)*np.array(Dk)
         Pk = Dk/(2.*np.pi*(k/(2.*np.pi))**2)
@@ -155,7 +156,7 @@ def make_image(params: dict, krange=(1e-3, 1e2), nk=128, z=0., L=500., T=None, n
 
     # Calculate kmax_Pk from the power spectrum
     # Defined as a non-linear wavenumber where D^2(k_max)=1.
-    if truncate_Pk: # Field looks a mess without truncation
+    if truncate_Pk:  # Field looks a mess without truncation
         k_initial_guess = 0.1
         if T is None:  # Use the 3D power spectrum here...
             kmax_Pk = fsolve(lambda x: Dk3D(x, Pk_interp(k, Pk))-1.,
@@ -163,6 +164,7 @@ def make_image(params: dict, krange=(1e-3, 1e2), nk=128, z=0., L=500., T=None, n
         else:  # ...otherwise use the 2D one
             kmax_Pk = fsolve(lambda x: Dk2D(x, Pk_interp(k, Pk))-1.,
                              k_initial_guess)[0]
+        kmax_Pk *= kfac_trunc
         if verbose:
             print(f"Truncation k: {kmax_Pk} h/Mpc")
         Pk *= np.exp(-k/kmax_Pk)
@@ -227,7 +229,7 @@ if __name__ == "__main__":
     nk = 128
     z = 0.
     L = 500.
-    T = 0.
+    T = 1.
     n = 512
     seed = 123
     truncate_Pk = True
@@ -243,9 +245,9 @@ if __name__ == "__main__":
     np.random.seed(seed)
 
     _ = make_image(params, (kmin, kmax), nk, z, L, T, n,
-                   vrange=(vmin, vmax), 
+                   vrange=(vmin, vmax),
                    truncate_Pk=truncate_Pk,
-                   plot_log_overdensity=plot_log_overdensity, 
+                   plot_log_overdensity=plot_log_overdensity,
                    cmap=cmap, figsize=(5, 5),
                    verbose=True)
     plt.show()
