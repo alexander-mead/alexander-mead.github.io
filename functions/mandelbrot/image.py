@@ -21,6 +21,7 @@ def run(cfg: DictConfig):
     sigma = cfg["sigma"]
     show = cfg["show"]
     transform = None if cfg["transform"] == "None" else cfg["transform"]
+    resample = cfg["resample"]
 
     # Write to screen
     if cfg["verbose"]:
@@ -40,14 +41,16 @@ def run(cfg: DictConfig):
         print("Smooth image:", cfg["smooth"])
         print("Bound image:", cfg["bound"])
         print("Method:", cfg["method"])
+        print("Resample factor:", resample)
         print()
 
     # Display an image on screen and simulatanouesly save it
     data = mandelbrot.create_image(rmin, rmax, imin, imax, iterations, width, height,
                                    smooth_sigma=sigma, transform=transform,
-                                   dpi=224, cmap=cfg["cmap"], format=format,
-                                   fractional_escape=cfg["smooth"], bound_colorbar=cfg["bound"],
-                                   calculation_method=cfg["method"])
+                                   fractional_escape=cfg["smooth"], resample=resample,
+                                   calculation_method=cfg["method"],
+                                   pad_inches=0., cmap=cfg["cmap"], dpi=224, format=format,
+                                   bound_colorbar=cfg["bound"], verbose=True)
     outfile = outdir+"/"+outfile+"."+format
     with open(outfile, "wb") as f:
         f.write(data)
