@@ -11,6 +11,8 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap
 import camb
 import hmcode
+import pandas as pd
+# import twinlab as tl
 # from numba import njit, prange
 
 digilab_colors = [
@@ -26,8 +28,10 @@ kfac_trunc = 1.
 
 def Pk_interp(k: np.array, Pk: np.array) -> callable:
     """
+    Create an interpolator for power spectra
+    This can interpolate both 3D and 2D power spectra (nD even)
     Careful, this function returns a function, which is thought prevoking
-    This can interpolate both 3D and 2D power spectra
+    TODO: Use linear extrapolation, but cubic interpolation
     """
     interpolator = interp1d(np.log(k), np.log(Pk),
                             kind='linear',
@@ -80,16 +84,26 @@ def make_Gaussian_random_field_2D(mean_value: float, power_spectrum: callable,
 
 
 def Dk2D(k: np.array, Pk: callable) -> np.array:
+    """
+    Delta^2(k) as a function of P(k) in 2D
+    """
     Dk = 2.*np.pi*((k/(2.*np.pi))**2)*Pk(k)
     return Dk
 
 
 def Dk3D(k: np.array, Pk: callable) -> np.array:
+    """
+    Delta^2(k) as a function of P(k) in 3D
+    """
     Dk = 4.*np.pi*((k/(2.*np.pi))**3)*Pk(k)
     return Dk
 
 
 def Dk2D_integrand(x: float, k: np.array, Pk: callable, T: float) -> float:
+    """
+    Integrand for calculating the 2D power specrtum in a slab of thickness T
+    Given a 3D power spectrum
+    """
     Wk = np.sinc(T*x)
     Dk = Dk3D(np.sqrt(x**2+k**2), Pk)
     integrand = Dk*Wk**2/np.sqrt(x**2+k**2)**3
@@ -98,17 +112,24 @@ def Dk2D_integrand(x: float, k: np.array, Pk: callable, T: float) -> float:
 
 # @njit(parallel=True)
 def get_Pk2D(k: np.array, Pk: callable, T: float) -> np.array:
+    """
+    TODO: Can this be parallelised with numba?
+    """
     Dk = []
     for _k in k:
         _Dk, _ = quad(Dk2D_integrand, 0., np.inf, args=(
             _k, Pk, T), limit=100, epsabs=0., epsrel=1e-3)  # Note that max error is used as target
         Dk.append(_Dk)
+    # Note well the k^2 factor (must be here for units)
     Dk = (k**2)*np.array(Dk)
     Pk = Dk/(2.*np.pi*(k/(2.*np.pi))**2)
     return Pk
 
 
-def get_Pk3D(params: dict, k: np.array, z, norm_sigma8=True, verbose=False) -> bytes:
+def get_Pk3D_HMcode(params: dict, k: np.array, z, norm_sigma8=True, verbose=False) -> np.array:
+    """
+    Get the non-linear 3D matter power spectrum from HMcode and CAMB
+    """
 
     # Constants
     kfac_CAMB = 10.  # How much bigger is CAMB kmax
@@ -146,6 +167,24 @@ def get_Pk3D(params: dict, k: np.array, z, norm_sigma8=True, verbose=False) -> b
     return Pk
 
 
+def get_Pk3D_twinLab(params: dict, k: np.array, z, norm_sigma8=True, verbose=False):
+    """
+    Get the 3D power spectrum from the trained twinLab emulator
+    TODO: Use params to create something akin to the cosmology.csv file!!
+    """
+    file = "cosmology.csv"
+    campaign = "cosmology"
+    k_here = np.logspace(np.log10(1e-3), np.log10(1e2), 100)
+    if k_here != k:
+        raise Exception("k must be the same as in the twinLab campaign.")
+    if z != 0.:
+        raise Exception("redshift must be zero for the twinLab campaign.")
+    if norm_sigma8:
+        raise Exception("norm_sigma8 must be False for the twinLab campaign.")
+    df_mean, _ = tl.sample_campaign(file, campaign, verbose=verbose)
+    return df_mean.to_numpy()
+
+
 def smooth_nonlinear_power(k: np.array, Pk: np.array, T=None, verbose=False):
     """
     Calculate kmax_Pk from the power spectrum
@@ -178,11 +217,11 @@ def lognormal_transform(delta, verbose=False):
     return delta
 
 
-def make_image(params: dict, krange=(1e-3, 1e2), nk=128, z=0., L=500., T=None, n=512,
-               vrange=(None, None), box_h_units=True, truncate_Pk=True,
-               log_normal_transform=True, plot_log_overdensity=True,
-               norm_sigma8=True,
-               smooth_sigma=0.5, pad_inches=0., cmap=digilab_cmap,
+def make_image(params: dict, krange=(1e-3, 1e2), nk=128, z=0., L=500., T=None,
+               norm_sigma8=True, box_h_units=True, truncate_Pk=True, use_twinLab=False,
+               log_normal_transform=True,
+               plot_log_overdensity=True, npix=512, smooth_sigma=0.5,
+               vrange=(None, None), pad_inches=0., cmap=digilab_cmap,
                figsize=(8, 8),
                verbose=False) -> bytes:
 
@@ -190,8 +229,15 @@ def make_image(params: dict, krange=(1e-3, 1e2), nk=128, z=0., L=500., T=None, n
     kmin, kmax = krange
     k = np.logspace(np.log10(kmin), np.log10(kmax), nk)
 
-    # Power spectrum
-    Pk_3D = get_Pk3D(params, k, z, norm_sigma8=norm_sigma8, verbose=verbose)
+    # 3D power spectrum
+    if use_twinLab:
+        Pk_3D = get_Pk3D_twinLab(
+            params, k, z, norm_sigma8=norm_sigma8, verbose=verbose)
+    else:
+        Pk_3D = get_Pk3D_HMcode(
+            params, k, z, norm_sigma8=norm_sigma8, verbose=verbose)
+
+    # 2D power spectrum as long as T is not None
     if T is not None:
         Pk = get_Pk2D(k, Pk_interp(k, Pk_3D), T)
     else:
@@ -204,13 +250,13 @@ def make_image(params: dict, krange=(1e-3, 1e2), nk=128, z=0., L=500., T=None, n
     # Generate Gaussian random field
     # TODO: Check the length transformation L -> L/h or L -> L*h ?!?
     L_here = L if box_h_units else L/(params['H_0']/100.)
-    delta = make_Gaussian_random_field_2D(0., Pk_interp(k, Pk), L_here, n)
+    delta = make_Gaussian_random_field_2D(0., Pk_interp(k, Pk), L_here, npix)
 
     # Log-normal transform to approximate non-linear field
     if log_normal_transform:
         delta = lognormal_transform(delta, verbose=verbose)
 
-    # Smooth image
+    # Smooth resulting image
     if smooth_sigma != 0.:
         delta = gaussian_filter(delta, sigma=smooth_sigma)
 
@@ -266,10 +312,10 @@ if __name__ == "__main__":
 
     np.random.seed(seed)
 
-    _ = make_image(params, (kmin, kmax), nk, z, L, T, n,
-                   vrange=(vmin, vmax),
-                   truncate_Pk=truncate_Pk,
-                   plot_log_overdensity=plot_log_overdensity,
-                   cmap=cmap, figsize=(5, 5),
+    _ = make_image(params, (kmin, kmax), nk, z, L, T, norm_sigma8=True,
+                   box_h_units=True, truncate_Pk=truncate_Pk, use_twinLab=False,
+                   log_normal_transform=True,
+                   plot_log_overdensity=plot_log_overdensity, npix=n,
+                   vrange=(vmin, vmax), pad_inches=0.02, cmap=cmap, figsize=(5, 5),
                    verbose=True)
     plt.show()
