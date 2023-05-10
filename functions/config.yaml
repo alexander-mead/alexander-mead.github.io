@@ -1,0 +1,17 @@
+real: -0.5
+imag: 0.
+zoom: 1.
+iterations: 64
+sigma: 0.5
+transform: None
+width: 2000
+height: 2000
+outdir: images
+outfile: mandelbrot
+cmap: cubehelix
+format: png
+verbose: True
+show: False
+smooth: True
+bound: True
+method: numba
