@@ -3,8 +3,10 @@ import json
 import base64
 from matplotlib.colors import LinearSegmentedColormap
 
-# Project imports
+# Third-party imports
 import numpy as np
+
+# Project imports
 import nbody
 
 digilab_colors = [

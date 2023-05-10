@@ -24,6 +24,20 @@ digilab_cmap = LinearSegmentedColormap.from_list("", digilab_colors)
 kfac_trunc = 1.
 
 
+def Pk_interp(k: np.array, Pk: np.array) -> callable:
+    """
+    Careful, this function returns a function, which is thought prevoking
+    This can interpolate both 3D and 2D power spectra
+    """
+    interpolator = interp1d(np.log(k), np.log(Pk),
+                            kind='linear',
+                            assume_sorted=True,
+                            bounds_error=False,
+                            fill_value='extrapolate',  # Only works with linear
+                            )
+    return lambda x: np.exp(interpolator(np.log(x)))
+
+
 def make_Gaussian_random_field_2D(mean_value: float, power_spectrum: callable,
                                   map_size: int, mesh_cells: int) -> np.ndarray:
     """
@@ -65,21 +79,40 @@ def make_Gaussian_random_field_2D(mean_value: float, power_spectrum: callable,
     return field
 
 
-def make_image(params: dict, krange=(1e-3, 1e2), nk=128, z=0., L=500., T=None, n=512,
-               vrange=(None, None), box_h_units=True, truncate_Pk=True,
-               log_normal_transform=True, plot_log_overdensity=True,
-               norm_sigma8=True,
-               smooth_sigma=0.5, pad_inches=0., cmap=digilab_cmap,
-               figsize=(8, 8),
-               verbose=False) -> bytes:
+def Dk2D(k: np.array, Pk: callable) -> np.array:
+    Dk = 2.*np.pi*((k/(2.*np.pi))**2)*Pk(k)
+    return Dk
+
+
+def Dk3D(k: np.array, Pk: callable) -> np.array:
+    Dk = 4.*np.pi*((k/(2.*np.pi))**3)*Pk(k)
+    return Dk
+
+
+def Dk2D_integrand(x: float, k: np.array, Pk: callable, T: float) -> float:
+    Wk = np.sinc(T*x)
+    Dk = Dk3D(np.sqrt(x**2+k**2), Pk)
+    integrand = Dk*Wk**2/np.sqrt(x**2+k**2)**3
+    return integrand
+
+
+# @njit(parallel=True)
+def get_Pk2D(k: np.array, Pk: callable, T: float) -> np.array:
+    Dk = []
+    for _k in k:
+        _Dk, _ = quad(Dk2D_integrand, 0., np.inf, args=(
+            _k, Pk, T), limit=100, epsabs=0., epsrel=1e-3)  # Note that max error is used as target
+        Dk.append(_Dk)
+    Dk = (k**2)*np.array(Dk)
+    Pk = Dk/(2.*np.pi*(k/(2.*np.pi))**2)
+    return Pk
+
+
+def get_Pk3D(params: dict, k: np.array, z, norm_sigma8=True, verbose=False) -> bytes:
 
     # Constants
     kfac_CAMB = 10.  # How much bigger is CAMB kmax
     As = 2e-9 if norm_sigma8 else params['A_s']
-
-    # Ranges
-    kmin, kmax = krange
-    k = np.logspace(np.log10(kmin), np.log10(kmax), nk)
     zs = [z]  # Redshifts
 
     # Initial run of CAMB
@@ -110,86 +143,75 @@ def make_image(params: dict, krange=(1e-3, 1e2), nk=128, z=0., L=500., T=None, n
 
     # HMcode
     Pk = hmcode.power(k, zs, results)[zs.index(z)]
+    return Pk
 
-    # Careful, this function returns a function, which is thought prevoking
-    # This can interpolate both 3D and 2D power spectra
-    def Pk_interp(k: np.array, Pk: np.array) -> callable:
-        interpolator = interp1d(np.log(k), np.log(Pk),
-                                kind='linear',
-                                assume_sorted=True,
-                                bounds_error=False,
-                                fill_value='extrapolate',  # Only works with linear
-                                )
-        return lambda x: np.exp(interpolator(np.log(x)))
 
-    def Dk2D(k: np.array, Pk: callable) -> np.array:
-        Dk = 2.*np.pi*((k/(2.*np.pi))**2)*Pk(k)
-        return Dk
+def smooth_nonlinear_power(k: np.array, Pk: np.array, T=None, verbose=False):
+    """
+    Calculate kmax_Pk from the power spectrum
+    Defined as a non-linear wavenumber where D^2(k_max)=1.
+    """
+    k_initial_guess = 0.1
+    if T is None:  # Use the 3D power spectrum here...
+        kmax_Pk = fsolve(lambda x: Dk3D(x, Pk_interp(k, Pk))-1.,
+                         k_initial_guess)[0]
+    else:  # ...otherwise use the 2D one
+        kmax_Pk = fsolve(lambda x: Dk2D(x, Pk_interp(k, Pk))-1.,
+                         k_initial_guess)[0]
+    kmax_Pk *= kfac_trunc
+    if verbose:
+        print(f"Truncation k: {kmax_Pk} h/Mpc")
+    Pk *= np.exp(-k/kmax_Pk)
+    return Pk
 
-    def Dk3D(k: np.array, Pk: callable) -> np.array:
-        Dk = 4.*np.pi*((k/(2.*np.pi))**3)*Pk(k)
-        return Dk
 
-    def Dk2D_integrand(x: float, k: np.array, Pk: callable, T: float) -> float:
-        Wk = np.sinc(T*x)
-        Dk = Dk3D(np.sqrt(x**2+k**2), Pk)
-        integrand = Dk*Wk**2/np.sqrt(x**2+k**2)**3
-        return integrand
+def lognormal_transform(delta, verbose=False):
+    """
+    Log-normal transform of field with renormalisation
+    """
+    delta = np.exp(delta)-1.
+    delta = -1.+(1.+delta)/(1.+delta.mean())
+    if verbose:
+        print(f"Minimum and maximum field values: {delta.min(), delta.max()}")
+        print(f"Mean and standard deviation: {delta.mean(), delta.std()}")
+        print()
+    return delta
 
-    # @njit(parallel=True)
-    def Pk2D(k: np.array, Pk: callable, T: float) -> np.array:
-        Dk = []
-        for _k in k:
-            _Dk, _ = quad(Dk2D_integrand, 0., np.inf, args=(
-                _k, Pk, T), limit=100, epsabs=0., epsrel=1e-3)  # Note that max error is used as target
-            Dk.append(_Dk)
-        Dk = (k**2)*np.array(Dk)
-        Pk = Dk/(2.*np.pi*(k/(2.*np.pi))**2)
-        return Pk
 
-    # Convert to 2D power spectrum
+def make_image(params: dict, krange=(1e-3, 1e2), nk=128, z=0., L=500., T=None, n=512,
+               vrange=(None, None), box_h_units=True, truncate_Pk=True,
+               log_normal_transform=True, plot_log_overdensity=True,
+               norm_sigma8=True,
+               smooth_sigma=0.5, pad_inches=0., cmap=digilab_cmap,
+               figsize=(8, 8),
+               verbose=False) -> bytes:
+
+    # Ranges
+    kmin, kmax = krange
+    k = np.logspace(np.log10(kmin), np.log10(kmax), nk)
+
+    # Power spectrum
+    Pk_3D = get_Pk3D(params, k, z, norm_sigma8=norm_sigma8, verbose=verbose)
     if T is not None:
-        Pk = Pk2D(k, Pk_interp(k, Pk), T)
-    plt.loglog(k, Pk)
-    plt.show()
+        Pk = get_Pk2D(k, Pk_interp(k, Pk_3D), T)
+    else:
+        Pk = Pk_3D
 
-    # Calculate kmax_Pk from the power spectrum
-    # Defined as a non-linear wavenumber where D^2(k_max)=1.
-    if truncate_Pk:  # Field looks a mess without truncation
-        k_initial_guess = 0.1
-        if T is None:  # Use the 3D power spectrum here...
-            kmax_Pk = fsolve(lambda x: Dk3D(x, Pk_interp(k, Pk))-1.,
-                             k_initial_guess)[0]
-        else:  # ...otherwise use the 2D one
-            kmax_Pk = fsolve(lambda x: Dk2D(x, Pk_interp(k, Pk))-1.,
-                             k_initial_guess)[0]
-        kmax_Pk *= kfac_trunc
-        if verbose:
-            print(f"Truncation k: {kmax_Pk} h/Mpc")
-        Pk *= np.exp(-k/kmax_Pk)
-
-    # Convert to 2D power spectrum
-    # TODO: Do this before or after truncation?
-    # if False and T is not None:
-    #     Pk = Pk2D(k, Pk_interp(k, Pk), T)
+    # Truncate power spectrum
+    if truncate_Pk:
+        Pk = smooth_nonlinear_power(k, Pk, T=T, verbose=verbose)
 
     # Generate Gaussian random field
     # TODO: Check the length transformation L -> L/h or L -> L*h ?!?
     L_here = L if box_h_units else L/(params['H_0']/100.)
     delta = make_Gaussian_random_field_2D(0., Pk_interp(k, Pk), L_here, n)
 
+    if log_normal_transform:
+        delta = lognormal_transform(delta, verbose=verbose)
+
     # Smooth image
     if smooth_sigma != 0.:
         delta = gaussian_filter(delta, sigma=smooth_sigma)
-
-    # Log-normal transform
-    if log_normal_transform:
-        delta = np.exp(delta)-1.
-        delta = -1.+(1.+delta)/(1.+delta.mean())
-    if verbose:
-        print(f"Minimum and maximum field values: {delta.min(), delta.max()}")
-        print(f"Mean and standard deviation: {delta.mean(), delta.std()}")
-        print()
 
     # Plot
     plt.subplots(figsize=figsize, dpi=224)
