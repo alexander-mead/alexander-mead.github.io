@@ -74,11 +74,11 @@ def handler(event, context, verbose=True):
     plot_log_overdensity = False  # Should be False if log_normal_transform = False
     norm_sigma8 = False
     data = nbody.make_image(params, (kmin, kmax), nk, z, L, T,
-                            n, (vmin, vmax),
+                            norm_sigma8=norm_sigma8,
                             box_h_units=box_h_units,
                             log_normal_transform=log_normal_transform,
                             plot_log_overdensity=plot_log_overdensity,
-                            norm_sigma8=norm_sigma8,
+                            npix=n, vrange=(vmin, vmax),
                             cmap=cmap, pad_inches=pad,
                             verbose=True,
                             )

@@ -3,3 +3,4 @@ scipy
 matplotlib
 camb
 hmcode
+pandas
