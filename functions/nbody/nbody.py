@@ -206,6 +206,7 @@ def make_image(params: dict, krange=(1e-3, 1e2), nk=128, z=0., L=500., T=None, n
     L_here = L if box_h_units else L/(params['H_0']/100.)
     delta = make_Gaussian_random_field_2D(0., Pk_interp(k, Pk), L_here, n)
 
+    # Log-normal transform to approximate non-linear field
     if log_normal_transform:
         delta = lognormal_transform(delta, verbose=verbose)
 
