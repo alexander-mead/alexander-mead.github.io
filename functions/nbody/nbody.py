@@ -118,8 +118,7 @@ def make_image(params: dict, krange=(1e-3, 1e2), nk=128, z=0., L=500., T=None, n
                                 kind='linear',
                                 assume_sorted=True,
                                 bounds_error=False,
-                                # fill_value=-np.inf,
-                                fill_value='extrapolate',
+                                fill_value='extrapolate',  # Only works with linear
                                 )
         return lambda x: np.exp(interpolator(np.log(x)))
 
@@ -131,18 +130,18 @@ def make_image(params: dict, krange=(1e-3, 1e2), nk=128, z=0., L=500., T=None, n
         Dk = 4.*np.pi*((k/(2.*np.pi))**3)*Pk(k)
         return Dk
 
-    def Dk2D_integrand(y: float, k: np.array, Pk: callable, T: float) -> float:
-        Wk = np.sinc(T*np.sqrt(y**2-k**2))
-        Dk = Dk3D(y, Pk)
-        integrand = Dk*Wk**2/(np.sqrt(y**2-k**2)*y**2)
+    def Dk2D_integrand(x: float, k: np.array, Pk: callable, T: float) -> float:
+        Wk = np.sinc(T*x)
+        Dk = Dk3D(np.sqrt(x**2+k**2), Pk)
+        integrand = Dk*Wk**2/np.sqrt(x**2+k**2)**3
         return integrand
 
     # @njit(parallel=True)
-    def Pk2D(k: np.array, Pk: callable, T: float, kmax=np.inf) -> np.array:
+    def Pk2D(k: np.array, Pk: callable, T: float) -> np.array:
         Dk = []
         for _k in k:
-            _Dk, _ = quad(Dk2D_integrand, _k, kmax, args=(
-                _k, Pk, T), limit=100, epsabs=1e-3, epsrel=1e-3)
+            _Dk, _ = quad(Dk2D_integrand, 0., np.inf, args=(
+                _k, Pk, T), limit=100, epsabs=0., epsrel=1e-3)  # Note that max error is used as target
             Dk.append(_Dk)
         Dk = (k**2)*np.array(Dk)
         Pk = Dk/(2.*np.pi*(k/(2.*np.pi))**2)
@@ -150,7 +149,7 @@ def make_image(params: dict, krange=(1e-3, 1e2), nk=128, z=0., L=500., T=None, n
 
     # Convert to 2D power spectrum
     if T is not None:
-        Pk = Pk2D(k, Pk_interp(k, Pk), T, kmax=np.inf)
+        Pk = Pk2D(k, Pk_interp(k, Pk), T)
     plt.loglog(k, Pk)
     plt.show()
 
