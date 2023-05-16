@@ -43,7 +43,7 @@ def Pk_interp(k: np.array, Pk: np.array) -> callable:
 
 
 def make_Gaussian_random_field_2D(mean_value: float, power_spectrum: callable,
-                                  map_size: int, mesh_cells: int) -> np.ndarray:
+                                  map_size: float, mesh_cells: int) -> np.ndarray:
     """
     Parameters:
         mean_value: mean value for the field
@@ -273,17 +273,20 @@ def make_image(params: dict, krange=(1e-3, 1e2), nk=128, z=0., L=500., T=None,
     if smooth_sigma != 0.:
         delta = gaussian_filter(delta, sigma=smooth_sigma)
 
+    # Convert density contrast to overdensity
+    delta += 1.
+
     # Plot
     plt.subplots(figsize=figsize, dpi=224)
     vmin, vmax = vrange
     if plot_log_overdensity:
-        eps = 1.+delta[delta > -1.].min()
+        eps = delta[delta > 0.].min()
         vmin_here = np.log10(vmin) if vmin is not None else None
         vmax_here = np.log10(vmax) if vmax is not None else None
-        plt.imshow(np.log10(1.+delta+eps), vmin=vmin_here,
+        plt.imshow(np.log10(delta+eps), vmin=vmin_here,
                    vmax=vmax_here, cmap=cmap)
     else:
-        plt.imshow(1.+delta, vmin=vmin, vmax=vmax, cmap=cmap)
+        plt.imshow(delta, vmin=vmin, vmax=vmax, cmap=cmap)
     plt.xticks([])
     plt.yticks([])
     buffer = io.BytesIO()
@@ -311,12 +314,12 @@ if __name__ == "__main__":
     z = 0.
     L = 500.
     T = 1.
-    n = 512
+    n = 1000
     seed = 123
     truncate_Pk = True
     plot_log_overdensity = False
     if plot_log_overdensity:
-        vmin, vmax = 1e-1, 10.
+        vmin, vmax = 1e-2, 100.
     else:
         vmin, vmax = 0., 15.
     # vmin, vmax = None, None
