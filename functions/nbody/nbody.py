@@ -12,7 +12,7 @@ from matplotlib.colors import LinearSegmentedColormap
 import camb
 import hmcode
 import pandas as pd
-# import twinlab as tl
+import twinlab as tl
 # from numba import njit, prange
 
 digilab_colors = [
@@ -172,16 +172,28 @@ def get_Pk3D_twinLab(params: dict, k: np.array, z, norm_sigma8=True, verbose=Fal
     Get the 3D power spectrum from the trained twinLab emulator
     TODO: Use params to create something akin to the cosmology.csv file!!
     """
-    file = "cosmology.csv"
+    _params = {
+        "Omega_c": params["Omega_m"]-params["Omega_b"],
+        "Omega_b": params["Omega_b"],
+        "Omega_k": 0.,
+        "h": params["H_0"]/100.,
+        "ns": params["n_s"],
+        "sigma_8": params["sigma_8"],
+        "w0": params["w_0"],
+        "wa": params["w_a"],
+        "m_nu": params["m_nu"],
+    }
+    df = pd.DataFrame(_params)
     campaign = "cosmology"
-    k_here = np.logspace(np.log10(1e-3), np.log10(1e2), 100)
+    k_here = np.logspace(np.log10(1e-3), np.log10(1e1),
+                         100)  # This must be the same!
     if k_here != k:
         raise Exception("k must be the same as in the twinLab campaign.")
     if z != 0.:
         raise Exception("redshift must be zero for the twinLab campaign.")
     if norm_sigma8:
         raise Exception("norm_sigma8 must be False for the twinLab campaign.")
-    df_mean, _ = tl.sample_campaign(file, campaign, verbose=verbose)
+    df_mean, _ = tl.sample_campaign(df, campaign, verbose=verbose)
     return df_mean.to_numpy()
 
 
