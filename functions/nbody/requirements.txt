@@ -4,3 +4,4 @@ matplotlib
 camb
 hmcode
 pandas
+twinlab
