@@ -184,11 +184,12 @@ def get_Pk3D_twinLab(params: dict, k: np.array, z, norm_sigma8=True, verbose=Fal
         "wa": params["w_a"],
         "m_nu": params["m_nu"],
     }
-    df = pd.DataFrame(_params)
+    df = pd.DataFrame(_params, index=[0])
+    print(df)
     campaign = "cosmology"
     k_here = np.logspace(np.log10(1e-3), np.log10(1e1),
                          100)  # This must be the same!
-    if k_here != k:
+    if not np.allclose(k, k_here):
         raise Exception("k must be the same as in the twinLab campaign.")
     if z != 0.:
         raise Exception("redshift must be zero for the twinLab campaign.")
@@ -309,8 +310,8 @@ if __name__ == "__main__":
         'n_s': 0.96,
         'm_nu': 0.,
     }
-    kmin, kmax = 1e-3, 1e2
-    nk = 128
+    kmin, kmax = 1e-3, 1e1
+    nk = 100
     z = 0.
     L = 500.
     T = 1.
@@ -328,8 +329,8 @@ if __name__ == "__main__":
 
     np.random.seed(seed)
 
-    _ = make_image(params, (kmin, kmax), nk, z, L, T, norm_sigma8=True,
-                   box_h_units=True, truncate_Pk=truncate_Pk, use_twinLab=False,
+    _ = make_image(params, (kmin, kmax), nk, z, L, T, norm_sigma8=False,
+                   box_h_units=True, truncate_Pk=truncate_Pk, use_twinLab=True,
                    log_normal_transform=True,
                    plot_log_overdensity=plot_log_overdensity, npix=n,
                    vrange=(vmin, vmax), pad_inches=0.02, cmap=cmap, figsize=(5, 5),
