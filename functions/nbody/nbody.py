@@ -135,6 +135,7 @@ def get_Pk3D_HMcode(params: dict, k: np.array, z, norm_sigma8=True, verbose=Fals
     kfac_CAMB = 10.  # How much bigger is CAMB kmax
     As = 2e-9 if norm_sigma8 else params['A_s']
     zs = [z]  # Redshifts
+    kmax = k[-1]  # Maximum k
 
     # Initial run of CAMB
     pars = camb.CAMBparams(WantCls=False)
