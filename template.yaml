@@ -45,6 +45,12 @@ Resources:
             Path: /nbody
             Method: post
       MemorySize: 10240
+      Environment:
+        Variables:
+          TWINLAB_SERVER:
+          TWINLAB_GROUPNAME:
+          TWINLAB_USERNAME:
+          TWINLAB_TOKEN:
     Metadata:
       Dockerfile: Dockerfile
       DockerContext: ./functions/nbody

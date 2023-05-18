@@ -971,14 +971,14 @@ mpmath = ">=0.19"
 
 [[package]]
 name = "twinlab"
-version = "1.1.0"
-description = "Client interface for twinLab"
+version = "1.1.1"
+description = "Client interface for twinLab machine-learning in the cloud."
 category = "main"
 optional = false
 python-versions = ">=3.9,<3.12"
 files = [
-    {file = "twinlab-1.1.0-py3-none-any.whl", hash = "sha256:817c8602e47097ca498ddd2c07924365531382d67c60d2a1e00e43233f4b56d5"},
-    {file = "twinlab-1.1.0.tar.gz", hash = "sha256:39537bfb4c5b3deec23557fa60019237ec2758151d699c48bbe4d216e9c3f5fd"},
+    {file = "twinlab-1.1.1-py3-none-any.whl", hash = "sha256:de916092010ea802c4c572c427d41ee2ba0c2dbd836abc9dfd041d6f461a6a0b"},
+    {file = "twinlab-1.1.1.tar.gz", hash = "sha256:b954e35c3b84cde09f7dbaa3a81236a9a388c520c1fa99bb950be5682760b144"},
 ]
 
 [package.dependencies]
@@ -1019,4 +1019,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.11"
-content-hash = "e6e6386120f9fad316313a789d004d30a3c1df4fd66f1db78002c46572b35ce0"
+content-hash = "483eca88567b05b4a6661ebc842806d2f8eedbfcbdcfa3d5a6645efd2375308d"

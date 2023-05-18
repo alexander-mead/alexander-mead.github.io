@@ -184,8 +184,8 @@ def get_Pk3D_twinLab(params: dict, k: np.array, z, norm_sigma8=True, verbose=Fal
         "wa": params["w_a"],
         "m_nu": params["m_nu"],
     }
+    # print(_params)
     df = pd.DataFrame(_params, index=[0])
-    print(df)
     campaign = "cosmology"
     k_here = np.logspace(np.log10(1e-3), np.log10(1e1),
                          100)  # This must be the same!
@@ -193,10 +193,11 @@ def get_Pk3D_twinLab(params: dict, k: np.array, z, norm_sigma8=True, verbose=Fal
         raise Exception("k must be the same as in the twinLab campaign.")
     if z != 0.:
         raise Exception("redshift must be zero for the twinLab campaign.")
-    if norm_sigma8:
-        raise Exception("norm_sigma8 must be False for the twinLab campaign.")
-    df_mean, _ = tl.sample_campaign(df, campaign, verbose=verbose)
-    return df_mean.to_numpy()
+    if not norm_sigma8:
+        raise Exception("norm_sigma8 must be True for the twinLab campaign.")
+    df_mean, _ = tl.predict_campaign(df, campaign, verbose=verbose)
+    Pk3D = np.exp(df_mean.iloc[0].to_numpy())
+    return Pk3D
 
 
 def smooth_nonlinear_power(k: np.array, Pk: np.array, T=None, verbose=False):
@@ -246,10 +247,12 @@ def make_image(params: dict, krange=(1e-3, 1e2), nk=128, z=0., L=500., T=None,
     # 3D power spectrum
     if use_twinLab:
         Pk_3D = get_Pk3D_twinLab(
-            params, k, z, norm_sigma8=norm_sigma8, verbose=verbose)
+            params, k, z, norm_sigma8=norm_sigma8, verbose=False)
     else:
         Pk_3D = get_Pk3D_HMcode(
             params, k, z, norm_sigma8=norm_sigma8, verbose=verbose)
+    # plt.loglog(k, Pk_3D, label='3D')
+    # plt.show()
 
     # 2D power spectrum as long as T is not None
     if T is not None:
@@ -329,7 +332,7 @@ if __name__ == "__main__":
 
     np.random.seed(seed)
 
-    _ = make_image(params, (kmin, kmax), nk, z, L, T, norm_sigma8=False,
+    _ = make_image(params, (kmin, kmax), nk, z, L, T, norm_sigma8=True,
                    box_h_units=True, truncate_Pk=truncate_Pk, use_twinLab=True,
                    log_normal_transform=True,
                    plot_log_overdensity=plot_log_overdensity, npix=n,

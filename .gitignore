@@ -3,6 +3,7 @@
 
 # Environment
 .env
+.env.json
 
 # AWS
 .aws-sam/

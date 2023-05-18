@@ -72,10 +72,13 @@ def handler(event, context, verbose=True):
     box_h_units = True
     log_normal_transform = True
     plot_log_overdensity = False  # Should be False if log_normal_transform = False
-    norm_sigma8 = False
+    norm_sigma8 = True
+    use_twinLab = True
     data = nbody.make_image(params, (kmin, kmax), nk, z, L, T,
                             norm_sigma8=norm_sigma8,
                             box_h_units=box_h_units,
+                            truncate_Pk=True,
+                            use_twinLab=use_twinLab,
                             log_normal_transform=log_normal_transform,
                             plot_log_overdensity=plot_log_overdensity,
                             npix=n, vrange=(vmin, vmax),

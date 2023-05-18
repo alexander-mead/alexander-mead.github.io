@@ -1,5 +1,5 @@
-// const baseURL = "http://127.0.0.1:3000";
-const baseURL = "https://qte7wuo072.execute-api.eu-west-2.amazonaws.com/Prod";
+const baseURL = "http://127.0.0.1:3000";
+// const baseURL = "https://qte7wuo072.execute-api.eu-west-2.amazonaws.com/Prod";
 
 const image = () => {
   // Definitions
@@ -9,10 +9,12 @@ const image = () => {
   const Omega_m = document.getElementById("Omega_m").value;
   const Omega_b = document.getElementById("Omega_b").value;
   const H_0 = document.getElementById("H_0").value;
-  const sigma_8 = 0.8; //document.getElementById("sigma_8").value;
+  // const sigma_8 = 0.8;
+  const sigma_8 = document.getElementById("sigma_8").value;
   const A_s = 2e-9;
   const n_s = document.getElementById("n_s").value;
-  const w_0 = document.getElementById("w_0").value;
+  const w_0 = -1;
+  // const w_0 = document.getElementById("w_0").value;
   const w_a = 0;
   const m_nu = 0;
 
@@ -22,8 +24,8 @@ const image = () => {
 
   // Constants
   const kmin = 1e-3;
-  const kmax = 1e2;
-  const nk = 128;
+  const kmax = 1e1;
+  const nk = 100;
   const z = 0;
   const npix = 512;
   const Lbox = 500;
