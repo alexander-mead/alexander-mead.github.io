@@ -1,5 +1,5 @@
-const baseURL = "http://127.0.0.1:3000";
-// const baseURL = "https://qte7wuo072.execute-api.eu-west-2.amazonaws.com/Prod";
+// const baseURL = "http://127.0.0.1:3000";
+const baseURL = "https://qte7wuo072.execute-api.eu-west-2.amazonaws.com/Prod";
 
 const image = () => {
   // Definitions
@@ -17,10 +17,6 @@ const image = () => {
   // const w_0 = document.getElementById("w_0").value;
   const w_a = 0;
   const m_nu = 0;
-
-  // Calculate
-  // const zoom = 2 ** document.getElementById("zoom").value;
-  // const transform = 1 / (1 + Math.log(depth / 64) / Math.log(2));
 
   // Constants
   const kmin = 1e-3;

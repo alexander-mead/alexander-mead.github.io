@@ -3,10 +3,10 @@
 
 # Environment
 .env
-.env.json
 
 # AWS
 .aws-sam/
+template.yaml
 
 # Hydra
 outputs/
