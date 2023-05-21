@@ -113,8 +113,10 @@ def Dk2D_integrand(x: float, k: np.array, Pk: callable, T: float) -> float:
 # @njit(parallel=True)
 def get_Pk2D(k: np.array, Pk: callable, T: float) -> np.array:
     """
-    TODO: Can this be parallelised with numba?
+    Computes the 2D power spectrum in a slab of thickness T
+    Uses the 3D power spectrum and performs a projection integral
     """
+    # TODO: Can this be parallelised with numba?
     Dk = []
     for _k in k:
         _Dk, _ = quad(Dk2D_integrand, 0., np.inf, args=(
@@ -168,10 +170,9 @@ def get_Pk3D_HMcode(params: dict, k: np.array, z, norm_sigma8=True, verbose=Fals
     return Pk
 
 
-def get_Pk3D_twinLab(params: dict, k: np.array, z, norm_sigma8=True, verbose=False):
+def get_Pk3D_twinLab(params: dict, k: np.array, z, verbose=False):
     """
     Get the 3D power spectrum from the trained twinLab emulator
-    TODO: Use params to create something akin to the cosmology.csv file!!
     """
     _params = {
         "Omega_c": params["Omega_m"]-params["Omega_b"],
@@ -184,7 +185,6 @@ def get_Pk3D_twinLab(params: dict, k: np.array, z, norm_sigma8=True, verbose=Fal
         "wa": params["w_a"],
         "m_nu": params["m_nu"],
     }
-    # print(_params)
     df = pd.DataFrame(_params, index=[0])
     campaign = "cosmology"
     k_here = np.logspace(np.log10(1e-3), np.log10(1e1),
@@ -244,8 +244,7 @@ def make_image(params: dict, krange=(1e-3, 1e2), nk=128, z=0., L=500., T=None,
 
     # 3D power spectrum
     if use_twinLab:
-        Pk_3D = get_Pk3D_twinLab(
-            params, k, z, norm_sigma8=norm_sigma8, verbose=False)
+        Pk_3D = get_Pk3D_twinLab(params, k, z, verbose=False)
     else:
         Pk_3D = get_Pk3D_HMcode(
             params, k, z, norm_sigma8=norm_sigma8, verbose=verbose)
