@@ -61,18 +61,19 @@ def handler(event, context, verbose=True):
     z = float(body["z"])
     L = float(body["Lbox"])
     T = float(body["Tbox"])
+    cmap = body["color"]
     n = int(body["npix"])
     pad = 0.02
     seed = 123
     # vmin, vmax = 1e-3, 1e3  # Change these if log_normal_transform = False
     vmin, vmax = 0., 15.
-    # cmap = "cubehelix"
-    cmap = digilab_cmap
+    if cmap == "digilab":
+        cmap = digilab_cmap
     np.random.seed(seed)
     box_h_units = True
     log_normal_transform = True
     plot_log_overdensity = False  # Should be False if log_normal_transform = False
-    norm_sigma8 = True
+    norm_sigma8 = False
     use_twinLab = True
     data = nbody.make_image(params, (kmin, kmax), nk, z, L, T,
                             norm_sigma8=norm_sigma8,

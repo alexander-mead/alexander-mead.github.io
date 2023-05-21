@@ -193,8 +193,6 @@ def get_Pk3D_twinLab(params: dict, k: np.array, z, norm_sigma8=True, verbose=Fal
         raise Exception("k must be the same as in the twinLab campaign.")
     if z != 0.:
         raise Exception("redshift must be zero for the twinLab campaign.")
-    if not norm_sigma8:
-        raise Exception("norm_sigma8 must be True for the twinLab campaign.")
     df_mean, _ = tl.predict_campaign(df, campaign, verbose=verbose)
     Pk3D = np.exp(df_mean.iloc[0].to_numpy())
     return Pk3D
@@ -332,7 +330,7 @@ if __name__ == "__main__":
 
     np.random.seed(seed)
 
-    _ = make_image(params, (kmin, kmax), nk, z, L, T, norm_sigma8=True,
+    _ = make_image(params, (kmin, kmax), nk, z, L, T, norm_sigma8=False,
                    box_h_units=True, truncate_Pk=truncate_Pk, use_twinLab=True,
                    log_normal_transform=True,
                    plot_log_overdensity=plot_log_overdensity, npix=n,
