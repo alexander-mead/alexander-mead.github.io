@@ -186,7 +186,7 @@ def get_Pk3D_twinLab(params: dict, k: np.array, z, verbose=False):
         "m_nu": params["m_nu"],
     }
     df = pd.DataFrame(_params, index=[0])
-    campaign = "cosmology-app"
+    campaign = "universe"
     k_here = np.logspace(np.log10(1e-3), np.log10(1e1),
                          100)  # This must be the same!
     if not np.allclose(k, k_here):
