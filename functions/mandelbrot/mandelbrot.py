@@ -29,7 +29,7 @@ def sample_area_python(real_start: float, real_end: float, imag_start: float, im
             n = 0
             for i in range(max_iters):
                 z = z**2 + c
-                if np.abs(z) > 2.:  # Divergence
+                if abs(z) > 2.:  # Divergence # TODO: Test abs vs. np.abs
                     if smooth:  # Fractional iteration count
                         n = i + 1. - \
                             math.log(math.log(abs(z)))/math.log(2.)
@@ -57,7 +57,7 @@ def sample_area_numba(real_start: float, real_end: float, imag_start: float, ima
             n = 0
             for i in range(max_iters):
                 z = z**2 + c
-                if np.abs(z) > 2.:  # Divergence
+                if abs(z) > 2.:  # Divergence # TODO: Test abs vs. np.abs
                     if smooth:  # Fractional iteration count
                         n = i + 1. - \
                             np.log(np.log(np.abs(z)))/np.log(2.)

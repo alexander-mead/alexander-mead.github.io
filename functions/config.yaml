@@ -6,6 +6,7 @@ sigma: 0.5
 transform: None
 width: 2000
 height: 2000
+resample: 4
 outdir: images
 outfile: mandelbrot
 cmap: cubehelix
