@@ -48,9 +48,8 @@ Resources:
       Environment:
         Variables:
           TWINLAB_SERVER: https://qisuqloa39.execute-api.eu-west-2.amazonaws.com/prod
-          TWINLAB_GROUPNAME: { { TWINLAB_GROUPNAME } }
-          TWINLAB_USERNAME: { { TWINLAB_USERNAME } }
-          TWINLAB_TOKEN: { { TWINLAB_TOKEN } }
+          TWINLAB_USER: { { TWINLAB_USER } }
+          TWINLAB_KEY: { { TWINLAB_KEY } }
     Metadata:
       Dockerfile: Dockerfile
       DockerContext: ./functions/nbody

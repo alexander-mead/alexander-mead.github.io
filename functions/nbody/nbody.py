@@ -244,7 +244,7 @@ def make_image(params: dict, krange=(1e-3, 1e2), nk=128, z=0., L=500., T=None,
 
     # 3D power spectrum
     if use_twinLab:
-        Pk_3D = get_Pk3D_twinLab(params, k, z, verbose=False)
+        Pk_3D = get_Pk3D_twinLab(params, k, z, verbose=verbose)
     else:
         Pk_3D = get_Pk3D_HMcode(
             params, k, z, norm_sigma8=norm_sigma8, verbose=verbose)

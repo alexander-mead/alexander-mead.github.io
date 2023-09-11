@@ -4,4 +4,4 @@ matplotlib
 camb
 hmcode
 pandas
-twinlab
+twinlab==1.3.1

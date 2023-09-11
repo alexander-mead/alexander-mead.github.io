@@ -16,9 +16,8 @@ fi
 
 # Inject secrets
 # sed -e "s/{ { TWINLAB_SERVER } }/${TWINLAB_SERVER}/g" \ # Does not work, because slashes in environment variables ?!?
-sed -e "s/{ { TWINLAB_GROUPNAME } }/${TWINLAB_GROUPNAME}/g" \
-    -e "s/{ { TWINLAB_USERNAME } }/${TWINLAB_USERNAME}/g" \
-    -e "s/{ { TWINLAB_TOKEN } }/${TWINLAB_TOKEN}/g" \
+sed -e "s/{ { TWINLAB_USER } }/${TWINLAB_USERNAME}/g" \
+    -e "s/{ { TWINLAB_KEY } }/${TWINLAB_TOKEN}/g" \
     template.base.yaml > template.yaml
 
 # Build
