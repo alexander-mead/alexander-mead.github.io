@@ -1,5 +1,5 @@
-const baseURL = "http://127.0.0.1:3000"; // local
-// const baseURL = "https://qte7wuo072.execute-api.eu-west-2.amazonaws.com/Prod"; // cloud
+// const baseURL = "http://127.0.0.1:3000"; // local
+const baseURL = "https://qte7wuo072.execute-api.eu-west-2.amazonaws.com/Prod"; // cloud
 
 const image = () => {
   // Definitions

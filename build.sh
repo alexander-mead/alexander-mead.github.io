@@ -15,16 +15,17 @@ elif [ "$unamestr" = "FreeBSD" ] || [ "$unamestr" = "Darwin" ]; then
 fi
 
 # Inject secrets
-# sed -e "s/{ { TWINLAB_SERVER } }/${TWINLAB_SERVER}/g" \ # Does not work, because slashes in environment variables ?!?
-sed -e "s/{ { TWINLAB_USER } }/${TWINLAB_USERNAME}/g" \
-    -e "s/{ { TWINLAB_KEY } }/${TWINLAB_TOKEN}/g" \
+_TWINLAB_SERVER=$(printf '%s\n' "$TWINLAB_SERVER" | sed -e 's/[\/&]/\\&/g') # Escape slashes and ampersands
+sed -e "s/{ { TWINLAB_SERVER } }/${_TWINLAB_SERVER}/g" \
+    -e "s/{ { TWINLAB_KEY } }/${TWINLAB_KEY}/g" \
+    -e "s/{ { TWINLAB_USER } }/${TWINLAB_USER}/g" \
     template.base.yaml > template.yaml
 
 # Build
 sam build
 
 # Remove the template file, which contains secrets
-rm template.yaml
+# rm template.yaml
 
 # Deploy locally or to the cloud
 if [ "$1" = "local" ]; then

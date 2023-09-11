@@ -47,7 +47,7 @@ Resources:
       MemorySize: 10240
       Environment:
         Variables:
-          TWINLAB_SERVER: https://qisuqloa39.execute-api.eu-west-2.amazonaws.com/prod
+          TWINLAB_SERVER: { { TWINLAB_SERVER } }
           TWINLAB_USER: { { TWINLAB_USER } }
           TWINLAB_KEY: { { TWINLAB_KEY } }
     Metadata:
