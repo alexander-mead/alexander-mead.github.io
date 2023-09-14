@@ -47,9 +47,8 @@ Resources:
       MemorySize: 10240
       Environment:
         Variables:
-          TWINLAB_SERVER: { { TWINLAB_SERVER } }
-          TWINLAB_USER: { { TWINLAB_USER } }
-          TWINLAB_KEY: { { TWINLAB_KEY } }
+          TWINLAB_URL: { { TWINLAB_URL } }
+          TWINLAB_API_KEY: { { TWINLAB_API_KEY } }
     Metadata:
       Dockerfile: Dockerfile
       DockerContext: ./functions/nbody
