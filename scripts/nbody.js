@@ -10,7 +10,6 @@ const image = () => {
   const Omega_b = document.getElementById("Omega_b").value;
   const H_0 = document.getElementById("H_0").value;
   const sigma_8 = 0.8;
-  // const sigma_8 = document.getElementById("sigma_8").value;
   const A_s = 2e-9;
   const n_s = document.getElementById("n_s").value;
   // const w_0 = -1;
