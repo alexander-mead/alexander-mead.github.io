@@ -10,7 +10,8 @@ import matplotlib.pyplot as plt
 from numba import njit, prange
 
 # Project imports
-from Fortran import mandelbrot
+# from .Fortran import mandelbrot # Works with FastAPI server
+from Fortran import mandelbrot  # Works with python image.py
 
 
 def sample_area_python(real_start: float, real_end: float, imag_start: float, imag_end: float,
