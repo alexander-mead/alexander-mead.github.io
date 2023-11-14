@@ -21,3 +21,6 @@ functions/mandelbrot/Fortran/mandelbrot.cpython-311-darwin.so
 functions/mandelbrot/Fortran/mandelbrot.mod
 functions/mandelbrot/Fortran/mandelbrot.o
 functions/mandelbrot/Fortran/mandelbrot.py
+
+# vscode
+.vscode/
