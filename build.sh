@@ -1,5 +1,10 @@
 #!/bin/sh
 
+if [ "$#" -ne 1 ]; then
+    echo "Usage: build.sh <local|cloud|guided>"
+    exit 1
+fi
+
 # Load environment variables from .env file
 if [ ! -f .env ]; then
   echo "Error: .env file not found. Please create one from the .env.example file."
