@@ -171,7 +171,7 @@ def get_Pk3D_HMcode(params: dict, k: np.array, z, norm_sigma8=True, verbose=Fals
 
 
 def get_Pk3D_twinLab(params: dict, k: np.array, z,
-                     campaign='universe', verbose=False):
+                     campaign='cosmology', verbose=False):
     """
     Get the 3D power spectrum from the trained twinLab emulator
     """
@@ -193,7 +193,9 @@ def get_Pk3D_twinLab(params: dict, k: np.array, z,
         raise Exception("k must be the same as in the twinLab campaign.")
     if z != 0.:
         raise Exception("redshift must be zero for the twinLab campaign.")
-    df_mean, _ = tl.predict_campaign(df, campaign, verbose=verbose)
+    emulator = tl.Emulator(campaign, campaign)
+    inputs = ["Omega_c", "Omega_b", "h", "ns", "w0"]
+    df_mean, _ = emulator.predict(df[inputs], verbose=verbose)
     Pk3D = np.exp(df_mean.iloc[0].to_numpy())
     return Pk3D
 
