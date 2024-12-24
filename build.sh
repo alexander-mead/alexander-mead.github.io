@@ -22,6 +22,7 @@ fi
 # Inject secrets
 _TWINLAB_URL=$(printf '%s\n' "$TWINLAB_URL" | sed -e 's/[\/&]/\\&/g') # Escape slashes and ampersands
 sed -e "s/{ { TWINLAB_URL } }/${_TWINLAB_URL}/g" \
+    -e "s/{ { TWINLAB_USER } }/${TWINLAB_USER}/g" \
     -e "s/{ { TWINLAB_API_KEY } }/${TWINLAB_API_KEY}/g" \
     template.base.yaml > template.yaml
 
