@@ -11,6 +11,7 @@ curl --request POST http://127.0.0.1:3000/nbody \
         "Lbox": 500,
         "Tbox": 1,
         "Omega_m": 0.3,
+        "Omega_b": 0.05,
         "H_0": 70.0,
         "sigma_8": 0.8,
         "A_s": 2e-9,

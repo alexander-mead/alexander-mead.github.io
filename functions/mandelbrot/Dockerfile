@@ -3,8 +3,8 @@ FROM public.ecr.aws/lambda/python:3.10
 
 # Commands to run when creating the image
 # The order matters here, as the layers are built up
-RUN pip install f90wrap
 RUN yum install gcc-gfortran -y
+RUN pip install f90wrap
 COPY Fortran ./Fortran
 RUN cd Fortran && ./f2py.sh
 COPY requirements.txt ./
