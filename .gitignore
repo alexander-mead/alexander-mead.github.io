@@ -15,11 +15,14 @@ outputs/
 __pycache__/
 
 # Fortran
+*.mod
+*.o
+*.so
+*.f2py_f2cmap
+
+# Fortran
 functions/mandelbrot/Fortran/.f2py_f2cmap
 functions/mandelbrot/Fortran/f90wrap_mandelbrot.f90
-functions/mandelbrot/Fortran/mandelbrot.cpython-311-darwin.so
-functions/mandelbrot/Fortran/mandelbrot.mod
-functions/mandelbrot/Fortran/mandelbrot.o
 functions/mandelbrot/Fortran/mandelbrot.py
 
 # vscode
