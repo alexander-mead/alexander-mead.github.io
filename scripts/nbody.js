@@ -67,6 +67,7 @@ const image = () => {
 
   // Fetch
   console.log("Request sent");
+  console.log("Params: " + JSON.stringify(params));
   fetch(url, params)
     .then((response) => response.json()) // TODO: Not blob; maybe use response.blob()?
     .then((blob) => {
