@@ -214,3 +214,9 @@ def create_image(real_start: float, real_end: float, imag_start: float, imag_end
                 pad_inches=pad_inches)  # Place the image as a binary in memory
     buffer = buffer.getvalue()
     return buffer  # Return the image binary (avoids saving to disk)
+
+
+if __name__ == "__main__":
+
+    create_image(-1.5, 0.5, -1., 1., 100, 1000, 1000, smooth_sigma=0.5)
+    plt.show()
