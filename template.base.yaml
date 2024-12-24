@@ -12,8 +12,8 @@ Globals:
       AllowCredentials: "'*'"
   Function:
     Architectures:
-      - x86_64
-      # - arm64
+      # - x86_64
+      - arm64
     Timeout: 60
 
 Resources:
@@ -48,6 +48,7 @@ Resources:
       Environment:
         Variables:
           TWINLAB_URL: { { TWINLAB_URL } }
+          TWINLAB_USER: { { TWINLAB_USER } }
           TWINLAB_API_KEY: { { TWINLAB_API_KEY } }
     Metadata:
       Dockerfile: Dockerfile
