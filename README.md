@@ -7,7 +7,7 @@ Once deployed (via GitHub pages), my personal website can be found here:
 
 First, install the (global) `poetry` environment:
 
-```bash
+```sh
 poetry install
 ```
 
@@ -15,13 +15,13 @@ To build and deploy the backend (from the root directory):
 
 For a local deployment (runs on [http://127.0.0.1:3000](http://127.0.0.1:3000)):
 
-```bash
+```sh
 sh build.sh local
 ```
 
 or for a cloud deployment:
 
-```bash
+```sh
 sh build.sh cloud
 ```
 
@@ -29,13 +29,13 @@ sh build.sh cloud
 
 Go to the function directory:
 
-```bash
+```sh
 cd functions/mandelbrot
 ```
 
 Install the Fortran part of the backend
 
-```bash
+```sh
 cd Fortran
 poetry run sh f2py.sh
 cd ..
@@ -43,7 +43,7 @@ cd ..
 
 Run the test script:
 
-```bash
+```sh
 poetry run python mandelbrot.py
 ```
 
@@ -51,7 +51,7 @@ An image of the Mandelbrot set should appear.
 
 If a local deployment is running, try the API invocation script:
 
-```bash
+```sh
 sh test.sh
 ```
 
@@ -60,27 +60,27 @@ terminal.
 
 Return to the root directory
 
-```bash
+```sh
 cd ../..
 ```
 
-### Nbody
+### N-body
 
 Go to the function directory:
 
-```bash
+```sh
 cd functions/nbody
 ```
 
 Ensure the model is trained:
 
-```bash
+```sh
 poetry run python training.py
 ```
 
 Run the test scripts:
 
-```bash
+```sh
 poetry run python nbody.py
 ```
 
@@ -88,7 +88,7 @@ an image of a slice through an N-body simulation should appear.
 
 If a local deployment is running, try the API invocation script:
 
-```bash
+```sh
 sh test.sh
 ```
 
@@ -97,7 +97,7 @@ terminal.
 
 Return to the root directory
 
-```bash
+```sh
 cd ../..
 ```
 
@@ -105,7 +105,9 @@ cd ../..
 
 If there are any problems with deployment, try looking in the following files:
 
-- samconfig.toml
-- template.base.yaml
-- functions/mandelbrot/Dockerfile
-- functions/nbody/Dockerfile
+- `samconfig.toml`
+- `template.base.yaml` (ensure the architecture matches)
+- `functions/mandelbrot/Dockerfile`
+- `functions/nbody/Dockerfile`
+
+Otherwise, try restarting Docker and/or purging the current set of containers.
