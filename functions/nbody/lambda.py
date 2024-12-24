@@ -1,10 +1,10 @@
 # Standard imports
 import json
 import base64
-from matplotlib.colors import LinearSegmentedColormap
 
 # Third-party imports
 import numpy as np
+from matplotlib.colors import LinearSegmentedColormap
 
 # Project imports
 import nbody
