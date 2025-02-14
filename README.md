@@ -72,7 +72,7 @@ Go to the function directory:
 cd functions/nbody
 ```
 
-Ensure the model is trained:
+Ensure that the twinLab model (if this is being used) is trained:
 
 ```sh
 poetry run python training.py
