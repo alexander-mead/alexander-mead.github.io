@@ -1,5 +1,6 @@
 #!/bin/sh
 
+# Exit on error
 set -e
 
 if [ "$#" -ne 1 ]; then
@@ -30,6 +31,7 @@ sed -e "s/{ { TWINLAB_URL } }/${_TWINLAB_URL}/g" \
 
 # Build
 sam build
+# sam build --no-cached # Might be necessary?
 
 # Remove the template file, which contains secrets
 rm template.yaml

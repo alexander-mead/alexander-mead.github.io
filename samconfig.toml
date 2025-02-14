@@ -6,6 +6,6 @@ s3_prefix = "mead"
 region = "eu-west-2"
 capabilities = "CAPABILITY_IAM"
 image_repositories = [
-  "MeadNbodyFunction=939027885851.dkr.ecr.eu-west-2.amazonaws.com/mead16d85aee/meadnbodyfunction40fb9383repo",
-  "MeadMandelbrotFunction=939027885851.dkr.ecr.eu-west-2.amazonaws.com/mead16d85aee/meadmandelbrotfunctionbd344d2arepo",
+    "MeadMandelbrotFunction=939027885851.dkr.ecr.eu-west-2.amazonaws.com/mead16d85aee/meadmandelbrotfunctionbd344d2arepo",
+    "MeadNbodyFunction=939027885851.dkr.ecr.eu-west-2.amazonaws.com/mead16d85aee/meadnbodyfunction40fb9383repo",
 ]
