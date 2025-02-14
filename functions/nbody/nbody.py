@@ -332,7 +332,7 @@ if __name__ == "__main__":
     np.random.seed(seed)
 
     _ = make_image(params, (kmin, kmax), nk, z, L, T, norm_sigma8=False,
-                   box_h_units=True, truncate_Pk=truncate_Pk, use_twinLab=True,
+                   box_h_units=True, truncate_Pk=truncate_Pk, use_twinLab=False,
                    log_normal_transform=True,
                    plot_log_overdensity=plot_log_overdensity, npix=n,
                    vrange=(vmin, vmax), pad_inches=0.02, cmap=cmap, figsize=(5, 5),
