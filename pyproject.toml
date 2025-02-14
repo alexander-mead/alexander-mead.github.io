@@ -1,5 +1,6 @@
 [tool.poetry]
 name = "mead-website"
+package-mode = false
 version = "0.1.0"
 description = ""
 authors = ["Alexander Mead <alexander.j.mead@googlemail.com>"]
