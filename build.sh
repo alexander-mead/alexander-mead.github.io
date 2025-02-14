@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 if [ "$#" -ne 1 ]; then
     echo "Usage: build.sh <local|cloud|guided>"
     exit 1
