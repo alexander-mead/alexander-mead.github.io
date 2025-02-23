@@ -21,6 +21,9 @@ if [ "$unamestr" = "Linux" ]; then
   export $(grep -v '^#' .env | xargs -d '\n')
 elif [ "$unamestr" = "FreeBSD" ] || [ "$unamestr" = "Darwin" ]; then
   export $(grep -v '^#' .env | xargs -0)
+else
+  echo "Unsupported OS: $unamestr."
+  exit 1
 fi
 
 # Inject secrets
@@ -41,7 +44,7 @@ rm template.yaml
 if [ "$1" = "local" ]; then
     sam local start-api
 elif [ "$1" = "cloud" ]; then
-    sam deploy
+    sam deploy --profile personal
 elif [ "$1" = "guided" ]; then
     sam deploy --guided
 else

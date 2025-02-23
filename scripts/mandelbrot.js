@@ -1,5 +1,7 @@
+// TODO: Read this from a .env file
 // const baseURL = "http://127.0.0.1:3000"; // local
-const baseURL = "https://qte7wuo072.execute-api.eu-west-2.amazonaws.com/Prod"; // cloud
+// const baseURL = "https://qte7wuo072.execute-api.eu-west-2.amazonaws.com/Prod"; // digiLab cloud
+const baseURL = "https://x7or5gwlkk.execute-api.eu-west-2.amazonaws.com/Prod"; // Personal cloud
 
 const image = () => {
   // Definitions

@@ -1,10 +1,8 @@
 version = 0.1
-[default.deploy.parameters]
-stack_name = "mead"
+[personal.deploy.parameters]
+stack_name = "mead-nbody"
 resolve_s3 = true
-s3_prefix = "mead"
+s3_prefix = "mead-nbody"
 region = "eu-west-2"
 capabilities = "CAPABILITY_IAM"
-image_repositories = [
-    "MeadNbodyFunction=939027885851.dkr.ecr.eu-west-2.amazonaws.com/mead16d85aee/meadnbodyfunction40fb9383repo",
-]
+image_repositories = ["MeadNbodyFunction=939027885851.dkr.ecr.eu-west-2.amazonaws.com/meadnbodyca117dc0/meadnbodyfunction40fb9383repo"]

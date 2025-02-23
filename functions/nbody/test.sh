@@ -1,6 +1,7 @@
 # Read the URL from the command line
 # url=http://127.0.0.1:3000/nbody
-# url=https://qte7wuo072.execute-api.eu-west-2.amazonaws.com/Prod/nbody
+# url=https://qte7wuo072.execute-api.eu-west-2.amazonaws.com/Prod/nbody # digiLab
+# url=https://g6afw1nc9a.execute-api.eu-west-2.amazonaws.com/Prod/nbody # Personal
 if [ "$#" -ne 1 ]; then
     echo "Usage: test.sh <url>" 
     exit 1

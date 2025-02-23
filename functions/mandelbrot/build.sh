@@ -16,9 +16,9 @@ sam build
 if [ "$1" = "local" ]; then
     sam local start-api
 elif [ "$1" = "cloud" ]; then
-    sam deploy
+    sam deploy --profile personal
 elif [ "$1" = "guided" ]; then
-    sam deploy --guided
+    sam deploy --guided --profile personal
 else
     echo "Invalid build option: $1."
     exit 1
