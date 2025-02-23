@@ -15,6 +15,14 @@ if [ ! -f .env ]; then
   exit 1
 fi
 
+# Detect OS and load environment variables accordingly
+unamestr=$(uname)
+if [ "$unamestr" = "Linux" ]; then
+  export $(grep -v '^#' .env | xargs -d '\n')
+elif [ "$unamestr" = "FreeBSD" ] || [ "$unamestr" = "Darwin" ]; then
+  export $(grep -v '^#' .env | xargs -0)
+fi
+
 # Inject secrets
 _TWINLAB_URL=$(printf '%s\n' "$TWINLAB_URL" | sed -e 's/[\/&]/\\&/g') # Escape slashes and ampersands
 sed -e "s/{ { TWINLAB_URL } }/${_TWINLAB_URL}/g" \

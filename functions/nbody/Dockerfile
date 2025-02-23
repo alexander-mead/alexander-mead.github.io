@@ -5,8 +5,6 @@ FROM public.ecr.aws/lambda/python:3.10
 RUN yum install gcc-gfortran -y
 RUN yum install make -y
 RUN yum install which -y
-# COPY requirements.txt ./
-# RUN python3.10 -m pip install -r requirements.txt -t .
 RUN python3.10 -m pip install --upgrade pip
 RUN curl -sSL https://install.python-poetry.org | python3 -
 RUN python3.10 -m pip install poetry

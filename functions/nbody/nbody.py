@@ -13,7 +13,6 @@ import camb
 import hmcode
 import pandas as pd
 import twinlab as tl
-# from numba import njit, prange
 
 digilab_colors = [
     "#162448",  # Dark blue
@@ -110,7 +109,6 @@ def Dk2D_integrand(x: float, k: np.array, Pk: callable, T: float) -> float:
     return integrand
 
 
-# @njit(parallel=True)
 def get_Pk2D(k: np.array, Pk: callable, T: float) -> np.array:
     """
     Computes the 2D power spectrum in a slab of thickness T

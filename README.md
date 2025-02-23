@@ -5,32 +5,18 @@ Once deployed (via GitHub pages), my personal website can be found here:
 
 ## Backend
 
-First, install the (global) `poetry` environment:
-
-```sh
-poetry install
-```
-
-To build and deploy the backend (from the root directory):
-
-For a local deployment (runs on [http://127.0.0.1:3000](http://127.0.0.1:3000)):
-
-```sh
-sh build.sh local
-```
-
-or for a cloud deployment:
-
-```sh
-sh build.sh cloud
-```
-
 ### Mandelplot
 
 Go to the function directory:
 
 ```sh
 cd functions/mandelbrot
+```
+
+First, install the `poetry` environment:
+
+```sh
+poetry install
 ```
 
 Install the Fortran part of the backend
@@ -49,10 +35,22 @@ poetry run python mandelbrot.py
 
 An image of the Mandelbrot set should appear.
 
-If a local deployment is running, try the API invocation script:
+For a local deployment (runs on [http://127.0.0.1:3000](http://127.0.0.1:3000)):
 
 ```sh
-sh test.sh
+sh build.sh local
+```
+
+or for a cloud deployment:
+
+```sh
+sh build.sh cloud
+```
+
+If a deployment is running, try the API invocation script:
+
+```sh
+sh test.sh <url>
 ```
 
 some gibberish (which is the image in a weird format) should be displayed on the
@@ -72,6 +70,12 @@ Go to the function directory:
 cd functions/nbody
 ```
 
+First, install the `poetry` environment:
+
+```sh
+poetry install
+```
+
 Ensure that the twinLab model (if this is being used) is trained:
 
 ```sh
@@ -86,10 +90,22 @@ poetry run python nbody.py
 
 an image of a slice through an N-body simulation should appear.
 
-If a local deployment is running, try the API invocation script:
+For a local deployment (runs on [http://127.0.0.1:3000](http://127.0.0.1:3000)):
 
 ```sh
-sh test.sh
+sh build.sh local
+```
+
+or for a cloud deployment:
+
+```sh
+sh build.sh cloud
+```
+
+If a deployment is running, try the API invocation script:
+
+```sh
+sh test.sh <url>
 ```
 
 some gibberish (which is the image in a weird format) should be displayed on the
@@ -105,9 +121,8 @@ cd ../..
 
 If there are any problems with deployment, try looking in the following files:
 
-- `samconfig.toml`
-- `template.base.yaml` (ensure the architecture matches)
-- `functions/mandelbrot/Dockerfile`
-- `functions/nbody/Dockerfile`
+- `functions/*/samconfig.toml`
+- `functions/*/template(.base).yaml` (ensure the architecture matches)
+- `functions/*/Dockerfile`
 
 Otherwise, try restarting Docker and/or purging the current set of containers.
