@@ -1,4 +1,4 @@
-# Fortran
+# Compiled Fortran module files
 *.mod
 *.o
 *.so

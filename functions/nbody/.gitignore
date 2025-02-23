@@ -1,5 +1,5 @@
-# Environment
+# Environment that contains secrets
 .env
 
-# AWS
+# Template that contains secrets
 template.yaml
