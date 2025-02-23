@@ -1,0 +1,8 @@
+# Fortran
+*.mod
+*.o
+*.so
+*.f2py_f2cmap
+Fortran/.f2py_f2cmap
+Fortran/f90wrap_mandelbrot.f90
+Fortran/mandelbrot.py
