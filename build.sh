@@ -30,8 +30,8 @@ sed -e "s/{ { TWINLAB_URL } }/${_TWINLAB_URL}/g" \
     template.base.yaml > template.yaml
 
 # Build
-sam build
-# sam build --no-cached # Might be necessary?
+# sam build
+sam build --no-cached --cache-dir .
 
 # Remove the template file, which contains secrets
 rm template.yaml
