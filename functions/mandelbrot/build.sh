@@ -16,7 +16,7 @@ sam build
 if [ "$1" = "local" ]; then
     sam local start-api
 elif [ "$1" = "cloud" ]; then
-    sam deploy --profile personal
+    sam deploy --config-env personal
 elif [ "$1" = "guided" ]; then
     sam deploy --guided --profile personal
 else

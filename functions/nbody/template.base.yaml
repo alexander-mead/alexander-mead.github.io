@@ -14,7 +14,7 @@ Globals:
     Architectures:
       # - x86_64
       - arm64 # digiLab M2 Mac
-    Timeout: 60
+    Timeout: 15
 
 Resources:
   MeadNbodyFunction:
@@ -29,7 +29,7 @@ Resources:
             Path: /nbody
             Method: post
       # MemorySize: 10240 # digiLab
-      MemorySize: 3008 # Personl
+      MemorySize: 3008 # Personal
       Environment:
         Variables:
           TWINLAB_URL: { { TWINLAB_URL } }

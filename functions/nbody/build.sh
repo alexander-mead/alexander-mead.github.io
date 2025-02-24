@@ -44,9 +44,9 @@ rm template.yaml
 if [ "$1" = "local" ]; then
     sam local start-api
 elif [ "$1" = "cloud" ]; then
-    sam deploy --profile personal
+    sam deploy --config-env personal
 elif [ "$1" = "guided" ]; then
-    sam deploy --guided --profile personal
+    sam deploy --guided
 else
     echo "Invalid build option: $1."
     exit 1
