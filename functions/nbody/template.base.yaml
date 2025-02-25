@@ -9,7 +9,7 @@ Globals:
       AllowMethods: "'GET,POST,OPTIONS'"
       AllowHeaders: "'content-type'"
       AllowOrigin: "'*'"
-      AllowCredentials: "'*'"
+      AllowCredentials: false
   Function:
     Architectures:
       # - x86_64
@@ -27,7 +27,7 @@ Resources:
           Type: Api
           Properties:
             Path: /nbody
-            Method: post
+            Method: POST
       # MemorySize: 10240 # digiLab
       MemorySize: 3008 # Personal
       Environment:
