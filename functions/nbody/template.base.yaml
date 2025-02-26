@@ -28,8 +28,7 @@ Resources:
           Properties:
             Path: /nbody
             Method: POST
-      # MemorySize: 10240 # digiLab
-      MemorySize: 3008 # Personal
+      MemorySize: 4096
       Environment:
         Variables:
           TWINLAB_URL: { { TWINLAB_URL } }

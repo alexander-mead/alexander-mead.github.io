@@ -27,8 +27,7 @@ Resources:
           Properties:
             Path: /mandelbrot
             Method: POST
-      # MemorySize: 10240 # digiLab
-      MemorySize: 3008 # Personal
+      MemorySize: 10240
     Metadata:
       Dockerfile: Dockerfile
       DockerContext: .
