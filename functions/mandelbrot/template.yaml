@@ -22,12 +22,12 @@ Globals:
     Timeout: 60
 
 Resources:
-  # MeadMandelbrotApi:
-  #   Type: AWS::Serverless::Api
-  #   Properties:
-  #     StageName: !Sub "${StageName}"
-  #     Auth:
-  #       ApiKeyRequired: true
+  ServerlessRestApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: !Sub "${StageName}"
+      Auth:
+        ApiKeyRequired: true
 
   MeadMandelbrotFunction:
     Type: AWS::Serverless::Function
