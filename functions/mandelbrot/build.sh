@@ -10,13 +10,14 @@ if [ "$#" -ne 1 ]; then
 fi
 
 # Build
+sam validate --lint
 sam build
 
 # Deploy locally or to the cloud
 if [ "$1" = "local" ]; then
     sam local start-api
 elif [ "$1" = "cloud" ]; then
-    sam deploy --config-env personal
+    sam deploy --profile personal
 elif [ "$1" = "guided" ]; then
     sam deploy --guided --profile personal
 else
