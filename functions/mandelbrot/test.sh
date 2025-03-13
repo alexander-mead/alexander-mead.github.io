@@ -18,8 +18,8 @@ curl --request POST $url/mandelbrot\
         "zoom": 1,
         "depth": 2,
         "color": "cubehelix",
-        "width": 1000,
-        "height": 1000,
+        "width": 100,
+        "height": 100,
         "sigma": 0.5,
         "transform": 1
     }'
