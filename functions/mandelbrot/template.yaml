@@ -2,6 +2,12 @@ AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 Description: SAM template for Mandelbrot function for my website
 
+Parameters:
+  StageName:
+    Type: String
+    Default: Prod
+    Description: Name of API stage.
+
 Globals:
   Api:
     Cors:
@@ -16,6 +22,13 @@ Globals:
     Timeout: 60
 
 Resources:
+  # MeadMandelbrotApi:
+  #   Type: AWS::Serverless::Api
+  #   Properties:
+  #     StageName: !Sub "${StageName}"
+  #     Auth:
+  #       ApiKeyRequired: true
+
   MeadMandelbrotFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -27,6 +40,8 @@ Resources:
           Properties:
             Path: /mandelbrot
             Method: POST
+            # Auth:
+            #   ApiKeyRequired: true
       MemorySize: 10240
     Metadata:
       Dockerfile: Dockerfile
@@ -35,4 +50,4 @@ Resources:
 Outputs:
   MeadMandelbrotApi:
     Description: "API Gateway endpoint URL for Mead Mandelbrot function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/mandelbrot"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/${StageName}"
