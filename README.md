@@ -38,19 +38,19 @@ An image of the Mandelbrot set should appear.
 For a local deployment (runs on [http://127.0.0.1:3000](http://127.0.0.1:3000)):
 
 ```sh
-sh build.sh local
+./scripts/build.sh local
 ```
 
 or for a cloud deployment:
 
 ```sh
-sh build.sh cloud
+./scripts/build.sh cloud
 ```
 
 If a deployment is running, try the API invocation script:
 
 ```sh
-sh test.sh <url>
+./scripts/test.sh <url>
 ```
 
 some gibberish (which is the image in a weird format) should be displayed on the
