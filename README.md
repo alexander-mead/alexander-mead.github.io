@@ -35,22 +35,16 @@ poetry run python mandelbrot.py
 
 An image of the Mandelbrot set should appear.
 
-For a local deployment (runs on [http://127.0.0.1:3000](http://127.0.0.1:3000)):
+For a local or coloud deployment use the deployment script:
 
 ```sh
-./scripts/build.sh local
-```
-
-or for a cloud deployment:
-
-```sh
-./scripts/build.sh cloud
+./scripts/deploy.sh
 ```
 
 If a deployment is running, try the API invocation script:
 
 ```sh
-./scripts/test.sh <url>
+./scripts/test.sh
 ```
 
 some gibberish (which is the image in a weird format) should be displayed on the

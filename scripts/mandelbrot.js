@@ -1,12 +1,11 @@
 // TODO: Read this from a .env file
 // const baseURL = "http://127.0.0.1:3000"; // local
 // const baseURL = "https://qte7wuo072.execute-api.eu-west-2.amazonaws.com/Prod"; // digiLab cloud
-const baseURL = "https://x7or5gwlkk.execute-api.eu-west-2.amazonaws.com/Prod"; // Personal cloud
+const SERVER_URL =
+  "https://x7or5gwlkk.execute-api.eu-west-2.amazonaws.com/Prod/mandelbrot"; // Personal cloud
+const API_KEY = "fpsrKwPdeQ5ecrNcivHwNaCfEur6j77Y2ro2PrGi";
 
 const image = () => {
-  // Definitions
-  const url = baseURL + "/mandelbrot";
-
   // Get from html
   const real = document.getElementById("real").value;
   const imag = document.getElementById("imag").value;
@@ -27,6 +26,7 @@ const image = () => {
     method: "POST", // Unless this is present it will default to "GET"
     headers: {
       "Content-Type": "application/json",
+      // "X-Api-Key": API_KEY, // TODO: Allow this in CORS
       Accept: "application/json",
     },
     body: JSON.stringify({
@@ -52,7 +52,7 @@ const image = () => {
 
   // Fetch
   console.log("Request sent");
-  fetch(url, params)
+  fetch(SERVER_URL, params)
     .then((response) => response.json()) // TODO: Not blob; maybe use response.blob()?
     .then((blob) => {
       console.log("Response blob received");

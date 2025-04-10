@@ -3,15 +3,17 @@
 # Read the URL from the command line
 # url=http://127.0.0.1:3000
 # url=https://x7or5gwlkk.execute-api.eu-west-2.amazonaws.com/Prod # Personal
-if [ "$#" -ne 1 ]; then
-    echo "Usage: test.sh <url>" 
+if [[ -z "${1:-}"  ]]; then
+    echo "Usage: $0 <url> [<api_key>]" 
     exit 1
 fi
-url=$1
+URL=$1
+API_KEY=${2:-}
 
-curl --request POST $url/mandelbrot\
+curl --request POST $URL/mandelbrot\
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
+    --header "X-Api-Key: $API_KEY" \
     --data '{
         "real": -0.5,
         "imag": 0,

@@ -11,7 +11,7 @@ fi
 
 # Build
 sam validate --lint
-sam build
+sam build --profile personal
 
 # Deploy locally or to the cloud
 if [ "$1" = "local" ]; then
@@ -21,7 +21,7 @@ elif [ "$1" = "cloud" ]; then
 elif [ "$1" = "guided" ]; then
     sam deploy --guided --profile personal
 else
-    echo "Invalid build option: $1."
+    echo "Invalid deploy option: $1."
     exit 1
 fi
 exit 0

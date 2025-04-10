@@ -7,6 +7,15 @@ Parameters:
     Type: String
     Default: Prod
     Description: Name of API stage.
+    AllowedValues:
+      - Prod
+  Architecture:
+    Type: String
+    Default: arm64 # ARM architecture (e.g., M-series Mac)
+    Description: Architecture of the Lambda function.
+    AllowedValues:
+      - x86_64
+      - arm64
 
 Globals:
   Api:
@@ -17,8 +26,7 @@ Globals:
       AllowCredentials: false
   Function:
     Architectures:
-      # - x86_64
-      - arm64 # digiLab M2 Mac
+      - !Ref Architecture
     Timeout: 60
 
 Resources:
@@ -46,6 +54,21 @@ Resources:
     Metadata:
       Dockerfile: Dockerfile
       DockerContext: .
+
+  ServerlessUsagePlan:
+    Type: AWS::ApiGateway::UsagePlan
+    Properties:
+      UsagePlanName: MandelbrotUsagePlan
+      Description: Usage plan for this API
+      Quota:
+        Limit: 25
+        Period: DAY
+      Throttle:
+        BurstLimit: 100
+        RateLimit: 50 # Requests per second
+      ApiStages:
+        - ApiId: !Ref ServerlessRestApi # Enforces a dependency on the ServerlessRestApi resource!
+          Stage: !Sub "${StageName}"
 
 Outputs:
   MeadMandelbrotApi:
