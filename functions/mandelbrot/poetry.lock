@@ -91,6 +91,40 @@ docs = ["ipython", "matplotlib", "numpydoc", "sphinx"]
 tests = ["pytest", "pytest-cov", "pytest-xdist"]
 
 [[package]]
+name = "f90wrap"
+version = "0.2.16"
+description = "Fortran to Python interface generator with derived type support"
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "f90wrap-0.2.16-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:3d98569d9e29bf0c76af1b2100317acdfaf762fc575c3e5023cd30c8d2edbacf"},
+    {file = "f90wrap-0.2.16-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:c064fc4135fc93a11aea7a804a35a58b291a679b38859d1999a51cdee9d17cea"},
+    {file = "f90wrap-0.2.16-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:46c645253a870dad855c5b54b1a4d7d5a15239fe8052c262000d8ad37dcf86b8"},
+    {file = "f90wrap-0.2.16-cp310-cp310-win_amd64.whl", hash = "sha256:cf6113cf9ed438ef99c0db3fdcfe6aed85db0a2cb0f065834e108073ef77f7d5"},
+    {file = "f90wrap-0.2.16-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:07784c9eb74ba6d709f327a282feecb5b210ecfaa83b43ddf82523aa59dccbb5"},
+    {file = "f90wrap-0.2.16-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:c48eef138c7c31509a6fa40d54418dfcd730cc89dfbdffcb3c2702dc21ef53d8"},
+    {file = "f90wrap-0.2.16-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:5398d2fe32d58a49554ecb4bb190848a9ee735ab4e02844743d3e3c04edb3209"},
+    {file = "f90wrap-0.2.16-cp311-cp311-win_amd64.whl", hash = "sha256:a561cca6a27f3026be4ea1858725260d20b620018ec53a1a24ecec5bd53811ac"},
+    {file = "f90wrap-0.2.16-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:6a31530872e0507fbef1479878732117b9492442f660937660c23024ff7adc11"},
+    {file = "f90wrap-0.2.16-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:d699c4341d95f42e803c701576a0e2426b1f9d92d898e523c11b79c6e5b32633"},
+    {file = "f90wrap-0.2.16-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:46a120410f389eca7ce25ac0a9ab38a236bc48360400263c9e87898a71b77079"},
+    {file = "f90wrap-0.2.16-cp312-cp312-win_amd64.whl", hash = "sha256:4870d50bf2a0a539e5eb4abcdcdc3bea0517796c5d88853098a38cb12950c6ad"},
+    {file = "f90wrap-0.2.16-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:d7f6f05e1b1e1623bcd664da9178ab38aed9bfba77c55520a098c678e7eff845"},
+    {file = "f90wrap-0.2.16-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:2d979669cc12ef3ba2eafa0e0170f0a20110e385585c6e083e330023fbfd619f"},
+    {file = "f90wrap-0.2.16-cp38-cp38-win_amd64.whl", hash = "sha256:58ea009237e7dd80411a619c83fb935d9b983836d86e6ea61aaf1f0279d8bb08"},
+    {file = "f90wrap-0.2.16-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:6ff9bc7f8b934d33cd261483d9c0eda3221cf3fc10e9e0d0a111fa5fe3bb37bb"},
+    {file = "f90wrap-0.2.16-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:9b724db18659eaf669b9ba5d8448748d2c8e3f13774fa62c05d2e7ab1c692140"},
+    {file = "f90wrap-0.2.16-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:a21267db802f7d2413e3fa6c089b07c7ed6ee2f77cc0a4d26783cc1ed7298f87"},
+    {file = "f90wrap-0.2.16-cp39-cp39-win_amd64.whl", hash = "sha256:52331d94d8fc10101ae7dc14a949cbe62f202fb6d78f2e4fc46200b77810175c"},
+    {file = "f90wrap-0.2.16.tar.gz", hash = "sha256:f085be1eb0dc62512df604e3f5d7535d70ae1837175beb12e3f49466f08776c6"},
+]
+
+[package.dependencies]
+numpy = ">=1.13"
+packaging = "*"
+
+[[package]]
 name = "fonttools"
 version = "4.56.0"
 description = "Tools to manipulate font files"
@@ -637,4 +671,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<3.11"
-content-hash = "ae3b1e1bf1c014e7c99091422c2eb5915e8fe4e19bcf751289945e930dc81e08"
+content-hash = "a47bbe01738d4a935bcede1a05089556d815b1a926156fc0498b3740a8937034"
