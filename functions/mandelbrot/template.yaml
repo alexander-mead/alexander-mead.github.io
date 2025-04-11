@@ -11,7 +11,7 @@ Parameters:
       - Prod
   Architecture:
     Type: String
-    Default: arm64 # ARM architecture (e.g., M-series Mac)
+    Default: x86_64 # ARM architecture (e.g., M-series Mac)
     Description: Architecture of the Lambda function.
     AllowedValues:
       - x86_64
@@ -20,14 +20,14 @@ Parameters:
 Globals:
   Api:
     Cors:
-      AllowMethods: "'GET,POST,OPTIONS'"
-      AllowHeaders: "'content-type'"
-      AllowOrigin: "'*'"
+      AllowMethods: "'POST,OPTIONS'"
+      AllowHeaders: "'*'" # TODO: Is this a good idea?
+      AllowOrigin: "'*'" # TODO: Try to allow only from my website?
       AllowCredentials: false
   Function:
     Architectures:
       - !Ref Architecture
-    Timeout: 60
+    Timeout: 29 # Seconds; 29s is the API Gateway timeout!
 
 Resources:
   ServerlessRestApi:
@@ -48,8 +48,8 @@ Resources:
           Properties:
             Path: /mandelbrot
             Method: POST
-            # Auth:
-            #   ApiKeyRequired: true
+            Auth:
+              ApiKeyRequired: true
       MemorySize: 10240
     Metadata:
       Dockerfile: Dockerfile
@@ -64,10 +64,10 @@ Resources:
         Limit: 25
         Period: DAY
       Throttle:
-        BurstLimit: 100
-        RateLimit: 50 # Requests per second
+        BurstLimit: 10
+        RateLimit: 1 # Requests per second
       ApiStages:
-        - ApiId: !Ref ServerlessRestApi # Enforces a dependency on the ServerlessRestApi resource!
+        - ApiId: !Ref ServerlessRestApi # Enforces a dependency on this resource so that infrastructure is deployed in order!
           Stage: !Sub "${StageName}"
 
 Outputs:
