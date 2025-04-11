@@ -1,23 +1,24 @@
 # Read the URL from the command line
 # url=http://127.0.0.1:3000/nbody
-# url=https://qte7wuo072.execute-api.eu-west-2.amazonaws.com/Prod/nbody # digiLab
 # url=https://wfa3ikw7ra.execute-api.eu-west-2.amazonaws.com/Prod/nbody # Personal
-if [ "$#" -ne 1 ]; then
-    echo "Usage: test.sh <url>" 
+if [[ -z "${1:-}"  ]]; then
+    echo "Usage: $0 <url> [<api_key>]" 
     exit 1
 fi
-url=$1
+URL=$1
+API_KEY=${2:-}
 
-curl --request POST $url \
+curl --request POST $URL \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
+    --header "X-Api-Key: $API_KEY" \
     --data '{
         "kmin": 0.001,
         "kmax": 10,
         "nk": 100,
         "z": 0,
         "color": "cubehelix",
-        "npix": 1000,
+        "npix": 100,
         "Lbox": 500,
         "Tbox": 1,
         "Omega_m": 0.3,

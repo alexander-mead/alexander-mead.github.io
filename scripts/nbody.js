@@ -1,11 +1,12 @@
 // TODO: Read this from a .env file
-// const baseURL = "http://127.0.0.1:3000"; // local
-// const baseURL = "https://qte7wuo072.execute-api.eu-west-2.amazonaws.com/Prod"; // digiLab cloud NOTE: *NOT* twinLab URL
-const baseURL = "https://wfa3ikw7ra.execute-api.eu-west-2.amazonaws.com/Prod"; // Personal cloud
+// const SERVER_URL = "http://127.0.0.1:3000"; // local
+const SERVER_URL =
+  "https://wfa3ikw7ra.execute-api.eu-west-2.amazonaws.com/Prod"; // Personal cloud
+const API_KEY = "tb7mB97zld20ehqsWK9tM7gRpJG27RpF4hfZQ8pj";
 
 const image = () => {
   // Definitions
-  const url = baseURL + "/nbody";
+  const url = SERVER_URL + "/nbody";
 
   // Cosmological parameters
   const Omega_m = document.getElementById("Omega_m").value;
@@ -36,6 +37,7 @@ const image = () => {
     method: "POST", // Unless this is present it will default to "GET"
     headers: {
       "Content-Type": "application/json",
+      "X-Api-Key": API_KEY,
       Accept: "application/json",
     },
     body: JSON.stringify({

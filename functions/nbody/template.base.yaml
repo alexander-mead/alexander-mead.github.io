@@ -1,22 +1,43 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  SAM template for my website
+  SAM template for Nbody function for my website
+
+Parameters:
+  StageName:
+    Type: String
+    Default: Prod
+    Description: Name of API stage.
+    AllowedValues:
+      - Prod
+  Architecture:
+    Type: String
+    Default: x86_64
+    Description: Architecture of the Lambda function.
+    AllowedValues:
+      - x86_64
+      - arm64
 
 Globals:
   Api:
     Cors:
-      AllowMethods: "'GET,POST,OPTIONS'"
-      AllowHeaders: "'content-type'"
+      AllowMethods: "'POST,OPTIONS'"
+      AllowHeaders: "'*'"
       AllowOrigin: "'*'"
       AllowCredentials: false
   Function:
     Architectures:
-      # - x86_64
-      - arm64 # digiLab M2 Mac
+      - !Ref Architecture
     Timeout: 15
 
 Resources:
+  ServerlessRestApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: !Sub "${StageName}"
+      Auth:
+        ApiKeyRequired: true
+
   MeadNbodyFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -28,6 +49,8 @@ Resources:
           Properties:
             Path: /nbody
             Method: POST
+            Auth:
+              ApiKeyRequired: true
       MemorySize: 4096
       Environment:
         Variables:
@@ -37,6 +60,21 @@ Resources:
     Metadata:
       Dockerfile: Dockerfile
       DockerContext: .
+
+  MeadNbodyUsagePlan:
+    Type: AWS::ApiGateway::UsagePlan
+    Properties:
+      UsagePlanName: MeadNbodyUsagePlan
+      Description: Usage plan for this API
+      Quota:
+        Limit: 50
+        Period: DAY
+      Throttle:
+        BurstLimit: 10
+        RateLimit: 1 # Requests per second
+      ApiStages:
+        - ApiId: !Ref ServerlessRestApi # Enforces a dependency on this resource so that infrastructure is deployed in order!
+          Stage: !Sub "${StageName}"
 
 Outputs:
   MeadNbodyApi:

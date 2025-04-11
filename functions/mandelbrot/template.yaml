@@ -11,7 +11,7 @@ Parameters:
       - Prod
   Architecture:
     Type: String
-    Default: x86_64 # ARM architecture (e.g., M-series Mac)
+    Default: x86_64
     Description: Architecture of the Lambda function.
     AllowedValues:
       - x86_64
@@ -55,13 +55,13 @@ Resources:
       Dockerfile: Dockerfile
       DockerContext: .
 
-  ServerlessUsagePlan:
+  MeadMandelbrotUsagePlan:
     Type: AWS::ApiGateway::UsagePlan
     Properties:
-      UsagePlanName: MandelbrotUsagePlan
+      UsagePlanName: MeadMandelbrotUsagePlan
       Description: Usage plan for this API
       Quota:
-        Limit: 25
+        Limit: 50
         Period: DAY
       Throttle:
         BurstLimit: 10
