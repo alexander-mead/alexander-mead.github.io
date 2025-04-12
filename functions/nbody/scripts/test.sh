@@ -1,6 +1,6 @@
 # Read the URL from the command line
-# url=http://127.0.0.1:3000/nbody
-# url=https://wfa3ikw7ra.execute-api.eu-west-2.amazonaws.com/Prod/nbody # Personal
+# url=http://127.0.0.1:3000
+# url=https://wfa3ikw7ra.execute-api.eu-west-2.amazonaws.com/Prod # Personal
 if [[ -z "${1:-}"  ]]; then
     echo "Usage: $0 <url> [<api_key>]" 
     exit 1
@@ -8,7 +8,7 @@ fi
 URL=$1
 API_KEY=${2:-}
 
-curl --request POST $URL \
+curl --request POST $URL/nbody \
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --header "X-Api-Key: $API_KEY" \
