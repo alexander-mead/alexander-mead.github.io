@@ -1,0 +1,78 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  SAM template for Worlds function for my website
+
+
+Parameters:
+  StageName:
+    Type: String
+    Default: Prod
+    Description: Name of API stage.
+    AllowedValues:
+      - Prod
+  Architecture:
+    Type: String
+    Default: x86_64
+    Description: Architecture of the Lambda function.
+    AllowedValues:
+      - x86_64
+      - arm64
+
+Globals:
+  Api:
+    Cors:
+      AllowMethods: "'POST,OPTIONS'"
+      AllowHeaders: "'*'"
+      AllowOrigin: "'*'"
+      AllowCredentials: false
+  Function:
+    Architectures:
+      - !Ref Architecture
+    Timeout: 15
+
+Resources:
+  ServerlessRestApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: !Sub "${StageName}"
+      Auth:
+        ApiKeyRequired: true
+
+  MeadWorldsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: "A lambda that generates a spherical world."
+      PackageType: Image
+      Events:
+        MeadWorlds:
+          Type: Api
+          Properties:
+            Path: /worlds
+            Method: POST
+            Auth:
+              ApiKeyRequired: true
+      MemorySize: 10240
+    Metadata:
+      Dockerfile: Dockerfile
+      DockerContext: .
+
+  MeadWorldsUsagePlan:
+    Type: AWS::ApiGateway::UsagePlan
+    Properties:
+      UsagePlanName: MeadWorldsUsagePlan
+      Description: Usage plan for this API
+      Quota:
+        Limit: 50
+        Period: DAY
+      Throttle:
+        BurstLimit: 10
+        RateLimit: 1 # Requests per second
+      ApiStages:
+        - ApiId: !Ref ServerlessRestApi # Enforces a dependency on this resource so that infrastructure is deployed in order!
+          Stage: !Sub "${StageName}"
+
+Outputs:
+  MeadWorldsApi:
+    Description: "API Gateway endpoint URL for Mead Worlds function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/worlds"

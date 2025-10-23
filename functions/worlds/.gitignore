@@ -1,0 +1,5 @@
+# Environment that contains secrets
+.env
+
+# Virtual environment
+.venv/

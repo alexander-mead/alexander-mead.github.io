@@ -1,0 +1,18 @@
+[project]
+name = "worlds-api"
+version = "0.1.0"
+description = "API for terrain generation."
+authors = [
+    { name = "Alexander Mead", email = "alexander.j.mead@googlemail.com" },
+]
+requires-python = ">=3.12"
+dependencies = ["world-generator"]
+
+[dependency-groups]
+dev = ["isort>=6.0.1", "mypy>=1.18.2", "ruff>=0.12.11"]
+
+[tool.isort]
+profile = "black"
+
+[tool.uv.sources]
+world-generator = { git = "https://github.com/alexander-mead/world-generator", tag = "v0.1.0" }
