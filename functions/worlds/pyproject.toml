@@ -6,10 +6,25 @@ authors = [
     { name = "Alexander Mead", email = "alexander.j.mead@googlemail.com" },
 ]
 requires-python = ">=3.12"
-dependencies = ["world-generator"]
+dependencies = [
+    "fastapi[standard]>=0.119.1",
+    "healpy>=1.18.1",
+    "matplotlib>=3.10.7",
+    "numpy>=2.3.4",
+    "plotly>=6.3.1",
+    "pydantic>=2.12.3",
+    "scipy>=1.16.2",
+    "world-generator",
+]
 
 [dependency-groups]
-dev = ["isort>=6.0.1", "mypy>=1.18.2", "ruff>=0.12.11"]
+dev = [
+    "isort>=6.0.1",
+    "mypy>=1.18.2",
+    "requests>=2.32.5",
+    "ruff>=0.12.11",
+    "uvicorn>=0.38.0",
+]
 
 [tool.isort]
 profile = "black"

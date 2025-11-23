@@ -1,52 +1,81 @@
 #!/bin/bash
 
-# Exit on error
+# Ensure that the script exits if any commands fail
 set -euo pipefail
 
-# Parse command-line arguments
+# Get environment variables
+env_vars=(
+    GOOGLE_PROJECT_ID
+    GOOGLE_REPOSITORY
+    GOOGLE_SERVICE_NAME
+    GOOGLE_REGION
+    WORLD_GENERATOR_TOKEN
+)
+if [ -f .env ]; then
+    source .env
+fi
+for var in "${env_vars[@]}"; do
+    if [[ -z "${!var:-}" ]]; then
+        echo "Error: $var is not set."
+        exit 1
+    fi
+done
+
+# Read arguments from command line
 if [[ -z "${1:-}" ]]; then
-    echo "Usage: $0 <local|cloud|guided> [<x86_64|arm64> <aws_profile>]"
+    echo "Usage: $0 <local|docker|cloud> [<amd64|arm64>]"
     exit 1
 fi
 DEPLOYMENT=$1
-ARCHITECTURE=${2:-"arm64"}
-AWS_PROFILE=${3:-"default"}
+ARCH=${2:-"amd64"}
 
-# Write info to screen
-echo "Deployment: $DEPLOYMENT"
-echo "Architecture: $ARCHITECTURE"
-echo "AWS profile: $AWS_PROFILE"
-
-# Load environment variables from .env file
-if [ ! -f .env ]; then
-    echo "Error: .env file not found. Please create one from the .env.example file."
+# Check deployment
+allowed_deployments=("local" "docker" "cloud")
+if [[ ! " ${allowed_deployments[*]} " =~ $DEPLOYMENT ]]; then
+    echo "Error: Invalid deployment type. Allowed values are: ${allowed_deployments[*]}"
     exit 1
 fi
 
-# Detect OS and load environment variables accordingly
-unamestr=$(uname)
-if [ "$unamestr" = "Linux" ]; then
-    export "$(grep -v '^#' .env | xargs -d '\n')"
-elif [ "$unamestr" = "FreeBSD" ] || [ "$unamestr" = "Darwin" ]; then
-    export "$(grep -v '^#' .env | xargs -0)"
-else
-    echo "Unsupported OS: $unamestr."
-    exit 1
+# Parameters
+IMAGE_ID="$GOOGLE_REGION-docker.pkg.dev/$GOOGLE_PROJECT_ID/$GOOGLE_REPOSITORY/$GOOGLE_SERVICE_NAME:latest"
+INTERNAL_PORT=8080 # NOTE: This must be identical to the port in the Dockerfile
+EXPOSED_PORT=8000
+MEMORY="512Mi"
+CPU="1"
+MAX_INSTANCES=5
+TIMEOUT="30s"
+
+# Build the Docker image if required
+if [[ "$DEPLOYMENT" = "docker" || "$DEPLOYMENT" = "cloud" ]]; then
+    if [ -f .env ]; then
+        source .env # Source the environment variables if .env exists
+    fi
+    if [[ -z "${WORLD_GENERATOR_TOKEN:-}" ]]; then
+        echo "Error: WORLD_GENERATOR_TOKEN is not set in the .env file."
+        exit 1
+    fi
+    ./scripts/build.sh "$ARCH"
 fi
 
-# Build
-sam validate --lint
-sam build --profile personal --parameter-overrides Architecture="$ARCHITECTURE"
-
-# Deploy locally or to the cloud
+# Run the application based on the deployment type
 if [ "$DEPLOYMENT" = "local" ]; then
-    sam local start-api --profile personal --parameter-overrides Architecture="$ARCHITECTURE"
+    uv run fastapi dev main.py
+elif [ "$DEPLOYMENT" = "docker" ]; then
+    # Run the Docker container
+    # Replacing -p with --expose does not seem to work?!
+    docker run -p $EXPOSED_PORT:$INTERNAL_PORT "$IMAGE_ID"
 elif [ "$DEPLOYMENT" = "cloud" ]; then
-    sam deploy --profile personal --parameter-overrides Architecture="$ARCHITECTURE"
-elif [ "$DEPLOYMENT" = "guided" ]; then
-    sam deploy --guided --profile personal --parameter-overrides Architecture="$ARCHITECTURE"
+    docker push "$IMAGE_ID"
+    gcloud run deploy "$GOOGLE_SERVICE_NAME" \
+        --region="$GOOGLE_REGION" \
+        --image="$IMAGE_ID" \
+        --project="$GOOGLE_PROJECT_ID" \
+        --memory=$MEMORY \
+        --cpu=$CPU \
+        --max-instances=$MAX_INSTANCES \
+        --timeout=$TIMEOUT \
+        --allow-unauthenticated
 else
-    echo "Invalid build option: $DEPLOYMENT."
+    echo "Error: Unknown deployment type."
     exit 1
 fi
-exit 0
