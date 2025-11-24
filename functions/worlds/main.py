@@ -1,7 +1,10 @@
+from typing import Any
+
 import healpy as hp
 import numpy as np
 import plotly.graph_objects as go
 from fastapi import FastAPI
+from fastapi.responses import HTMLResponse
 from matplotlib.colors import ListedColormap
 from pydantic import BaseModel
 from scipy.interpolate import griddata
@@ -24,7 +27,7 @@ async def ping() -> dict[str, str]:
 
 
 @app.post("/worlds")
-async def worlds() -> dict[str, str]:
+async def worlds() -> dict[str, Any]:
     """
     Endpoint to generate a new world
     """
@@ -166,4 +169,13 @@ async def worlds() -> dict[str, str]:
     fig.show()
     html_content = fig.to_html(include_plotlyjs="cdn")
 
-    return {"message": "World generated", "html": html_content}
+    headers = {  # Headers are necessary for CORS
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Headers": "*",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Credentials": "*",
+        "Access-Control-Allow-Methods": "*",
+    }
+
+    response = HTMLResponse(content=html_content, headers=headers)
+    return {"headers": headers, "message": "World generated", "html": html_content}
