@@ -10,6 +10,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script type="text/javascript" src="scripts/script.js"></script>
     <script type="text/javascript" src="scripts/menu.js"></script>
+    <script type="text/javascript" src="scripts/worlds.js"></script>
     <!--[if IE]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -42,8 +43,12 @@
       <div class="intro">
         <h3>World Generator</h3>
       </div>
+      <div style="text-align: center; margin-top: 20px">
+        <button id="clickButton" onClick="image()">Generate new world</button>
+      </div>
       <div class="world-embed">
         <iframe
+          id="world"
           src="html/world.html"
           title="World Generator"
           style="
@@ -56,6 +61,8 @@
         >
           Your browser does not support iframes.
         </iframe>
+        <div id="spinner" class="spinner"></div>
+        <div id="overlay" class="overlay"></div>
       </div>
       <footer>
         <p>
