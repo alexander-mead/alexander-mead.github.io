@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Alexander Mead | Worlds</title>
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="css/reset.css" />
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type="text/javascript" src="scripts/script.js"></script>
+    <script type="text/javascript" src="scripts/menu.js"></script>
+    <script type="text/javascript" src="scripts/worlds.js"></script>
+    <!--[if IE]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+    <div class="page-wrapper">
+      <div class="nav-container clearfix" id="nav-home">
+        <div class="nav-logo">
+          <p class="logo"><a href="index.html">AM</a></p>
+        </div>
+        <nav class="nav-menu">
+          <ul>
+            <li><a href="index.html#about">About</a></li>
+            <li><a href="index.html#publications">Publications</a></li>
+            <li>
+              <a href="https://github.com/alexander-mead/HMcode">HMcode</a>
+            </li>
+            <li><a href="orbits.html">Orbits</a></li>
+            <li><a href="gravity.html">Gravity</a></li>
+            <li><a href="maths.html">Maths</a></li>
+            <li><a href="mandelplot.html">Mandelplot</a></li>
+            <li><a href="universe.html">Universe</a></li>
+            <li><a href="#" class="selected">Worlds</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+
+      <div class="intro">
+        <h3>World Generator</h3>
+      </div>
+      <div style="text-align: center; margin-top: 20px">
+        <button id="clickButton" onClick="image()">Generate new world</button>
+      </div>
+      <div class="world-embed">
+        <iframe
+          id="world"
+          src="html/world.html"
+          title="World Generator"
+          style="
+            display: block;
+            margin: 0 auto;
+            width: 80%;
+            height: 600px;
+            border: 0;
+          "
+        >
+          Your browser does not support iframes.
+        </iframe>
+        <div id="spinner" class="spinner"></div>
+        <div id="overlay" class="overlay"></div>
+      </div>
+      <footer>
+        <p>
+          &copy; 2025 Alexander Mead. Website by
+          <a href="http://www.jenbayne.com" target="_blank">Jen Bayne</a>.
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>
