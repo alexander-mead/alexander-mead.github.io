@@ -1,1 +1,0 @@
-from .mandelbrot import mandelbrot

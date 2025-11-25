@@ -1,5 +1,0 @@
-# Environment that contains secrets
-.env
-
-# Template that contains secrets
-template.yaml
