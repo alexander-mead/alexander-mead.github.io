@@ -43,27 +43,48 @@
       <div class="intro">
         <h3>World Generator</h3>
       </div>
-      <div style="text-align: center; margin-top: 20px">
-        <button id="clickButton" onClick="image()">Generate new world</button>
+
+      <div class="subpage-wrapper">
+        <div class="content-wrapper clearfix">
+          <div class="subpage-left">
+            <div class="world-embed">
+              <iframe
+                id="world"
+                src="html/world.html"
+                title="World Generator"
+                style="
+                  display: block;
+                  margin: 0 auto;
+                  width: 80%;
+                  height: 600px;
+                  border: 0;
+                "
+              >
+                Your browser does not support iframes.
+              </iframe>
+              <div id="spinner" class="spinner"></div>
+              <div id="overlay" class="overlay"></div>
+            </div>
+          </div>
+          <div class="subpage-right">
+            <div style="text-align: center; margin-top: 20px">
+              <p>
+                The world shown here is generated randomly using a
+                procedural-generation technique that borrows concepts from
+                cosmology in order to create terrain on the surface of a sphere.
+                A basic erosion model gives realistic relief to mountains. The
+                spherical world is perfectly periodic, meaning that continents
+                and oceans line up automatically without seams. The API used to
+                generate these worlds is hosted on Google Cloud Run.
+              </p>
+              <button id="clickButton" onClick="image()">
+                Generate new world
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="world-embed">
-        <iframe
-          id="world"
-          src="html/world.html"
-          title="World Generator"
-          style="
-            display: block;
-            margin: 0 auto;
-            width: 80%;
-            height: 600px;
-            border: 0;
-          "
-        >
-          Your browser does not support iframes.
-        </iframe>
-        <div id="spinner" class="spinner"></div>
-        <div id="overlay" class="overlay"></div>
-      </div>
+
       <footer>
         <p>
           &copy; 2025 Alexander Mead. Website by
