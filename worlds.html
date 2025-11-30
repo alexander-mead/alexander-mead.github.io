@@ -40,6 +40,12 @@
         </nav>
       </div>
 
+      <script>
+        $(document).ready(function () {
+          ping();
+        });
+      </script>
+
       <div class="intro">
         <h3>World Generator</h3>
       </div>
@@ -69,14 +75,57 @@
           <div class="subpage-right">
             <div style="text-align: center; margin-top: 20px">
               <p>
-                The world shown here is generated randomly using a
+                The world shown here is randomly generated using a
                 procedural-generation technique that borrows concepts from
-                cosmology in order to create terrain on the surface of a sphere.
-                A basic erosion model gives realistic relief to mountains. The
-                spherical world is perfectly periodic, meaning that continents
-                and oceans line up automatically without seams. The API used to
-                generate these worlds is hosted on Google Cloud Run.
+                cosmology in order to create realistic terrain on the surface of
+                a sphere. The world is constructed from a series of spherical
+                waves that interfere to create continents, oceans, mountain
+                ranges, and plains. The waves are periodic over the sphere and
+                are generated using a power spectrum that mimics the statistical
+                properties of real-world terrain. The relief is then sharpened,
+                and this is followed by a basic algorithmic erosion model gives
+                realistic relief to mountains. The spherical world is perfectly
+                periodic, meaning that continents and oceans line up
+                automatically around the surface of the sphere.
               </p>
+              <p>
+                The API used to generate these worlds is hosted on Google Cloud
+                Run.
+              </p>
+              <p>
+                Use the controls below to generate new worlds with different
+                characteristics. You can adjust the topography, rainfall, and
+                temperature:
+              </p>
+              <div
+                style="
+                  display: flex;
+                  justify-content: center;
+                  gap: 24px;
+                  margin-bottom: 24px;
+                  margin-top: 24px;
+                "
+              >
+                <select name="topography" id="topography">
+                  <option value="archipelagic">archipelagic</option>
+                  <option value="continental" selected>continental</option>
+                  <option value="lakes">lakes</option>
+                </select>
+                <select name="rainfall" id="rainfall">
+                  <option value="drenched">drenched</option>
+                  <option value="wet">wet</option>
+                  <option value="moist" selected>moist</option>
+                  <option value="dry">dry</option>
+                  <option value="parched">parched</option>
+                </select>
+                <select name="temperature" id="temperature">
+                  <option value="cold">cold</option>
+                  <option value="cool">cool</option>
+                  <option value="temperate" selected>temperate</option>
+                  <option value="warm">warm</option>
+                  <option value="hot">hot</option>
+                </select>
+              </div>
               <button id="clickButton" onClick="image()">
                 Generate new world
               </button>

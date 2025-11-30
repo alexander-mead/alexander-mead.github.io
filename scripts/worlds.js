@@ -2,9 +2,43 @@
 // const SERVER_URL = "http://127.0.0.1:8000";
 const SERVER_URL = "https://worlds-service-1080316704559.europe-west2.run.app";
 
+const ping = () => {
+  // Definitions
+  const url = SERVER_URL + "/ping";
+
+  // Construct request json
+  const params = {
+    method: "GET", // Unless this is present it will default to "GET"
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  };
+
+  // Send request
+  fetch(url, params)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log("Ping response:", data);
+    })
+    .catch((error) => {
+      console.log("Error:", error);
+    });
+};
+
 const image = () => {
   // Definitions
   const url = SERVER_URL + "/worlds";
+
+  // Topography parameters
+  const topography = document.getElementById("topography").value;
+  const rainfall = document.getElementById("rainfall").value;
+  const temperature = document.getElementById("temperature").value;
 
   // Construct request json
   const params = {
@@ -13,6 +47,11 @@ const image = () => {
       "Content-Type": "application/json",
       Accept: "application/json",
     },
+    body: JSON.stringify({
+      topography: topography,
+      rainfall: rainfall,
+      temperature: temperature,
+    }),
   };
 
   // Show spinner and grey overlay
