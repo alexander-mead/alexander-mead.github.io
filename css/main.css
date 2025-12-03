@@ -163,6 +163,24 @@ a.selected {
 
 /* Spinner */
 
+.world-embed {
+  position: relative; /* Needed for absolute overlay */
+  width: 100%;
+}
+
+.overlay-world {
+  position: absolute;
+  top: 0;
+  left: 10%; /* because iframe width = 80% and is centered */
+  width: 80%; /* match the iframe width */
+  height: 600px; /* match iframe height */
+  background: rgba(255, 255, 255, 0.7);
+  display: none; /* hide by default; set display:flex to show */
+  justify-content: center;
+  align-items: center;
+  z-index: 10; /* ensure it appears above iframe */
+}
+
 .image-container {
   position: relative;
   display: inline-block;
