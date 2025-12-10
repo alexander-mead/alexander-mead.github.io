@@ -8,7 +8,7 @@ const ping = () => {
 
   // Construct request json
   const params = {
-    method: "GET", // Unless this is present it will default to "GET"
+    method: "GET",
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
