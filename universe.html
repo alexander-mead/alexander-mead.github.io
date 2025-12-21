@@ -66,17 +66,15 @@
               <a href="https://www.digilab.co.uk/">digiLab</a>. This emulator is
               trained on
               <a href="https://github.com/alexander-mead/HMcode">HMcode</a>
-              predictions, which are combined with a log-normal field
+              predictions, which is then combined with a log-normal field
               approximation to produce realisations of the matter distribution
               in the Universe. This is a quick method for generating mock
               universes, which would otherwise require expensive $N$-body
               simulations to create. Areas of higher matter density are shown
               with brighter colours. The region of the Universe shown is 500
-              megaparsecs across and one megaparsec deep, which would contain
-              approximately 250,000 galaxies and would take light more than 1.5
-              billion years to cross. Galaxies are clustered into huge
-              superclusters, which are joined by filaments and separated by
-              voids.
+              megaparsecs across and 1 megaparsec deep. This volume would
+              contain approximately 250,000 galaxies and would take light more
+              than 1.5 billion years to cross.
             </p>
             <p>
               You can change the density of both dark and normal (baryonic)
@@ -160,6 +158,18 @@
               <option value="magma">Magma</option>
               <option value="digilab">digiLab</option></select
             ><br /><br />
+
+            <label for="seed">Seed:</label>
+            <input
+              type="number"
+              name="seed"
+              id="seed"
+              value="123"
+              placeholder="Enter integer"
+              pattern="\d+"
+              title="Enter an integer value"
+              autocomplete="off"
+            /><br /><br />
 
             <button id="clickButton" onClick="image()">
               Generate universe
