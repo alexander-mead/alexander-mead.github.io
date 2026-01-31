@@ -90,29 +90,31 @@
         "
       ></div>
       <script>
+        const size = 256;
+        // TODO: Not sure why the negative sign is needed  in bounds here
+        const bounds = [
+          [0, 0],
+          [-size, size],
+        ];
+        const center = [-size / 2, size / 2];
+        const url = "http://127.0.0.1:3000";
+        // const url =
+        // "https://x7or5gwlkk.execute-api.eu-west-2.amazonaws.com/Prod";
         const map = L.map("map", {
           crs: L.CRS.Simple, // IMPORTANT: non-geographic coordinates
           minZoom: 2,
           maxZoom: 12,
         });
-        const url = "http://127.0.0.1:3000";
-        // const url =
-        // "https://x7or5gwlkk.execute-api.eu-west-2.amazonaws.com/Prod";
-        const tiles = L.tileLayer(`${url}/{z}/{x}/{y}`, {
+        const tiles = L.tileLayer(`${url}/v1/{z}/{x}/{y}`, {
           tileSize: 256,
           noWrap: true,
           // updateWhenZooming: false,
           // updateWhenIdle: true,
           // keepBuffer: 2,
         }).addTo(map);
-        const size = 256;
-        const bounds = [
-          [0, 0],
-          [size, size],
-        ];
-        // Center the map on the middle of the tile grid
-        const center = [size / 2, size / 2];
-        map.setView(center, 4); // Adjust zoom as needed
+        map.setView(center, 2); // Adjust zoom as needed
+        map.setMaxBounds(bounds);
+        map.options.maxBoundsViscosity = 1.0;
       </script>
       <footer>
         <p>
