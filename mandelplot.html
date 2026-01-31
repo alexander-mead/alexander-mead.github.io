@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <title>Alexander Mead | Mandelplot</title>
@@ -10,7 +10,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script type="text/javascript" src="scripts/script.js"></script>
     <script type="text/javascript" src="scripts/menu.js"></script>
-    <script type="text/javascript" src="scripts/mandelbrot.js"></script>
     <!-- Mathjax with GitHub pages: https://stackoverflow.com/questions/34347818/using-mathjax-on-a-github-page -->
     <script
       type="text/javascript"
@@ -24,6 +23,11 @@
     <!--[if IE]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   </head>
 
   <body>
@@ -56,83 +60,60 @@
 
       <div class="subpage-wrapper">
         <div class="content-wrapper clearfix">
-          <div class="subpage-left">
-            <p>
-              Here you can plot part of the
-              <a href="https://en.wikipedia.org/wiki/Mandelbrot_set"
-                >Mandelbrot Set</a
-              >, which is a fun thing to do if you cannot sleep at night. The
-              set is a good example of how a simple mathematical equation can
-              produce extraordinarily complex behaviour. Explore the set by
-              changing the image centre, depth, and zoom level. The depth
-              controls the number of iterations that are used to determine
-              whether a point is in the set or not. Zoom is how many factors of
-              two to zoom in by. Points are coloured according to the number of
-              iterations required to determine whether they are in the set or
-              not, with black being points that are in the set, and the colour
-              intensity indicating how long it took a point to diverge. The
-              backend for the calculation is deployed using a
-              <a href="https://aws.amazon.com/pm/lambda/">
-                serverless AWS Lambda</a
-              >
-              function.
-            </p>
-            <br />
-            <p>Some coordinates to try are:</p>
-            <ol>
-              <br />
-              <li>･ $(-0.75, 0.00)$</li>
-              <li>･ $(-1.40, 0.00)$</li>
-              <li>･ $(-0.60, -0.40)$</li>
-              <li>･ $(0.25, 0.00)$</li>
-            </ol>
-            <br /><br />
-
-            <label for="real">Image centre (real): </label>
-            <input id="real" type="number" value="-0.5" /><br /><br />
-
-            <label for="imag">Image centre (imaginary): </label>
-            <input id="imag" type="number" value="0.0" /><br /><br />
-
-            <label for="zoom">Image zoom: </label>
-            <input id="zoom" type="number" value="0.0" /><br /><br />
-
-            <label for="depth">Image depth:</label>
-            <select name="depth" id="depth">
-              <option value="64" selected>Very low</option>
-              <option value="128">Low</option>
-              <option value="256">Medium</option>
-              <option value="512">High</option>
-              <option value="1024">Very high</option></select
-            ><br /><br />
-
-            <label for="color">Colour scheme:</label>
-            <select name="color" id="color">
-              <option value="binary_r" selected>Black & white</option>
-              <option value="cubehelix">Cubehelix</option>
-              <option value="afmhot">Lava</option>
-              <option value="bone">Cool</option></select
-            ><br /><br />
-
-            <button id="clickButton" onClick="image()">Generate image</button>
-          </div>
-
-          <div class="subpage-right">
-            <div class="image-container">
-              <img
-                id="image"
-                src="images/mandelbrot.png"
-                alt="Image of the Mandelbrot Set"
-                title="Mandelbrot"
-                download="mandelbrot.png"
-              />
-              <div id="spinner" class="spinner"></div>
-              <div id="overlay" class="overlay"></div>
-            </div>
-          </div>
+          <p>
+            Here you can plot part of the
+            <a href="https://en.wikipedia.org/wiki/Mandelbrot_set"
+              >Mandelbrot Set</a
+            >, which is a fun thing to do if you cannot sleep at night. The set
+            is a good example of how a simple mathematical equation can produce
+            extraordinarily complex behaviour. Points are coloured according to
+            the number of iterations required to determine whether they are in
+            the set or not, with black being points that are in the set, and the
+            colour intensity indicating how long it took a point to diverge. The
+            backend for the calculation is deployed using a
+            <a href="https://aws.amazon.com/pm/lambda/">
+              serverless AWS Lambda</a
+            >
+            function.
+          </p>
+          <br />
         </div>
       </div>
-
+      <div
+        id="map"
+        style="
+          height: 70vh;
+          width: 90%;
+          margin: 0 auto;
+          border: 1px solid #ccc;
+          border-radius: 8px;
+        "
+      ></div>
+      <script>
+        const map = L.map("map", {
+          crs: L.CRS.Simple, // IMPORTANT: non-geographic coordinates
+          minZoom: 2,
+          maxZoom: 12,
+        });
+        const url = "http://127.0.0.1:3000";
+        // const url =
+        // "https://x7or5gwlkk.execute-api.eu-west-2.amazonaws.com/Prod";
+        const tiles = L.tileLayer(`${url}/{z}/{x}/{y}`, {
+          tileSize: 256,
+          noWrap: true,
+          // updateWhenZooming: false,
+          // updateWhenIdle: true,
+          // keepBuffer: 2,
+        }).addTo(map);
+        const size = 256;
+        const bounds = [
+          [0, 0],
+          [size, size],
+        ];
+        // Center the map on the middle of the tile grid
+        const center = [size / 2, size / 2];
+        map.setView(center, 4); // Adjust zoom as needed
+      </script>
       <footer>
         <p>
           &copy; 2025 Alexander Mead. Website by
