@@ -61,16 +61,20 @@
       <div class="subpage-wrapper">
         <div class="content-wrapper clearfix">
           <p>
-            Here you can plot part of the
+            Here you can zoom around the
             <a href="https://en.wikipedia.org/wiki/Mandelbrot_set"
               >Mandelbrot Set</a
             >, which is a fun thing to do if you cannot sleep at night. The set
             is a good example of how a simple mathematical equation can produce
-            extraordinarily complex behaviour. Points are coloured according to
-            the number of iterations required to determine whether they are in
-            the set or not, with black being points that are in the set, and the
-            colour intensity indicating how long it took a point to diverge. The
-            backend for the calculation is deployed using a
+            complex behaviour. The black region represents points that are in
+            the set. An iterative algorithm is used to determine whether points
+            are in the set or not. For those points not in the set, the colour
+            intensity indicates how many iterations of the algorithm were
+            required to determine that the point was not in the set. With
+            brighter colours
+          </p>
+          <p>
+            The backend server for the calculation runs as a
             <a href="https://aws.amazon.com/pm/lambda/">
               serverless AWS Lambda</a
             >
@@ -91,15 +95,14 @@
       ></div>
       <script>
         const size = 256;
-        // TODO: Not sure why the negative sign is needed  in bounds here
+        // Coordinates are [y, x]!
+        // Negative signs because screen y-coordinates increase downwards
         const bounds = [
           [0, 0],
           [-size, size],
         ];
         const center = [-size / 2, size / 2];
-        const url = "http://127.0.0.1:3000";
-        // const url =
-        // "https://x7or5gwlkk.execute-api.eu-west-2.amazonaws.com/Prod";
+        const url = "https://dsqatv76tve2i.cloudfront.net";
         const map = L.map("map", {
           crs: L.CRS.Simple, // IMPORTANT: non-geographic coordinates
           minZoom: 2,
@@ -108,9 +111,6 @@
         const tiles = L.tileLayer(`${url}/v1/{z}/{x}/{y}`, {
           tileSize: 256,
           noWrap: true,
-          // updateWhenZooming: false,
-          // updateWhenIdle: true,
-          // keepBuffer: 2,
         }).addTo(map);
         map.setView(center, 2); // Adjust zoom as needed
         map.setMaxBounds(bounds);
