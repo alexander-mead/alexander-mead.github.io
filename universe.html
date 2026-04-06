@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <title>Alexander Mead | Universe</title>
@@ -185,13 +185,14 @@
           </div>
         </div>
       </div>
-
-      <footer>
-        <p>
-          &copy; 2025 Alexander Mead. Website by
-          <a href="http://www.jenbayne.com" target="_blank">Jen Bayne</a>.
-        </p>
-      </footer>
+      <div id="footer"></div>
+      <script>
+        fetch("html/footer.html")
+          .then((r) => r.text())
+          .then((html) => {
+            document.getElementById("footer").innerHTML = html;
+          });
+      </script>
     </div>
   </body>
 </html>
